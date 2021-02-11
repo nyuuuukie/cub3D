@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/11 22:09:56 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/11 22:22:07 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,8 @@
 int		check_extension(char *map, const char *ext);
 int		check_save_arg(char *save);
 int		check_map_arg(char *map);
+
+/* Print error */
+void	print_error(char *title, char *msg);
 
 #endif

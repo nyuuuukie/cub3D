@@ -6,18 +6,11 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:46:26 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/11 22:10:00 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/11 22:21:45 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-void	print_error(char *title, char *msg)
-{
-	write(2, title, ft_strlen(title));
-	write(2, msg, ft_strlen(msg));
-	write(2, "\n", 1);
-}
 
 char*	get_map_error(int code)
 {
