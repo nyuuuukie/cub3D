@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/12 15:39:38 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/12 16:36:25 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ int check_resolution(char *str, t_prm *prm)
 		if ((res = ft_atoui(&str[i], &prm->r_width)) == -1)
 		{
 			if (str[i] == '-')
-				print_error("Map error", "Screen width value is negative", 0);
+				print_error("Map error", "Resolution value is negative", 0);
 			else
-				print_error("Map error", "Invalid screen width value", 0);
+				print_error("Map error", "Invalid resolution value", 0);
 			return (-1);
 		}
 		i += res;
@@ -74,7 +74,7 @@ int check_resolution(char *str, t_prm *prm)
 			//if (ft_isdigit(str[i]))
 			//	print_error("Map error", "Resolution has only one parameter", 0);
 			if (str[i] == '-')
-				print_error("Map error", "Screen height value is negative", 0);
+				print_error("Map error", "Resolution value is negative", 0);
 			else
 				print_error("Map error", "Invalid symbols in map resolution", &str[i]);
 			return (-1);
