@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 21:45:51 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/12 07:47:23 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/12 15:21:57 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,20 @@ int		check_extension(char *map, const char *ext)
 	return (end != 0 && (ft_strcmp(&map[end], ext) == 0));
 }
 
-int		check_map_arg(char *map)
+int		check_file(char *file, char *ext)
 {
 	int fd;
 	int code;
 	
 	code = 1;
-	if (check_extension(map, ".cub"))
+	if (check_extension(file, ext))
 	{
-		fd = open(map, O_RDONLY);
+		fd = open(file, O_RDONLY);
 		code = fd < 0 ? 2 : 0;
 		close(fd);
 	}
 	if (code)
-		print_error("Argument error", get_map_error(code), 0);
+		print_error("File error", get_map_error(code), 0); //CHANGE
 	return (code);
 }
 
@@ -44,7 +44,7 @@ int check_save_arg(char *save)
 {
 	int code;
 	
-	code = !(ft_strcmp(save, "--save") && ft_strcmp(save, "-s"));
+	code = (ft_strcmp(save, "--save") && ft_strcmp(save, "-s"));
 	if (code)
 		print_error("Argument error", "Invalid flag", save);
 	return (code);

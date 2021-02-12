@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/12 07:13:25 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/12 14:54:57 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 /* Check input arguments */
 int		check_extension(char *map, const char *ext);
 int		check_save_arg(char *save);
-int		check_map_arg(char *map);
+int		check_file(char *map, char *ext);
 
 /* Check map */
 int		check_map(char *map, t_prm *prm);

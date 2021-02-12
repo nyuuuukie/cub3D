@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/12 14:46:01 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/12 15:39:38 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int check_resolution(char *str, t_prm *prm)
 		i += skip_symbol(&str[i], ' ');
 		if (str[i++] != 'R')
 		{
-			print_error("Map error", "Resolution was not found", 0);			
+			print_error("Map error", "Resolution was not found", &str[i]);
 			return (-1);
 		}
 		
@@ -60,26 +60,78 @@ int check_resolution(char *str, t_prm *prm)
 			return (-1);
 		}
 		i += res;
-		
 		if (str[i] != ' ')
 		{
-			if (ft_isdigit(str[i]))
-				print_error("Map error", "Resolution has only one parameter", 0);
-			else if (str[i] == '-')
+			//if (ft_isdigit(str[i]))
+			//	print_error("Map error", "Resolution has only one parameter", 0);
+			//else
+			print_error("Map error", "Invalid symbols in map resolution", &str[i]);
+			return (-1);
+		}
+		i += skip_symbol(&str[i], ' ');
+		if ((res = ft_atoui(&str[i], &prm->r_height)) == -1)
+		{
+			//if (ft_isdigit(str[i]))
+			//	print_error("Map error", "Resolution has only one parameter", 0);
+			if (str[i] == '-')
 				print_error("Map error", "Screen height value is negative", 0);
 			else
-				print_error("Map error", "Invalid symbols in map resolution", 0);
+				print_error("Map error", "Invalid symbols in map resolution", &str[i]);
 			return (-1);
-		}	
-
+		}
+		i += res;
 		i += skip_symbol(&str[i], ' ');
-		if (ft_atoui(&str[i], &prm->r_height) == -1)
+		if (str[i] != '\n')
 		{
-			print_error("Map error", "Invalid screen height value", 0);
+			if (ft_isdigit(str[i]))
+				print_error("Map error", "Resolution has more than two parameters", 0);
+			else
+				print_error("Map error", "Invalid symbols in map resolution", &str[i]);
 			return (-1);
 		}
 	}
 	return ((str == NULL) * -1);
+}
+
+char* get_sym_pos(char *str, char c)
+{
+	while (str && *str && *str != c)
+		str++;
+	return (str);
+}
+
+int	check_textures_abbr(char *str)
+{
+	if (ft_strncmp(str, "NO", get_sym_pos(str, ' ') - str))
+		return (0);
+	if (ft_strncmp(str, "SO", get_sym_pos(str, ' ') - str))
+		return (0);
+	if (ft_strncmp(str, "WE", get_sym_pos(str, ' ') - str))
+		return (0);
+	if (ft_strncmp(str, "EA", get_sym_pos(str, ' ') - str))
+		return (0);
+	return (-1);
+}
+
+int check_textures(char *str, t_prm *prm)
+{
+	(void)prm;
+	int i;
+
+	i = 0;
+	i += skip_symbol(&str[0], ' ');
+	if (check_textures_abbr(&str[i]) == -1)
+	{
+		print_error("Map error", "Invalid abbreviation of texture", 0);
+		return (-1);
+	}
+	i += 2;
+	i += skip_symbol(&str[i], ' ');
+	if (check_file(&str[i], ".xpm"))
+	{
+		return (-1);
+	}
+	return (0);
 }
 
 int	check_map(char *map, t_prm *prm)
@@ -102,5 +154,18 @@ int	check_map(char *map, t_prm *prm)
 		printf("w:%u\n", prm->r_width);
 		printf("h:%u\n", prm->r_height);
 	}
+	
+	code = get_next_line(fd, &tmp);
+	if (code < 0)
+	{
+		print_error("Internal error", "get_next_line caused crash", 0);
+		return (-1);
+	}
+	
+	if (check_textures(tmp, prm) != -1)
+	{
+		printf("textures check done!\n");
+	}
+	close(fd);
 	return (0);
 }

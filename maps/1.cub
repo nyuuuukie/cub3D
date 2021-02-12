@@ -1,1 +1,5 @@
-R 100 -200
+R 100 200 mhufflep
+NO textures/textureNO.xpm
+SO textures/textureSO.xpm
+WE textures/textureWE.xpm
+EA textures/textureEA.xpm

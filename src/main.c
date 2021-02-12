@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:46:26 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/12 07:47:28 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/12 15:18:49 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char*	get_map_error(int code)
 	static char* errors[10];
 
 	errors[0] = "Unknown error";
-	errors[1] = "Bad extension of map";
+	errors[1] = "Invalid file extension";
 	errors[2] = "No such file or directory";
 	errors[3] = "";
 	errors[4] = "";
@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 	set_defaults(&prm);
 	if (argc == 2 || argc == 3)
 	{
-		if (check_map_arg(argv[1]))
+		if (check_file(argv[1], ".cub"))
 			return (-1);
 		if (argc == 3 && check_save_arg(argv[2]))
 			return (-1);
