@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:46:26 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/11 22:21:45 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/12 07:47:28 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char*	get_map_error(int code)
 {
 	const int n = 10; //Cannot use const due to norm error
-	static char* errors[n];
+	static char* errors[10];
 
 	errors[0] = "Unknown error";
 	errors[1] = "Bad extension of map";
@@ -38,30 +38,33 @@ int link_start()
 	return (0);
 }
 
-int make_screen()
+int make_screenshot()
 {
 	return (0);
 }
 
+void	set_defaults(t_prm *prm)
+{
+	prm->r_height = 0;
+	prm->r_width = 0;
+}
+
 int main(int argc, char **argv)
 {
-	int code;
+	t_prm	prm;
 
+	set_defaults(&prm);
 	if (argc == 2 || argc == 3)
 	{
-		if ((code = check_map_arg(argv[1])))
-			print_error("Argument error: ", get_map_error(code));
-		else if (argc == 3)
-		{
-			if (check_save_arg(argv[2]))
-				print_error("Argument error: ", "Invalid flag");
-			else
-				make_screen();
-		}
-		else
-			link_start();
+		if (check_map_arg(argv[1]))
+			return (-1);
+		if (argc == 3 && check_save_arg(argv[2]))
+			return (-1);
+		if (check_map(argv[1], &prm))
+			return (-1);
+		(argc == 2) ? link_start() : make_screenshot();
 	}
 	else
-		print_error("Argument error: ", "Invalid number of arguments");
+		print_error("Argument error", "Invalid number of arguments", 0);
 	return (0);
 }

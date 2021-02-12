@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 18:24:16 by mhufflep          #+#    #+#             */
-/*   Updated: 2020/10/31 20:24:53 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/12 05:02:26 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int		i;
 	int		len_first;
 	int		len_second;
 	char	*res;
 
-	i = 0;
 	if (!s1 || !s2)
 		return (NULL);
 	len_first = ft_strlen(s1);

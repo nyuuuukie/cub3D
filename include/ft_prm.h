@@ -1,18 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_prm.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/11 20:19:30 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/12 05:01:58 by mhufflep         ###   ########.fr       */
+/*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
+/*   Updated: 2021/02/12 06:26:46 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strcmp(const char *s1, const char *s2)
+#ifndef FT_PRM_H
+# define FT_PRM_H
+
+# define PARSE_R_MAX_LEN 6
+
+typedef struct		s_prm
 {
-	while (*s1 != '\0' && *s2 != '\0' && *s1 == *s2 && s1++)
-		s2++;
-	return (*s1 - *s2);
-}
+	unsigned int 	r_width;
+	unsigned int 	r_height;
+}					t_prm;
+
+#endif

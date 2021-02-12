@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_base.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/11 20:19:30 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/12 05:01:58 by mhufflep         ###   ########.fr       */
+/*   Created: 2021/02/12 05:06:24 by mhufflep          #+#    #+#             */
+/*   Updated: 2021/02/12 07:24:18 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	while (*s1 != '\0' && *s2 != '\0' && *s1 == *s2 && s1++)
-		s2++;
-	return (*s1 - *s2);
-}
+#ifndef FT_BASE_H
+# define FT_BASE_H
+
+# include <unistd.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include <stdio.h>
+# include <string.h>
+# include <errno.h>
+
+# include "libft.h"
+
+#endif
