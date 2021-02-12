@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/12 23:34:27 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/12 23:42:24 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,9 @@ void	check_resolution(char **ptr, t_map *map)
 	get_number(ptr, &map->r_height);
 
 	skip_symbol(ptr, ' ');
-	check_symbol(ptr, "\0");
+	if (**ptr != '\0')
+		exit(1);
+	//check_symbol(ptr, "\0");
 	print_status("Resolution", "", "OK");
 }
 
