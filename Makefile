@@ -1,6 +1,7 @@
 .PHONY: all clean fclean re bonus libft create_obj_dir
 
 NAME = cub3D
+LIBFT_NAME = libft.a
 
 CC = gcc
 
@@ -25,7 +26,7 @@ SOURCES =	main.c \
 			print_error.c 
 		
 GNL_SRC = gnl.c
-GNL_OBJ = $(addprefix $(GNL_DIR)/, $(GNL_SRC:.c=.o))
+GNL_OBJ = $(addprefix $(OBJ_DIR)/, $(GNL_SRC:.c=.o))
 OBJECTS = $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 HEADERS = $(INCLUDES_DIR)/*.h
 
@@ -40,8 +41,8 @@ $(GNL_OBJ): $(GNL_DIR)/$(GNL_SRC)
 libft:
 	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(LIBFT_DIR)/$(LIBFT_NAME)
-	@$(CC) $(CFLAGS) -c $^ $(INCLUDE_FLAGS) -o $@
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(LIBFT_DIR)/$(LIBFT_NAME) $(GNL_OBJ)
+	@$(CC) $(CFLAGS) -c $< $(INCLUDE_FLAGS) -o $@
 
 $(NAME): $(GNL_OBJ) $(OBJECTS) $(HEADERS)
 	@$(CC) $(CFLAGS) $(GNL_OBJ) $(OBJECTS) $(LIB_FLAGS) -o $@
