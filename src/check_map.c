@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/12 19:34:26 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/12 23:34:27 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int		ft_atoui(char **str, unsigned int *number)
     return (s[i] == '\0' || s[i] == ' ' || i == R_MAX_LEN ? i : -1);
 }
 
-int		get_integer(char **str, unsigned int *number)
+int		get_number(char **str, unsigned int *number)
 {
 	int res;
 	
@@ -49,101 +49,130 @@ int		get_integer(char **str, unsigned int *number)
 	return (res);
 }
 
-int		check_symbol(char **str, const char ex)
+void	print_status(char *title, char *name, char *status)
 {
-	if (**str != ex)
+	write(1, title, ft_strlen(title));
+	write(1, " ", 1);
+	write(1, name, ft_strlen(name));
+	write(1, ": ", 2);
+	write(1, "[", 1);
+	write(1, status, ft_strlen(status));
+	write(1, "]\n", 2);
+}
+
+int		check_symbol(char **str, const char *example)
+{
+	if (ft_strcmp(*str, example) == 0)
 	{
-		print_error("Map error", "Invalid map resolution line", *str);
+		print_error("Map error", "Invalid symbol in map line", *str);
 		exit(1);
 	}
 	(*str)++;
 	return (0);
 }
 
-int		check_resolution(char **ptr, t_prm *prm)
+void	check_resolution(char **ptr, t_map *map)
 {
-	skip_symbol(ptr, ' ');
-	check_symbol(ptr, 'R');
+	check_symbol(ptr, "R");
 
 	skip_symbol(ptr, ' ');
-	get_integer(ptr, &prm->r_width);
+	get_number(ptr, &map->r_width);
 
-	check_symbol(ptr, ' ');
-
-	skip_symbol(ptr, ' ');
-	get_integer(ptr, &prm->r_height);
+	check_symbol(ptr, " ");
 
 	skip_symbol(ptr, ' ');
-	check_symbol(ptr, '\0'); 
+	get_number(ptr, &map->r_height);
 
+	skip_symbol(ptr, ' ');
+	check_symbol(ptr, "\0");
+	print_status("Resolution", "", "OK");
+}
+
+void check_texture(char *field, char **ptr, char *name)
+{
+	size_t i;
+
+	i = 0; 
+	while (i < ft_strlen(name))
+		skip_symbol(ptr, name[i++]);
+	check_file(*ptr, ".xpm");
+	field = *ptr;
+	print_status("Texture", name, "OK");
+}
+
+void	check_color(t_map *map, char *name)
+{
+	map->f[0] = 1;
+	map->f[1] = 1;
+	map->f[2] = 1;
+	map->c[0] = 1;
+	map->c[1] = 1;
+	map->c[2] = 1;
+	print_status("Color", name, "OK");
+}
+
+void	identify_line(char **ptr, t_map *map)
+{
+	if (!ft_strncmp(*ptr, "R ", 2))
+		check_resolution(ptr, map);
+	else if (!ft_strncmp(*ptr, "NO ", 3))
+		check_texture(map->NO_texture, ptr, "NO");
+	else if (!ft_strncmp(*ptr, "SO ", 3))
+		check_texture(map->SO_texture, ptr, "SO");
+	else if (!ft_strncmp(*ptr, "WE ", 3))
+		check_texture(map->WE_texture, ptr, "WE");
+	else if (!ft_strncmp(*ptr, "EA ", 3))
+		check_texture(map->EA_texture, ptr, "EA");
+	else if (!ft_strncmp(*ptr, "S ", 2))
+		check_texture(map->sprite, ptr, "S");
+	else if (!ft_strncmp(*ptr, "F ", 2))
+		check_color(map, "F");
+	else if (!ft_strncmp(*ptr, "C ", 2))
+		check_color(map, "C");
+	else
+		print_error("Map error", "Identificator not found", *ptr);
+}
+
+int	get_map_line(int fd, char **tmp)
+{
+	if (get_next_line(fd, tmp) < 0)
+	{
+		print_error("Internal error", "get_next_line caused crash", 0);
+		exit(1);
+	}
 	return (0);
 }
 
-int	check_textures_abbr(char **ptr, int len)
+int	check_entirety(t_map *map)
 {
 	int res;
 
-	res = 0;
-	printf("ptr:%s\n", *ptr);
-	if (ft_strncmp(*ptr, "NO", len - 1))
-		res = -1;
-	else if (ft_strncmp(*ptr, "SO", len))
-		res = -1;
-	else if (ft_strncmp(*ptr, "WE", len))
-		res = -1;
-	else if (ft_strncmp(*ptr, "EA", len))
-		res = -1;
-	*ptr += len;
+	res = 1;
+	if (map->r_width == 0 || map->r_height == 0)
+		res = 0; 
+	if (map->SO_texture == 0 || map->NO_texture == 0)
+		res = 0;
+	if (map->WE_texture == 0 || map->EA_texture == 0)
+		res = 0;
+	if (map->sprite == 0)
+		res = 0;
+	if (map->c_color_set == 0 || map->f_color_set == 0)
+		res = 0;
 	return (res);
 }
 
-int check_textures(char **ptr, t_prm *prm)
-{
-	(void)prm;
-
-	skip_symbol(ptr, ' ');
-	if (check_textures_abbr(ptr, 2))
-	{
-		print_error("Map error", "Invalid abbreviation of texture", 0);
-		return (-1);
-	}
-
-	skip_symbol(ptr, ' ');
-	if (check_file(*ptr, ".xpm"))
-	{
-		return (-1);
-	}
-	return (0);
-}
-
-int	check_map(char *map, t_prm *prm)
+int	check_map(char *file, t_map *map)
 {
 	int		fd;
 	char	*tmp;
 
-	fd = open(map, O_RDWR);
-	if (get_next_line(fd, &tmp) < 0)
+	fd = open(file, O_RDWR);
+	while (!check_entirety(map))
 	{
-		print_error("Internal error", "get_next_line caused crash", 0);
-		return (-1);
-	}
-	printf("%s\n", tmp);
-
-	if (check_resolution(&tmp, prm))
-		return (-1);
-	
-	printf("w:%u\n", prm->r_width);
-	printf("h:%u\n", prm->r_height);
-
-	if (get_next_line(fd, &tmp) < 0)
-	{
-		print_error("Internal error", "get_next_line caused crash", 0);
-		return (-1);
-	}
-	
-	if (check_textures(&tmp, prm) != -1)
-	{
-		printf("textures check done!\n");
+		get_map_line(fd, &tmp);
+		skip_symbol(&tmp, ' ');
+		identify_line(&tmp, map);
+		free(tmp);
 	}
 	close(fd);
 	return (0);

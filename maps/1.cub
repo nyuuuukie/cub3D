@@ -1,5 +1,11 @@
-R 100 100
+R 100 100 
 NO textures/textureNO.xpm
 SO textures/textureSO.xpm
 WE textures/textureWE.xpm
 EA textures/textureEA.xpm
+S textures/textureEA.xpm
+
+F 255, 127, 10
+C 255, 128, 11
+
+//map

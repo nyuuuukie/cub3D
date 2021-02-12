@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 21:45:51 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/12 15:21:57 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/12 22:55:44 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ int		check_file(char *file, char *ext)
 		close(fd);
 	}
 	if (code)
-		print_error("File error", get_map_error(code), 0); //CHANGE
+	{
+		print_error("File error", get_error_msg(code), 0);
+		exit(1);
+	}
 	return (code);
 }
 
