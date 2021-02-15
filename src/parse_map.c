@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_map.c                                        :+:      :+:    :+:   */
+/*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/15 06:21:12 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/15 20:27:46 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,6 @@ void	check_duplicate(char *texture_path, char *ptr)
 {
 	if (texture_path != 0)
 		throw_error(MAP_ERROR, ERR_DUPLICATE_SPEC, ptr);
-	//{
-		//print_error("Map error", "Texture specifier duplicated", ptr);
-		//exit(1);
-	//}
 }
 
 void	parse_path(char **field, char *ptr, char *name)
@@ -177,10 +173,13 @@ void	identify_line(char *line, t_map *map)
 
 int		get_map_line(int fd, char **line)
 {
-	if (get_next_line(fd, line) < 0)
+	int res;
+
+	inc_line_number(1);
+	if ((res = get_next_line(fd, line)) < 0)
 		throw_error(INTERNAL_ERROR, ERR_GNL, 0);
 
-	return (0);
+	return (res);
 }
 
 int		check_entirety(t_map *map)
@@ -201,13 +200,43 @@ int		check_entirety(t_map *map)
 	return (res);
 }
 
-int		check_map(t_map *map)
+//REMOVE
+void*	ft_print_list_node(void *content)
 {
-	(void) map;
-	return (0);
+	write(1, (char *)content, ft_strlen((char *)content));
+	write(1, "\n", 1);
+	return (NULL);
 }
 
-void	print_all_params(t_map *map)
+int		check_map_allowed_symbols(char *line)
+{
+	size_t		i;
+	size_t		line_len;
+
+	i = 0;
+	line_len = ft_strlen(line);
+	while (i < line_len)
+	{
+		if (ft_strchr(ALLOWED_MAP_SPEC, line[i++]) == NULL)
+			return (0);
+	}
+	return (1);
+}
+
+void	add_map_node(t_list **head, char *line)
+{
+	if (!check_map_allowed_symbols(line))
+	{
+		ft_lstclear(head, free);
+		throw_error(MAP_ERROR, ERR_INVALID_SYMBOL, line);
+	}
+	ft_lstadd_back(head, ft_lstnew(ft_strdup(line)));
+	free(line);
+	line = 0;
+}
+
+//REMOVE
+void	print_all_params(t_list *lst, t_map *map)
 {
 	printf("\nRECEIVED:\n");
 	printf("width:%d\n", map->r_width);
@@ -219,24 +248,78 @@ void	print_all_params(t_map *map)
 	printf("S:%s\n", map->sprite);
 	printf("F:%d %d %d\n", map->c[0], map->c[1], map->c[2]);
 	printf("C:%d %d %d\n", map->f[0], map->f[1], map->f[2]);
+
+	printf("MAP:\n");
+	ft_lstmap(lst, ft_print_list_node, free);
+
+	printf("\nRows:%d\n", map->rows);
+	printf("Columns:%d\n", map->cols);
 }
 
-int		parse_scene_file(char *file, t_map *map)
+int		ft_lstmax_cont(t_list *lst)
 {
-	int		fd;
-	char	*line;
+	int 	max;
+	int		curr;
 
-	fd = open(file, O_RDWR);
+	max = 0;
+	while (lst)
+	{
+		curr = ft_strlen(lst->content);
+		max = curr > max ? curr : max;
+		lst = lst->next;
+	}
+	return (max);
+}
+
+int		parse_prm(int fd, t_map *map)
+{
+	char *line;
+
 	while (!check_entirety(map))
 	{
-		inc_line_number(1);
 		get_map_line(fd, &line);
 		if (ft_strcmp(line, "\0"))
 			identify_line(line, map);
 		free(line);
 	}
-	print_all_params(map);
-	check_map(map);
+	return (0);
+}
+
+int		parse_map(int fd, t_map *map)
+{
+	char *line;
+	int res;
+
+	res = 1;
+	map->lst = 0;
+	while ((res = get_map_line(fd, &line)) > 0 && !ft_strcmp(line, "\0"))
+	{
+		free(line);
+	}
+	if (!res)
+		throw_error(MAP_ERROR, ERR_MAP_MISSING, 0);
+	while (res)
+	{
+		add_map_node(&map->lst, line);
+		res = get_map_line(fd, &line);
+	}
+	add_map_node(&map->lst, line);
+	return (0);
+}
+
+int		parse_scene_file(char *file, t_map *map)
+{
+	int	fd;
+
+	fd = open(file, O_RDWR);
+	parse_prm(fd, map);
+	parse_map(fd, map);
+
+	map->rows = ft_lstsize(map->lst);
+	map->cols = ft_lstmax_cont(map->lst);
+	
+	print_all_params(map->lst, map);
+
 	close(fd);
 	return (0);
 }

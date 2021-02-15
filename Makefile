@@ -22,7 +22,7 @@ OBJ_DIR		 = obj
 
 SOURCES =	main.c \
 			check_arguments.c \
-			check_map.c \
+			parse_map.c \
 			print_error.c \
 			errors.c
 		
@@ -40,7 +40,7 @@ $(GNL_OBJ): $(GNL_DIR)/$(GNL_SRC)
 	@$(CC) $(CFLAGS) -c $< $(INCLUDE_FLAGS) -o $@
 
 libft:
-	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
+	@$(MAKE) bonus -C $(LIBFT_DIR) --no-print-directory
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(LIBFT_DIR)/$(LIBFT_NAME) $(GNL_OBJ)
 	@$(CC) $(CFLAGS) -c $< $(INCLUDE_FLAGS) -o $@

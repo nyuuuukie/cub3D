@@ -44,8 +44,8 @@ fclean: clean
 re: fclean all 
 
 bonus: $(OBJECTS) $(OBJECTS_BONUS)
-	ar rc $(NAME) $?
-	ranlib $(NAME)
-	@echo 'created successfully with bonuses'
+	@ar rc $(NAME) $?
+	@ranlib $(NAME)
+	@echo $(NAME) 'created with bonuses'
 
 .PHONY: all clean fclean re bonus
