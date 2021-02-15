@@ -23,7 +23,8 @@ OBJ_DIR		 = obj
 SOURCES =	main.c \
 			check_arguments.c \
 			check_map.c \
-			print_error.c 
+			print_error.c \
+			errors.c
 		
 GNL_SRC = gnl.c
 GNL_OBJ = $(addprefix $(OBJ_DIR)/, $(GNL_SRC:.c=.o))

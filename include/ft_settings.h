@@ -1,32 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_map.h                                           :+:      :+:    :+:   */
+/*   ft_settings.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/15 06:15:51 by mhufflep         ###   ########.fr       */
+/*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
+/*   Updated: 2021/02/15 05:03:26 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_MAP_H
-# define FT_MAP_H
+#ifndef FT_SETTINGS
+# define FT_SETTINGS
 
-typedef struct		s_map
-{
-	int 			r_width;
-	int 			r_height;
-	char			*NO_path;
-	char			*SO_path;
-	char			*WE_path;
-	char			*EA_path;
-	char			*sprite;
-	int				f[3];
-	int				c[3];
+# define R_MAX_LEN 6
+# define R_MIN_WIDTH 1
+# define R_MAX_WIDTH 10000
+# define R_MIN_HEIGHT 1
+# define R_MAX_HEIGHT 10000
 
-	int				f_set;
-	int				c_set;
-}					t_map;
+# define COLOR_MIN_VALUE 0
+# define COLOR_MAX_VALUE 255
+
+# define EXTENSION_LEN 5
 
 #endif

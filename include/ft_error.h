@@ -1,32 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_map.h                                           :+:      :+:    :+:   */
+/*   ft_error.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/15 06:15:51 by mhufflep         ###   ########.fr       */
+/*   Created: 2021/02/14 07:40:31 by mhufflep          #+#    #+#             */
+/*   Updated: 2021/02/15 05:51:29 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_MAP_H
-# define FT_MAP_H
+#ifndef FT_ERROR_H
+# define FT_ERROR_H
 
-typedef struct		s_map
-{
-	int 			r_width;
-	int 			r_height;
-	char			*NO_path;
-	char			*SO_path;
-	char			*WE_path;
-	char			*EA_path;
-	char			*sprite;
-	int				f[3];
-	int				c[3];
+typedef enum	e_err_ttl {
+	ARGUMENT_ERROR = 0,
+	FILE_ERROR = 1,
+	MAP_ERROR = 2,
+	INTERNAL_ERROR = 3
+}				t_err_ttl;
 
-	int				f_set;
-	int				c_set;
-}					t_map;
+typedef enum	e_err_msg {
+	ERR_ARG_NUM = 0,
+	ERR_WRONG_EXT = 1,
+	ERR_NO_FILE = 2,
+	ERR_NO_FILENAME = 3,
+	ERR_OUT_OF_BOUND = 4,
+	ERR_INVALID_SYMBOL = 5,
+	ERR_DUPLICATE_SPEC = 6,
+	ERR_NEGATIVE_VALUE = 7,
+	ERR_ID_NOT_FOUND = 8, 
+	ERR_GNL = 9
+}				t_err_msg;
 
 #endif
