@@ -1,8 +1,12 @@
+.PHONY: all clean fclean re bonus create_obj_dir
+
 NAME = libft.a
 CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 INCLUDES = -I./
+
+OBJ_DIR = obj
 
 SOURCES =	ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c \
 			ft_isprint.c ft_memccpy.c ft_memcpy.c ft_memmove.c ft_memset.c ft_strchr.c \
@@ -19,33 +23,34 @@ BONUS_SRC = ft_lstnew.c \
 			ft_lstdelone.c \
 			ft_lstiter.c \
 			ft_lstclear.c \
-			ft_lstmap.c 
+			ft_lstmap.c \
+			ft_lstmax_cont_len.c
 
-OBJECTS = $(SOURCES:.c=.o)
-OBJECTS_BONUS = $(BONUS_SRC:.c=.o)
+OBJECTS = $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
+OBJECTS_BONUS = $(addprefix $(OBJ_DIR)/, $(BONUS_SRC:.c=.o))
 
+all: create_obj_dir $(NAME)
 
-all: $(NAME)
+create_obj_dir:
+	@mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJECTS)
-	ar rc $@ $^
-	ranlib $@
-	@echo 'created successfully'
+	@ar rcs $@ $?
+	@echo "$(NAME) created"
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< $(INCLUDES) -o $@
+$(OBJ_DIR)/%.o: %.c
+	@$(CC) $(CFLAGS) -c $< $(INCLUDES) -o $@
 
 clean: 
-	rm -rf $(OBJECTS) $(OBJECTS_BONUS)
+	@rm -rf $(OBJECTS) $(OBJECTS_BONUS)
 
 fclean: clean
-	rm -rf $(NAME)
+	@rm -rf $(NAME)
+	@echo "$(NAME) has been deleted"
 	
 re: fclean all 
 
 bonus: $(OBJECTS) $(OBJECTS_BONUS)
-	@ar rc $(NAME) $?
-	@ranlib $(NAME)
-	@echo $(NAME) 'created with bonuses'
+	@ar rcs $(NAME) $?
+	@echo "$(NAME) created with bonuses"
 
-.PHONY: all clean fclean re bonus

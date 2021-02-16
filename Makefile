@@ -3,34 +3,44 @@
 NAME = cub3D
 LIBFT_NAME = libft.a
 
+######################### CC && FLAGS ########################
 CC = gcc
 
 CFLAGS			= -Wall -Wextra -Werror
 LIB_FLAGS		= -L $(LIBFT_DIR) -lft
 INCLUDE_FLAGS 	= -I $(INCLUDES_DIR) -I $(LIBFT_DIR) -I $(GNL_DIR)
 
+######################### COLORS #############################
 GREEN =	\033[32m
 RED	  =	\033[31m
 RESET =	\033[0m
 
-GNL_DIR = get_next_line
+######################### DIRECTORIES ########################
 INCLUDES_DIR = include
 LIBFT_DIR 	 = libft
 GNL_DIR		 = get_next_line
 SRC_DIR		 = src
 OBJ_DIR		 = obj
 
+######################### SOURCES ############################
 SOURCES =	main.c \
 			check_arguments.c \
 			parse_map.c \
 			print_error.c \
-			errors.c
+			errors.c \
+			parse_scene_file.c \
+			arrays.c
 		
-GNL_SRC = gnl.c
+GNL_SRC = 	gnl.c
+
+######################## OBJECT FILES ########################
 GNL_OBJ = $(addprefix $(OBJ_DIR)/, $(GNL_SRC:.c=.o))
 OBJECTS = $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
+
+######################## HEADERS #############################
 HEADERS = $(INCLUDES_DIR)/*.h
 
+######################## INSTRUCTIONS ########################
 all: libft create_obj_dir $(NAME)
 
 create_obj_dir:
@@ -47,7 +57,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(LIBFT_DIR)/$(LIBFT_NAME) $(GNL_OBJ)
 
 $(NAME): $(GNL_OBJ) $(OBJECTS) $(HEADERS)
 	@$(CC) $(CFLAGS) $(GNL_OBJ) $(OBJECTS) $(LIB_FLAGS) -o $@
-	@echo "$(GREEN)$(NAME)$(RESET) created."
+	@echo "$(GREEN)$(NAME)$(RESET) created"
 
 clean:
 	@$(MAKE) clean -C $(LIBFT_DIR) --no-print-directory 
@@ -56,6 +66,6 @@ clean:
 fclean: clean
 	@$(MAKE) fclean -C $(LIBFT_DIR) --no-print-directory
 	@rm -rf $(NAME)
-	@echo "[x] $(RED)$(NAME)$(RESET) has been deleted."
+	@echo "$(RED)$(NAME)$(RESET) has been deleted"
 
 re: fclean all

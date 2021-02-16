@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:34:29 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/16 01:54:55 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/16 20:58:03 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*get_error_title(t_err_ttl code)
 {
-	static char *titles[10];
+	static char *titles[4];
 
 	titles[ARGUMENT_ERROR] = "Argument error";
 	titles[FILE_ERROR] = "File error";
@@ -26,7 +26,7 @@ char	*get_error_title(t_err_ttl code)
 
 char	*get_error_msg(t_err_msg code)
 {
-	static char *errors[11];
+	static char *errors[12];
 
 	errors[ERR_ARG_NUM] = "Invalid number of arguments";
 	errors[ERR_WRONG_EXT] = "Wrong file extension";

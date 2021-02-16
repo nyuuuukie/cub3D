@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_settings.h                                      :+:      :+:    :+:   */
+/*   ft_lstmax_cont_len.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/16 23:18:05 by mhufflep         ###   ########.fr       */
+/*   Created: 2021/02/16 20:39:56 by mhufflep          #+#    #+#             */
+/*   Updated: 2021/02/16 20:42:01 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_SETTINGS
-# define FT_SETTINGS
+#include "libft.h"
 
-/* Resolution */
-# define R_MAX_LEN 6
-# define R_MIN_WIDTH 10
-# define R_MAX_WIDTH 10000
-# define R_MIN_HEIGHT 10
-# define R_MAX_HEIGHT 10000
+int		ft_lstmax_cont_len(t_list *lst)
+{
+	int 	max;
+	int		curr;
 
-/* Colors */
-# define COLOR_MIN_VALUE 0
-# define COLOR_MAX_VALUE 255
-
-/* File */
-# define EXTENSION_LEN 5
-
-/* Map */
-# define ALLOWED_MAP_SPEC "012NSWE "
-
-#endif
+	max = 0;
+	while (lst)
+	{
+		curr = lst->content ? ft_strlen(lst->content) : 0;
+		max = curr > max ? curr : max;
+		lst = lst->next;
+	}
+	return (max);
+}

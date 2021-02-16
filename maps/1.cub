@@ -5,9 +5,9 @@ SO textures/textureSO.xpm
 WE textures/textureWE.xpm
 EA textures/textureEA.xpm
 S sprites/sprite.xpm
+F 255,     127,       10
 
-F 255, 127, 10
-C 255, 128, 11
+C      255, 128,      110
 
         1111111111111111111111111
         1000000000110000000000001

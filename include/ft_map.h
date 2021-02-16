@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/16 03:24:18 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/16 23:07:29 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct		s_map
 	int				cols;
 	int				f_set;
 	int				c_set;
-	int				**arr;
+	char			**arr;
 }					t_map;
 
 #endif
