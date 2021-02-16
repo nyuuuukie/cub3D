@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:34:29 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/15 20:26:49 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/16 01:54:55 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char	*get_error_msg(t_err_msg code)
 	errors[ERR_ID_NOT_FOUND] = "Identifier not found";
 	errors[ERR_MAP_MISSING] = "Map is missing";
 	errors[ERR_GNL] = "get_next_line caused crash";
+	errors[ERR_CANNOT_ALLOC] = "malloc cannot allocate required memory";
 	code = (code < 1 && code > 10) ? 0 : code;
 	return (errors[code]);
 }

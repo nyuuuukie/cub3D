@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:40:31 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/15 20:23:15 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/16 01:54:20 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ typedef enum	e_err_msg {
 	ERR_NEGATIVE_VALUE = 7,
 	ERR_ID_NOT_FOUND = 8, 
 	ERR_MAP_MISSING = 9,
-	ERR_GNL = 10
+	ERR_GNL = 10,
+	ERR_CANNOT_ALLOC = 11,
 }				t_err_msg;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:46:26 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/15 06:16:44 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/15 22:46:44 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	set_defaults(t_map *map)
 	map->c[2] = 0;
 	map->f_set = 0;
 	map->c_set = 0;
-}	
+}
+
 int main(int argc, char **argv)
 {
 	t_map	map;

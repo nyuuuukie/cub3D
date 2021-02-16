@@ -6,15 +6,15 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 15:43:19 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/11 20:09:28 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/16 03:51:40 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(const char *s)
+int	ft_strlen(const char *s)
 {
-	size_t i;
+	int i;
 
 	i = 0;
 	while (s && s[i])

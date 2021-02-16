@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/15 20:27:46 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/16 04:10:37 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void	get_number(char **str, int *number)
 void	print_status(char *title, char *name, char *status)
 {
 	write(1, title, ft_strlen(title));
-	write(1, " ", 1);
+	if (name)
+		write(1, " ", 1);
 	write(1, name, ft_strlen(name));
 	write(1, ": ", 2);
 	write(1, "[", 1);
@@ -92,19 +93,19 @@ void	parse_resolution(char *ptr, t_map *map)
 	get_number(copy, &map->r_height);
 	check_number(map->r_height, R_MIN_HEIGHT, R_MAX_HEIGHT);
 	check_symbol(*copy, '\0');
-	print_status("Resolution", "", "OK");
+	print_status("Resolution", 0, "OK");
 }
 
 void	check_duplicate(char *texture_path, char *ptr)
 {
-	if (texture_path != 0)
+	if (texture_path != NULL)
 		throw_error(MAP_ERROR, ERR_DUPLICATE_SPEC, ptr);
 }
 
 void	parse_path(char **field, char *ptr, char *name)
 {
 	char	**copy;
-	size_t	i;
+	int	i;
 
 	i = 0;
 	copy = &ptr;
@@ -112,8 +113,8 @@ void	parse_path(char **field, char *ptr, char *name)
 		skip_symbol(copy, name[i++]);
 	check_symbol(*copy, ' ');
 	skip_symbol(copy, ' ');
-	check_file_path(*copy, ".xpm");
 	check_duplicate(*field, *copy);
+	check_file_path(*copy, ".xpm");
 	*field = ft_strdup(*copy);
 	print_status("Texture", name, "OK");
 }
@@ -167,7 +168,7 @@ void	identify_line(char *line, t_map *map)
 	else
 	{
 		free(line);
-		throw_error(MAP_ERROR, ERR_ID_NOT_FOUND, line);
+		throw_error(MAP_ERROR, ERR_ID_NOT_FOUND, 0);
 	}
 }
 
@@ -193,9 +194,9 @@ int		check_entirety(t_map *map)
 		res = 0;
 	if (map->WE_path == 0 || map->EA_path == 0)
 		res = 0;
-	if (map->sprite == 0)
-		res = 0;
 	if (map->c_set == 0 || map->f_set == 0)
+		res = 0;
+	if (map->sprite == 0)
 		res = 0;
 	return (res);
 }
@@ -304,6 +305,63 @@ int		parse_map(int fd, t_map *map)
 		res = get_map_line(fd, &line);
 	}
 	add_map_node(&map->lst, line);
+	print_status("Map", "lists", "OK");
+	return (0);
+}
+
+int		transform_into_arr(t_map *map)
+{
+	int		**arr;
+	t_list	*tmp;
+	int		i;
+	int		j;
+	
+	i = -1;
+	if (!(arr = malloc(sizeof(char *) * (map->rows + 1))))
+		return (-1);
+	tmp = map->lst;
+	arr[map->rows] = NULL;
+	while (++i < map->rows)
+	{
+		j = -1;
+		if (!(arr[i] = malloc(map->cols + 1)))
+		{
+			free(arr);
+			return (-1);
+		}
+		arr[i][map->cols] = '\0';
+		int len = ft_strlen((char *)tmp->content);
+		while (++j < len)
+			arr[i][j] = ((char *)tmp->content)[j];
+		//while (++j < map->rows)
+		//	arr[i][j] = ' ';
+		tmp = tmp->next;
+	}
+	map->arr = arr;
+	return (0);
+}
+
+int		validate_map(t_map *map)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < map->rows)
+	{
+		j = 0;
+		while (j < map->cols)
+		{
+			printf("%c", map->arr[i][j]);
+			//if (map->arr[i][j] == '0')
+			//{
+			//	if (map->arr[i][j - 1] == '1' && map->arr[i][j + 1] == '0')
+			//}
+			j++;
+		}
+		printf("\n");
+		i++;
+	}
 	return (0);
 }
 
@@ -317,9 +375,11 @@ int		parse_scene_file(char *file, t_map *map)
 
 	map->rows = ft_lstsize(map->lst);
 	map->cols = ft_lstmax_cont(map->lst);
-	
+	if (transform_into_arr(map))
+		throw_error(INTERNAL_ERROR, ERR_CANNOT_ALLOC, 0);
 	print_all_params(map->lst, map);
 
+	validate_map(map);
 	close(fd);
 	return (0);
 }
