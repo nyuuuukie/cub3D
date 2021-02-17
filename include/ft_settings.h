@@ -6,12 +6,15 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/16 23:18:05 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/17 05:22:50 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_SETTINGS
 # define FT_SETTINGS
+
+# define START_CUB3D 1
+# define MAKE_SCREENSHOT 2
 
 /* Resolution */
 # define R_MAX_LEN 6

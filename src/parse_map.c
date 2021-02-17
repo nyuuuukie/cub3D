@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/16 23:16:27 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/17 07:44:38 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	print_all_params(t_map *map)
 	ft_lstmap(map->lst, ft_print_list_node, free);
 
 	printf("\nRows:%d\n", map->rows);
-	printf("Columns:%d\n", map->cols);
 }
 
 void	skip_symbol(char **str, char c)
@@ -68,9 +67,9 @@ void	get_number(char **str, int *number)
 	if (ft_atoui(str, number) == -1)
 	{
 		if (**str == '-')
-			throw_error(MAP_ERROR, ERR_NEGATIVE_VALUE, *str);
+			throw_error(ERR_NEGATIVE_VALUE, inc_line_number(0), *str);
 		else
-			throw_error(MAP_ERROR, ERR_INVALID_SYMBOL, *str);
+			throw_error(ERR_INVALID_SYMBOL, inc_line_number(0), *str);
 	}
 }
 
@@ -89,7 +88,7 @@ void	print_status(char *title, char *name, char *status)
 void	check_symbol(char *str, const char c)
 {
 	if (*str != '\0' && *str != c)
-		throw_error(MAP_ERROR, ERR_INVALID_SYMBOL, str);
+		throw_error(ERR_INVALID_SYMBOL, inc_line_number(0), str);
 }
 
 int		inc_line_number(int add)
@@ -103,7 +102,7 @@ int		inc_line_number(int add)
 void	check_number(unsigned int num, long long min, long long max)
 {
 	if (num < min || num > max)
-		throw_error(MAP_ERROR, ERR_OUT_OF_BOUND, 0);
+		throw_error(ERR_OUT_OF_BOUND, inc_line_number(0), 0);
 }
 
 void	parse_resolution(char *ptr, t_map *map)
@@ -128,7 +127,7 @@ void	parse_resolution(char *ptr, t_map *map)
 void	check_duplicate(char *texture_path, char *ptr)
 {
 	if (texture_path != NULL)
-		throw_error(MAP_ERROR, ERR_DUPLICATE_SPEC, ptr);
+		throw_error(ERR_DUPLICATE_SPEC, inc_line_number(0), ptr);
 }
 
 void	parse_path(char **field, char *ptr, char *name)
@@ -152,25 +151,28 @@ void	parse_color(t_map *map, char *line, char *name)
 {
 	char	**copy;
 	int		*color;
+	int		i;
 
+	i = 0;
 	copy = &line;
 	color = *name == 'F' ? map->f : map->c;
 	skip_symbol(copy, *name);
 	check_symbol(*copy, ' ');
-	skip_symbol(copy, ' ');
-	get_number(copy, &color[0]);
-	skip_symbol(copy, ' ');
-	check_symbol(*copy, ',');
-	skip_symbol(copy, ',');
-	skip_symbol(copy, ' ');
-	get_number(copy, &color[1]);
-	skip_symbol(copy, ' ');
-	check_symbol(*copy, ',');
-	skip_symbol(copy, ',');
-	skip_symbol(copy, ' ');
-	get_number(copy, &color[2]);
+	while (i < 3)
+	{
+		skip_symbol(copy, ' ');
+		get_number(copy, &color[i]);
+		check_number(color[i], COLOR_MIN_VALUE, COLOR_MAX_VALUE);
+		skip_symbol(copy, ' ');
+		if (i != 2)
+		{
+			check_symbol(*copy, ',');
+			skip_symbol(copy, ',');
+		}
+		i++;
+	}
+	//skip_symbol(*copy, ' ');
 	check_symbol(*copy, '\0');
-	
 	map->f_set = (*name == 'F') ? 1 : map->f_set;
 	map->c_set = (*name == 'C') ? 1 : map->c_set;
 	print_status("Color", name, "OK");
@@ -197,7 +199,7 @@ void	parse_identify_line(char *line, t_map *map)
 	else
 	{
 		free(line);
-		throw_error(MAP_ERROR, ERR_ID_NOT_FOUND, 0);
+		throw_error(ERR_ID_NOT_FOUND,  inc_line_number(0), 0);
 	}
 }
 
@@ -205,9 +207,8 @@ int		parse_getline(int fd, char **line)
 {
 	int res;
 
-	inc_line_number(1);
 	if ((res = get_next_line(fd, line)) < 0)
-		throw_error(INTERNAL_ERROR, ERR_GNL, 0);
+		throw_error(ERR_GNL, 0, 0);
 
 	return (res);
 }
@@ -242,7 +243,7 @@ void	add_map_node(t_list **head, char *line)
 		if (ft_strchr(ALLOWED_MAP_SPEC, line[i++]) == NULL)
 		{
 			ft_lstclear(head, free);
-			throw_error(MAP_ERROR, ERR_INVALID_SYMBOL, line);
+			throw_error(ERR_INVALID_SYMBOL, inc_line_number(0), line);
 		}
 	}
 	ft_lstadd_back(head, ft_lstnew(ft_strdup(line)));
@@ -257,11 +258,15 @@ int		parse_map_to_list(int fd, t_map *map)
 
 	res = 1;
 	while ((res = parse_getline(fd, &line)) > 0 && !ft_strcmp(line, "\0"))
+	{
+		inc_line_number(1);
 		free(line);
+	}
+	inc_line_number(1);
 	if (res == 0)
-		throw_error(MAP_ERROR, ERR_MAP_MISSING, 0);
+		throw_error(ERR_MAP_MISSING, inc_line_number(0), 0);
 	else if (res == -1)
-		throw_error(INTERNAL_ERROR, ERR_GNL, 0);
+		throw_error(ERR_GNL, 0, 0);
 	while (res)
 	{
 		add_map_node(&map->lst, line);
@@ -271,94 +276,59 @@ int		parse_map_to_list(int fd, t_map *map)
 	return (0);
 }
 
-
-
-int		parse_transform_to_arr(t_map *map)
+void	flood_fill(char **arr, int x, int y)
 {
-	(void)map;
-	// char	**arr;
-	// t_list	*tmp;
-	// int		i;
-	
-	// i = 0;
-
-	// tmp = map->lst;
-	// map->arr[map->rows] = NULL;
-	// while (i < map->rows)
-	// {
-
-	// }
-	// map->arr = arr;
-	return (0);
+	if (ft_strchr("#21NSEW", arr[x][y]) != NULL)
+		return ;
+	else if (arr[x][y] == '0')
+	{
+		arr[x][y] = '#';
+		if (arr[x + 1] != NULL && ft_strlen(arr[x + 1]) > y)
+			flood_fill(arr, x + 1, y);
+		//if (arr[x + 1] != NULL && ft_strlen(arr[x + 1]) > y + 1)
+		//	flood_fill(arr, x + 1, y + 1);
+		if (x > 0 && arr[x - 1] != NULL && ft_strlen(arr[x - 1]) > y)
+			flood_fill(arr, x - 1, y);
+		//if (x > 0 && arr[x - 1] != NULL && ft_strlen(arr[x - 1]) > y + 1)
+		//	flood_fill(arr, x - 1, y + 1);	
+		flood_fill(arr, x, y + 1);
+		flood_fill(arr, x, y - 1);
+	}
+	else if (arr[x][y] == ' ' || arr[x][y] == '\0')
+		throw_error(ERR_MAP_NOT_CLOSED, inc_line_number(0) + x, 0);
+	else
+		throw_error(ERR_INVALID_SYMBOL, inc_line_number(0) + x, 0);
 }
 
-int		validate_map(t_map *map)
+void	parse_validate_map(t_map *map)
 {
+	char **copy;
 	int i;
 	int j;
+	int player_count;
+	int len;
 
 	i = 0;
+	player_count = 0;
+	copy = copy_arr(map->arr, map->rows);
 	while (i < map->rows)
 	{
 		j = 0;
-		while (j < map->cols)
+		len = ft_strlen(copy[i]);
+		while (j < len)
 		{
-			printf("%c", map->arr[i][j]);
-			//if (map->arr[i][j] == '0')
-			//{
-			//	if (map->arr[i][j - 1] == '1' && map->arr[i][j + 1] == '0')
-			//}
+			if (copy[i][j] == '0')
+				flood_fill(copy, i, j);
+			if (ft_strchr("NSEW", copy[i][j]) != NULL)
+				player_count++;
 			j++;
 		}
-		printf("\n");
 		i++;
 	}
-	return (0);
-}
-
-int		parse_map(int fd, t_map *map)
-{
-	(void)fd;
-	(void)map;
-	// parse_map_to_list(fd, map);
-	// map->rows = ft_lstsize(map->lst);
-	// map->cols = ft_lstmax_cont_len(map->lst);
-	// map->arr = create_arr(map->rows, map->cols);
-
-	// if (parse_transform_to_arr(map))
-	// 	throw_error(INTERNAL_ERROR, ERR_CANNOT_ALLOC, 0);
-
-	// validate_map(map);
-	print_status("Map parsing ", 0, "DONE");
-	return (0);
-}
-
-int		parse_prm(int fd, t_map *map)
-{
-	char *line;
-
-	while (!is_prm_complete(map))
-	{
-		if (!parse_getline(fd, &line))
-			throw_error(MAP_ERROR, ERR_ID_NOT_FOUND, 0);
-		if (ft_strcmp(line, "\0") != 0)
-			parse_identify_line(line, map);
-		free(line);
-	}
-	print_status("Parameters parsing", 0, "DONE");
-	return (0);
-}
-
-int		parse_scene_file(char *file, t_map *map)
-{
-	int	fd;
-
-	fd = open(file, O_RDWR);
-
-	parse_prm(fd, map);
-	parse_map(fd, map);
-
-	close(fd);
-	//print_all_params(map);
-	return (0);
+	print_array(copy);
+	if (player_count > 1)
+		throw_error(ERR_TOO_MANY_PLAYERS, 0, 0);
+	if (player_count == 0)
+		throw_error(ERR_PLAYER_NOT_FOUND, 0, 0);
+	delete_arr(copy, map->rows);
 }

@@ -6,18 +6,13 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:46:26 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/16 20:45:15 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/17 06:26:08 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
 int link_start()
-{
-	return (0);
-}
-
-int make_screenshot()
 {
 	return (0);
 }
@@ -49,15 +44,16 @@ int main(int argc, char **argv)
 	set_defaults(&map);
 	if (argc == 2 || argc == 3)
 	{
-		if (check_file_path(argv[1], ".cub"))
-			return (-1);
-		if (argc == 3 && check_save_arg(argv[2]))
-			return (-1);
-		if (parse_scene_file(argv[1], &map))
-			return (-1);
-		(argc == 2) ? link_start() : make_screenshot();
+		check_file_path(argv[1], ".cub");
+		if (argc == 3)
+			check_save_arg(argv[2]);
+		parse_scene_file(argv[1], &map);
+		if (argc == 2)
+			link_start(START_CUB3D);
+		else
+			link_start(MAKE_SCREENSHOT);
 	}
 	else
-		print_error(get_error_title(0), get_error_msg(0), 0);
+		throw_error(ERR_ARG_NUM, 0, 0);
 	return (0);
 }

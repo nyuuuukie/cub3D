@@ -6,19 +6,12 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:40:31 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/16 01:54:20 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/17 07:40:58 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_ERROR_H
 # define FT_ERROR_H
-
-typedef enum	e_err_ttl {
-	ARGUMENT_ERROR = 0,
-	FILE_ERROR = 1,
-	MAP_ERROR = 2,
-	INTERNAL_ERROR = 3
-}				t_err_ttl;
 
 typedef enum	e_err_msg {
 	ERR_ARG_NUM = 0,
@@ -33,6 +26,10 @@ typedef enum	e_err_msg {
 	ERR_MAP_MISSING = 9,
 	ERR_GNL = 10,
 	ERR_CANNOT_ALLOC = 11,
-}				t_err_msg;
+	ERR_MAP_NOT_CLOSED = 12,
+	ERR_PLAYER_NOT_FOUND = 13,
+	ERR_TOO_MANY_PLAYERS = 14,
+	ERR_INVALID_ARG = 15
+}				t_error;
 
 #endif
