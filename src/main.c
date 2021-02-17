@@ -6,15 +6,15 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:46:26 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/17 06:26:08 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/17 17:54:25 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int link_start()
+int link_start(int code)
 {
-	return (0);
+	return (code);
 }
 
 void	set_defaults(t_map *map)
@@ -35,6 +35,8 @@ void	set_defaults(t_map *map)
 	map->f_set = 0;
 	map->c_set = 0;
 	map->lst = 0;
+	map->arr = 0;
+	get_map(map);
 }
 
 int main(int argc, char **argv)

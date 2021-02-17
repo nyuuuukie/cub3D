@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/17 05:22:50 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/17 18:05:42 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,8 @@
 
 /* Map */
 # define ALLOWED_MAP_SPEC "012NSWE "
+
+/* Errors */
+#define LOGS_FD 2 
 
 #endif

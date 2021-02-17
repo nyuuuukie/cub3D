@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:34:29 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/17 07:47:22 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/17 20:01:22 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*get_error_msg(t_error code)
 	errors[ERR_NO_FILE] = "No such file or directory";
 	errors[ERR_NO_FILENAME] = "Filename is missing";
 	errors[ERR_OUT_OF_BOUND] = "Value out of bounds";
-	errors[ERR_INVALID_SYMBOL] = "Invalid symbol";
+	errors[ERR_INVALID_SYMBOL] = "Invalid symbol in line";
 	errors[ERR_DUPLICATE_SPEC] = "Specifier duplicated";
 	errors[ERR_NEGATIVE_VALUE] = "Negative value";
 	errors[ERR_ID_NOT_FOUND] = "Identifier not found";
@@ -36,6 +36,26 @@ char	*get_error_msg(t_error code)
 	return (errors[code]);
 }
 
+void	free_map(t_map *map)
+{
+	map->lst ? ft_lstclear(&map->lst, free) : NULL;
+	map->arr ? delete_arr(map->arr) : NULL;
+	map->sprite ? free(map->sprite) : NULL;
+	map->NO_path ? free(map->NO_path) : NULL;
+	map->SO_path ? free(map->SO_path) : NULL;
+	map->WE_path ? free(map->WE_path) : NULL;
+	map->EA_path ? free(map->EA_path) : NULL;
+}
+
+t_map	*get_map(t_map *map)
+{
+	static t_map *ptr;
+
+	if (ptr == NULL)
+		ptr = map;
+	return (ptr);
+}
+
 void	throw_error(t_error msg, int line, char *add)
 {
 	if (msg == ERR_NO_FILE)
@@ -43,26 +63,28 @@ void	throw_error(t_error msg, int line, char *add)
 	else
 		print_error(get_error_msg(msg), line, add);
 	errno = 0;
+	free_map(get_map(0));
 	exit(1);
 }
 
 void	print_error(char *msg, int line, char *add)
 {
-	write(2, "Error\n", 6);
-	write(2, "[", 1);
+	if (LOGS_FD > 2 && write(LOGS_FD, "1", 0) < 0)
+		return ;
+	ft_putstr_fd("Error\n[", LOGS_FD);
 	if (line != 0)
 	{
-		write(2, "Line ", 5);
-		ft_putnbr_fd(line, 2);
-		write(2, ": ", 2);
+		ft_putstr_fd("Line ", LOGS_FD);
+		ft_putnbr_fd(line, LOGS_FD);
+		ft_putstr_fd(": ", LOGS_FD);
 	}
-	write(2, msg, ft_strlen(msg));
-	write(2, "]", 1);
-	if (add != NULL)
+	ft_putstr_fd(msg, LOGS_FD);
+	ft_putstr_fd("]", LOGS_FD);
+	if (add != 0)
 	{
-		write(2, "\n>> \"", 5);
-		write(2, add, ft_strlen(add));
-		write(2, "\"", 1);
+		ft_putstr_fd("\n>> \"", LOGS_FD);
+		ft_putstr_fd(add, LOGS_FD);
+		ft_putstr_fd("\"", LOGS_FD);
 	}
-	write(2, "\n", 1);
+	ft_putstr_fd("\n", LOGS_FD);
 }

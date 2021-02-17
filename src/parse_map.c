@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/17 07:44:38 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/17 23:40:16 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ void	parse_identify_line(char *line, t_map *map)
 	else
 	{
 		free(line);
-		throw_error(ERR_ID_NOT_FOUND,  inc_line_number(0), 0);
+		throw_error(ERR_INVALID_SYMBOL,  inc_line_number(0), 0);
 	}
 }
 
@@ -265,8 +265,6 @@ int		parse_map_to_list(int fd, t_map *map)
 	inc_line_number(1);
 	if (res == 0)
 		throw_error(ERR_MAP_MISSING, inc_line_number(0), 0);
-	else if (res == -1)
-		throw_error(ERR_GNL, 0, 0);
 	while (res)
 	{
 		add_map_node(&map->lst, line);
@@ -276,59 +274,72 @@ int		parse_map_to_list(int fd, t_map *map)
 	return (0);
 }
 
-void	flood_fill(char **arr, int x, int y)
+void	flood_fill_iter(char **arr, int row, int col)
 {
-	if (ft_strchr("#21NSEW", arr[x][y]) != NULL)
-		return ;
-	else if (arr[x][y] == '0')
+	int i;
+	int j;
+
+	j = col - 1;
+	while (j < col + 2)
 	{
-		arr[x][y] = '#';
-		if (arr[x + 1] != NULL && ft_strlen(arr[x + 1]) > y)
-			flood_fill(arr, x + 1, y);
-		//if (arr[x + 1] != NULL && ft_strlen(arr[x + 1]) > y + 1)
-		//	flood_fill(arr, x + 1, y + 1);
-		if (x > 0 && arr[x - 1] != NULL && ft_strlen(arr[x - 1]) > y)
-			flood_fill(arr, x - 1, y);
-		//if (x > 0 && arr[x - 1] != NULL && ft_strlen(arr[x - 1]) > y + 1)
-		//	flood_fill(arr, x - 1, y + 1);	
-		flood_fill(arr, x, y + 1);
-		flood_fill(arr, x, y - 1);
+		i = row - 1;
+		while (i < row + 2)
+		{
+			if ((i != row && j != col) && flood_fill(arr, i, j) > 0)
+			{
+				print_array(arr);
+				throw_error(ERR_MAP_NOT_CLOSED, inc_line_number(0) + i, 0);
+			}
+			i++;
+		}
+		j++;
 	}
-	else if (arr[x][y] == ' ' || arr[x][y] == '\0')
-		throw_error(ERR_MAP_NOT_CLOSED, inc_line_number(0) + x, 0);
-	else
-		throw_error(ERR_INVALID_SYMBOL, inc_line_number(0) + x, 0);
+}
+
+int		flood_fill(char **arr, int row, int col)
+{
+	if (row < 0 || col < 0 || ft_strchr("#1", arr[row][col]))
+		return (0);
+	else if (ft_strchr("02NSEW", arr[row][col]))
+	{
+		if (arr[row][col] == '0')
+			arr[row][col] = '#';
+		flood_fill_iter(arr, row, col);
+	}
+	else if (arr[row][col] == ' ')
+		return (row);
+	return (0);
+}
+
+void	player_check(int count, int row)
+{
+	if (count > 1)
+		throw_error(ERR_TOO_MANY_PLAYERS, inc_line_number(0) + row - 1, 0);
+	if (count == 0)
+		throw_error(ERR_PLAYER_NOT_FOUND, 0, 0);
 }
 
 void	parse_validate_map(t_map *map)
 {
-	char **copy;
-	int i;
-	int j;
-	int player_count;
-	int len;
-
-	i = 0;
-	player_count = 0;
-	copy = copy_arr(map->arr, map->rows);
-	while (i < map->rows)
+	int 	i;
+	int 	j;
+	int 	count;
+	
+	i = 1;
+	count = 0;
+	while (i < map->rows - 1)
 	{
 		j = 0;
-		len = ft_strlen(copy[i]);
-		while (j < len)
+		while (map->arr[i][j] != '\0')
 		{
-			if (copy[i][j] == '0')
-				flood_fill(copy, i, j);
-			if (ft_strchr("NSEW", copy[i][j]) != NULL)
-				player_count++;
+			if (ft_strchr("02NSWE", map->arr[i][j]))
+				flood_fill(map->arr, i, j);
+			if (ft_strchr("NSEW", map->arr[i][j]) != NULL)
+				player_check(++count, i);
 			j++;
 		}
 		i++;
 	}
-	print_array(copy);
-	if (player_count > 1)
-		throw_error(ERR_TOO_MANY_PLAYERS, 0, 0);
-	if (player_count == 0)
-		throw_error(ERR_PLAYER_NOT_FOUND, 0, 0);
-	delete_arr(copy, map->rows);
+
+	player_check(count, 0);
 }
