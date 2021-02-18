@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/17 23:40:16 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/18 03:18:48 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int		ft_atoui(char **str, int *number)
 	i = 0;
 	s = *str;
     *number = 0;
+	if (s[i] == '\0')
+		return (-1);
 	while (ft_isdigit(s[i]) && i < R_MAX_LEN)
 	{
 		*number = *number * 10 + (s[i++] - '0');
@@ -69,7 +71,7 @@ void	get_number(char **str, int *number)
 		if (**str == '-')
 			throw_error(ERR_NEGATIVE_VALUE, inc_line_number(0), *str);
 		else
-			throw_error(ERR_INVALID_SYMBOL, inc_line_number(0), *str);
+			throw_error(ERR_MISSING_SYMBOL, inc_line_number(0), *str);
 	}
 }
 
@@ -87,8 +89,8 @@ void	print_status(char *title, char *name, char *status)
 
 void	check_symbol(char *str, const char c)
 {
-	if (*str != '\0' && *str != c)
-		throw_error(ERR_INVALID_SYMBOL, inc_line_number(0), str);
+	if (*str != c)
+		throw_error(ERR_MISSING_SYMBOL, inc_line_number(0), str);
 }
 
 int		inc_line_number(int add)
@@ -162,6 +164,7 @@ void	parse_color(t_map *map, char *line, char *name)
 	{
 		skip_symbol(copy, ' ');
 		get_number(copy, &color[i]);
+		//printf("%s\n", *copy);
 		check_number(color[i], COLOR_MIN_VALUE, COLOR_MAX_VALUE);
 		skip_symbol(copy, ' ');
 		if (i != 2)
@@ -199,7 +202,7 @@ void	parse_identify_line(char *line, t_map *map)
 	else
 	{
 		free(line);
-		throw_error(ERR_INVALID_SYMBOL,  inc_line_number(0), 0);
+		throw_error(ERR_ID_NOT_FOUND,  inc_line_number(0), 0);
 	}
 }
 
@@ -279,20 +282,23 @@ void	flood_fill_iter(char **arr, int row, int col)
 	int i;
 	int j;
 
-	j = col - 1;
-	while (j < col + 2)
+	i = row + 1;
+	while (i >= row - 1)
 	{
-		i = row - 1;
-		while (i < row + 2)
+		j = col + 1;
+		while (j >= col - 1)
 		{
-			if ((i != row && j != col) && flood_fill(arr, i, j) > 0)
+			if (i != row || j != col)
 			{
-				print_array(arr);
-				throw_error(ERR_MAP_NOT_CLOSED, inc_line_number(0) + i, 0);
+				if (flood_fill(arr, i, j) > 0)
+				{
+					throw_error(ERR_MAP_NOT_CLOSED, inc_line_number(0) + i, 0);
+				}
+				//print_array(arr);
 			}
-			i++;
+			j--;
 		}
-		j++;
+		i--;
 	}
 }
 
@@ -306,7 +312,7 @@ int		flood_fill(char **arr, int row, int col)
 			arr[row][col] = '#';
 		flood_fill_iter(arr, row, col);
 	}
-	else if (arr[row][col] == ' ')
+	else if (arr[row][col] == ' ' || arr[row][col] == '\0')
 		return (row);
 	return (0);
 }

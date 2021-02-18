@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:34:29 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/17 20:01:22 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/18 02:49:51 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*get_error_msg(t_error code)
 {
-	static char *errors[16];
+	static char *errors[17];
 
 	errors[ERR_ARG_NUM] = "Invalid number of arguments";
 	errors[ERR_INVALID_ARG] = "Invalid argument";
@@ -32,6 +32,7 @@ char	*get_error_msg(t_error code)
 	errors[ERR_MAP_NOT_CLOSED] = "Map is not closed";
 	errors[ERR_PLAYER_NOT_FOUND] = "Player not found";
 	errors[ERR_TOO_MANY_PLAYERS] = "Too many players";
+	errors[ERR_MISSING_SYMBOL] = "Missing symbol or symbol is invalid";
 	code = (code < 1 && code > 10) ? 0 : code;
 	return (errors[code]);
 }

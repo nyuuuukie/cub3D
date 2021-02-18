@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 21:46:58 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/17 22:46:08 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/18 02:38:00 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		parse_map(int fd, t_map *map)
 	parse_validate_map(map);
 	replace_in_arr(map->arr, '#', '0');
 	print_status("Map's validation ", 0, "OK");
-	print_array(map->arr);
+	//print_array(map->arr);
 	return (0);
 }
 

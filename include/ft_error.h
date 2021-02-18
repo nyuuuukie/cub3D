@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:40:31 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/17 07:40:58 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/18 02:48:16 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ typedef enum	e_err_msg {
 	ERR_MAP_NOT_CLOSED = 12,
 	ERR_PLAYER_NOT_FOUND = 13,
 	ERR_TOO_MANY_PLAYERS = 14,
-	ERR_INVALID_ARG = 15
+	ERR_INVALID_ARG = 15,
+	ERR_MISSING_SYMBOL = 16
 }				t_error;
 
 #endif
