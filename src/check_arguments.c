@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 21:45:51 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/17 07:14:18 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/19 22:38:53 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		check_extension(char *path, const char *ext)
 	if (i == EXTENSION_LEN)
 		return (1);
 	if (!(end != 0 && !ft_strcmp(&path[end], ext)))
-		throw_error(ERR_WRONG_EXT, inc_line_number(0), &path[end]);	
+		throw_error(ERR_WRONG_EXT, line_num(0), &path[end]);	
 	return (0);
 }
 
@@ -36,10 +36,10 @@ int		check_file_path(char *file, char *ext)
 	int fd;
 
 	if (!ft_strcmp(file, "\0"))
-		throw_error(ERR_NO_FILENAME, inc_line_number(0), 0);
+		throw_error(ERR_NO_FILENAME, line_num(0), 0);
 	check_extension(file, ext);
 	if ((fd = open(file, O_RDONLY)) < 0)
-		throw_error(ERR_NO_FILE, inc_line_number(0), 0);
+		throw_error(ERR_NO_FILE, line_num(0), 0);
 	return (0);
 }
 

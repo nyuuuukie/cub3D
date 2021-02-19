@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/17 07:05:53 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/19 21:48:54 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 typedef struct		s_map
 {
+	int				run_mode;
 	int 			r_width;
 	int 			r_height;
 	char			*NO_path;
@@ -25,12 +26,12 @@ typedef struct		s_map
 	int				f[3];
 	int				c[3];
 	
-	t_list			*lst;
 	int				rows;
 	int				cols;
 	int				f_set;
 	int				c_set;
 	char			**arr;
+	t_list			*lst;
 }					t_map;
 
 #endif

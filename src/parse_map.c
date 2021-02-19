@@ -6,44 +6,100 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/18 03:18:48 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/19 23:29:56 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
 //REMOVE
-void*	ft_print_list_node(void *content)
-{
-	write(1, (char *)content, ft_strlen((char *)content));
-	write(1, "\n", 1);
-	return (NULL);
-}
+// void*	ft_print_list_node(void *content)
+// {
+// 	write(1, (char *)content, ft_strlen((char *)content));
+// 	write(1, "\n", 1);
+// 	return (NULL);
+// }
 
 //REMOVE
-void	print_all_params(t_map *map)
-{
-	printf("\nRECEIVED:\n");
-	printf("width:%d\n", map->r_width);
-	printf("height:%d\n", map->r_height);
-	printf("NO:%s\n", map->NO_path);
-	printf("SO:%s\n", map->SO_path);
-	printf("WE:%s\n", map->WE_path);
-	printf("EA:%s\n", map->EA_path);
-	printf("S:%s\n", map->sprite);
-	printf("F:%d %d %d\n", map->c[0], map->c[1], map->c[2]);
-	printf("C:%d %d %d\n", map->f[0], map->f[1], map->f[2]);
+// void	print_all_params(t_map *map)
+// {
+// 	printf("\nRECEIVED:\n");
+// 	printf("width:%d\n", map->r_width);
+// 	printf("height:%d\n", map->r_height);
+// 	printf("NO:%s\n", map->NO_path);
+// 	printf("SO:%s\n", map->SO_path);
+// 	printf("WE:%s\n", map->WE_path);
+// 	printf("EA:%s\n", map->EA_path);
+// 	printf("S:%s\n", map->sprite);
+// 	printf("F:%d %d %d\n", map->c[0], map->c[1], map->c[2]);
+// 	printf("C:%d %d %d\n", map->f[0], map->f[1], map->f[2]);
 
-	printf("MAP:\n");
-	ft_lstmap(map->lst, ft_print_list_node, free);
+// 	printf("MAP:\n");
+// 	ft_lstmap(map->lst, ft_print_list_node, free);
 
-	printf("\nRows:%d\n", map->rows);
-}
+// 	printf("\nRows:%d\n", map->rows);
+// }
 
 void	skip_symbol(char **str, char c)
 {
 	while (**str == c)
 		(*str)++;
+}
+
+int		ft_atoi_u(char *s, int *number)
+{
+	int i;
+
+	i = 0;
+	*number = 0;
+	while (ft_isdigit(s[i]) && i < R_MAX_LEN)
+	{
+		*number = *number * 10 + (s[i++] - '0');
+    }
+    return (i);
+}
+
+
+//NEW FUCTIONS
+
+int		check_and_skip(char *str, const char c)
+{
+	int i;
+
+	i = 0;
+	while (is_allowed(str, c))
+		i++;
+	return (i);
+}
+
+int		is_allowed(char *str, const char c)
+{
+	if (*str != c)
+		throw_error(ERR_MISSING_SYMBOL, line_num(0), str);
+	return (1);
+}
+
+void	skip_symbol(char *str, char c)
+{
+	int i;
+
+	i = 0;
+	while (str[i] == c)
+		i++;
+}
+
+int		get_number(char *str, char *separators, int *number)
+{
+	int i;
+	int res;
+
+	i = 0;
+	res = ft_atoi_u(str, number);
+	if (res == 0 || !ft_strchr(separators, str[i + res]))
+	{
+		throw_error(ERR_MISSING_SYMBOL, line_num(0), *str);
+	}
+	return (i);
 }
 
 int		ft_atoui(char **str, int *number)
@@ -64,14 +120,45 @@ int		ft_atoui(char **str, int *number)
     return (s[i] == '\0' || s[i] == ' ' || s[i] == ',' || i == R_MAX_LEN ? i : -1);
 }
 
+int		line_num(int add)
+{
+	static int line;
+
+	line += add;
+	return (line);
+}
+
+void	check_number(unsigned int num, long long min, long long max)
+{
+	if (num < min || num > max)
+		throw_error(ERR_OUT_OF_BOUND, line_num(0), 0);
+}
+
+void	parse_resolution(char *ptr, t_map *map)
+{
+	int i;
+
+	i = 0;
+	i += check_and_skip(&ptr[i], 'R');
+	i += check_and_skip(&ptr[i], ' ');
+	i += get_number(&ptr[i], " ", &map->r_width);
+	i += check_and_skip(&ptr[i], ' ');
+	i += get_number(&ptr[i], " ", &map->r_height);
+	check_symbol(&ptr[i], '\0');
+	print_status("Resolution", 0, "OK");
+}
+
+
+//////////////
+
 void	get_number(char **str, int *number)
 {
 	if (ft_atoui(str, number) == -1)
 	{
 		if (**str == '-')
-			throw_error(ERR_NEGATIVE_VALUE, inc_line_number(0), *str);
+			throw_error(ERR_NEGATIVE_VALUE, line_num(0), *str);
 		else
-			throw_error(ERR_MISSING_SYMBOL, inc_line_number(0), *str);
+			throw_error(ERR_MISSING_SYMBOL, line_num(0), *str);
 	}
 }
 
@@ -90,10 +177,10 @@ void	print_status(char *title, char *name, char *status)
 void	check_symbol(char *str, const char c)
 {
 	if (*str != c)
-		throw_error(ERR_MISSING_SYMBOL, inc_line_number(0), str);
+		throw_error(ERR_MISSING_SYMBOL, line_num(0), str);
 }
 
-int		inc_line_number(int add)
+int		line_num(int add)
 {
 	static int line;
 
@@ -104,7 +191,7 @@ int		inc_line_number(int add)
 void	check_number(unsigned int num, long long min, long long max)
 {
 	if (num < min || num > max)
-		throw_error(ERR_OUT_OF_BOUND, inc_line_number(0), 0);
+		throw_error(ERR_OUT_OF_BOUND, line_num(0), 0);
 }
 
 void	parse_resolution(char *ptr, t_map *map)
@@ -129,7 +216,7 @@ void	parse_resolution(char *ptr, t_map *map)
 void	check_duplicate(char *texture_path, char *ptr)
 {
 	if (texture_path != NULL)
-		throw_error(ERR_DUPLICATE_SPEC, inc_line_number(0), ptr);
+		throw_error(ERR_DUPLICATE_SPEC, line_num(0), ptr);
 }
 
 void	parse_path(char **field, char *ptr, char *name)
@@ -164,7 +251,6 @@ void	parse_color(t_map *map, char *line, char *name)
 	{
 		skip_symbol(copy, ' ');
 		get_number(copy, &color[i]);
-		//printf("%s\n", *copy);
 		check_number(color[i], COLOR_MIN_VALUE, COLOR_MAX_VALUE);
 		skip_symbol(copy, ' ');
 		if (i != 2)
@@ -174,7 +260,6 @@ void	parse_color(t_map *map, char *line, char *name)
 		}
 		i++;
 	}
-	//skip_symbol(*copy, ' ');
 	check_symbol(*copy, '\0');
 	map->f_set = (*name == 'F') ? 1 : map->f_set;
 	map->c_set = (*name == 'C') ? 1 : map->c_set;
@@ -202,7 +287,7 @@ void	parse_identify_line(char *line, t_map *map)
 	else
 	{
 		free(line);
-		throw_error(ERR_ID_NOT_FOUND,  inc_line_number(0), 0);
+		throw_error(ERR_ID_NOT_FOUND,  line_num(0), 0);
 	}
 }
 
@@ -234,7 +319,7 @@ int		is_prm_complete(t_map *map)
 	return (res);
 }
 
-void	add_map_node(t_list **head, char *line)
+void	map_add_node(t_list **head, char *line)
 {
 	size_t		i;
 	size_t		line_len;
@@ -246,7 +331,7 @@ void	add_map_node(t_list **head, char *line)
 		if (ft_strchr(ALLOWED_MAP_SPEC, line[i++]) == NULL)
 		{
 			ft_lstclear(head, free);
-			throw_error(ERR_INVALID_SYMBOL, inc_line_number(0), line);
+			throw_error(ERR_INVALID_SYMBOL, line_num(0), line);
 		}
 	}
 	ft_lstadd_back(head, ft_lstnew(ft_strdup(line)));
@@ -254,98 +339,52 @@ void	add_map_node(t_list **head, char *line)
 	line = 0;
 }
 
-int		parse_map_to_list(int fd, t_map *map)
+int		is_empty_line(char *str)
 {
-	char *line;
-	int res;
-
-	res = 1;
-	while ((res = parse_getline(fd, &line)) > 0 && !ft_strcmp(line, "\0"))
+	if (!str || *str == '\0')
+		return (1);
+	while (*str)
 	{
-		inc_line_number(1);
+		if (*str != ' ')
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
+char*	skip_empty_lines(int fd)
+{
+	char	*line;
+	int		res;
+	
+	res = 1;
+	while ((res = parse_getline(fd, &line)) > 0 && is_empty_line(line))
+	{
+		line_num(1);
 		free(line);
 	}
-	inc_line_number(1);
+	line_num(1);
 	if (res == 0)
-		throw_error(ERR_MAP_MISSING, inc_line_number(0), 0);
+	{
+		free(line);
+		throw_error(ERR_MAP_MISSING, line_num(0), 0);
+	}
+	return (line);
+}
+
+int		parse_map_to_list(int fd, t_map *map)
+{
+	char	*line;
+	int		res;
+
+	res = 1;
+	line = skip_empty_lines(fd);
 	while (res)
 	{
-		add_map_node(&map->lst, line);
+		map_add_node(&map->lst, line);
 		res = parse_getline(fd, &line);
 	}
-	add_map_node(&map->lst, line);
+	map_add_node(&map->lst, line);
 	return (0);
 }
 
-void	flood_fill_iter(char **arr, int row, int col)
-{
-	int i;
-	int j;
-
-	i = row + 1;
-	while (i >= row - 1)
-	{
-		j = col + 1;
-		while (j >= col - 1)
-		{
-			if (i != row || j != col)
-			{
-				if (flood_fill(arr, i, j) > 0)
-				{
-					throw_error(ERR_MAP_NOT_CLOSED, inc_line_number(0) + i, 0);
-				}
-				//print_array(arr);
-			}
-			j--;
-		}
-		i--;
-	}
-}
-
-int		flood_fill(char **arr, int row, int col)
-{
-	if (row < 0 || col < 0 || ft_strchr("#1", arr[row][col]))
-		return (0);
-	else if (ft_strchr("02NSEW", arr[row][col]))
-	{
-		if (arr[row][col] == '0')
-			arr[row][col] = '#';
-		flood_fill_iter(arr, row, col);
-	}
-	else if (arr[row][col] == ' ' || arr[row][col] == '\0')
-		return (row);
-	return (0);
-}
-
-void	player_check(int count, int row)
-{
-	if (count > 1)
-		throw_error(ERR_TOO_MANY_PLAYERS, inc_line_number(0) + row - 1, 0);
-	if (count == 0)
-		throw_error(ERR_PLAYER_NOT_FOUND, 0, 0);
-}
-
-void	parse_validate_map(t_map *map)
-{
-	int 	i;
-	int 	j;
-	int 	count;
-	
-	i = 1;
-	count = 0;
-	while (i < map->rows - 1)
-	{
-		j = 0;
-		while (map->arr[i][j] != '\0')
-		{
-			if (ft_strchr("02NSWE", map->arr[i][j]))
-				flood_fill(map->arr, i, j);
-			if (ft_strchr("NSEW", map->arr[i][j]) != NULL)
-				player_check(++count, i);
-			j++;
-		}
-		i++;
-	}
-
-	player_check(count, 0);
-}

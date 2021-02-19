@@ -6,19 +6,28 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:46:26 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/17 17:54:25 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/19 18:01:35 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int link_start(int code)
+int start_engine(t_map *map)
 {
-	return (code);
+	if (map->run_mode == START_CUB3D)
+	{
+		map->run_mode--;
+	}
+	else if (map->run_mode == MAKE_SCREENSHOT)
+	{
+		map->run_mode--;
+	}
+	return (map->run_mode);
 }
 
 void	set_defaults(t_map *map)
 {
+	map->run_mode = 0;
 	map->r_height = 0;
 	map->r_width = 0;
 	map->NO_path = 0;  
@@ -47,13 +56,10 @@ int main(int argc, char **argv)
 	if (argc == 2 || argc == 3)
 	{
 		check_file_path(argv[1], ".cub");
-		if (argc == 3)
-			check_save_arg(argv[2]);
+		map.run_mode = argc == 2 ? START_CUB3D : MAKE_SCREENSHOT;
+		map.run_mode == MAKE_SCREENSHOT ? check_save_arg(argv[2]) : NULL;
 		parse_scene_file(argv[1], &map);
-		if (argc == 2)
-			link_start(START_CUB3D);
-		else
-			link_start(MAKE_SCREENSHOT);
+		start_engine(&map);
 	}
 	else
 		throw_error(ERR_ARG_NUM, 0, 0);

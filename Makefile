@@ -10,11 +10,6 @@ CFLAGS			= -Wall -Wextra -Werror
 LIB_FLAGS		= -L $(LIBFT_DIR) -lft
 INCLUDE_FLAGS 	= -I $(INCLUDES_DIR) -I $(LIBFT_DIR) -I $(GNL_DIR)
 
-######################### COLORS #############################
-GREEN =	\033[32m
-RED	  =	\033[31m
-RESET =	\033[0m
-
 ######################### DIRECTORIES ########################
 INCLUDES_DIR = include
 LIBFT_DIR 	 = libft
@@ -29,7 +24,8 @@ SOURCES =	main.c \
 			print_error.c \
 			errors.c \
 			parse_scene_file.c \
-			arrays.c
+			arrays.c \
+			map_validation.c
 		
 GNL_SRC = 	gnl.c
 
@@ -57,7 +53,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(LIBFT_DIR)/$(LIBFT_NAME) $(GNL_OBJ)
 
 $(NAME): $(GNL_OBJ) $(OBJECTS) $(HEADERS)
 	@$(CC) $(CFLAGS) $(GNL_OBJ) $(OBJECTS) $(LIB_FLAGS) -o $@
-	@echo "$(GREEN)$(NAME)$(RESET) created"
+	@echo "$(NAME) created"
 
 clean:
 	@$(MAKE) clean -C $(LIBFT_DIR) --no-print-directory 
@@ -66,6 +62,6 @@ clean:
 fclean: clean
 	@$(MAKE) fclean -C $(LIBFT_DIR) --no-print-directory
 	@rm -rf $(NAME)
-	@echo "$(RED)$(NAME)$(RESET) has been deleted"
+	@echo "$(NAME) has been deleted"
 
 re: fclean all

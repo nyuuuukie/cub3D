@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/17 23:27:41 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/19 22:38:53 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,13 @@ int		is_prm_complete(t_map *map);
 int		parse_getline(int fd, char **line);
 void	parse_identify_line(char *line, t_map *map);
 
-//REMOVE
+/////////////////////////////////////////////////////////////////REMOVE
 void	print_all_params(t_map *map);
+
+
 /* Print error */
 void	print_error(char *msg, int line, char *add);
-int		inc_line_number(int add);
+int		line_num(int add);
 
 /* Errors.c */
 char*	get_error_msg(t_error code);

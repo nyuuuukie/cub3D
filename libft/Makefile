@@ -36,7 +36,7 @@ create_obj_dir:
 
 $(NAME): $(OBJECTS)
 	@ar rcs $@ $?
-	@echo "$(NAME) created"
+	@echo "$(NAME) has been created"
 
 $(OBJ_DIR)/%.o: %.c
 	@$(CC) $(CFLAGS) -c $< $(INCLUDES) -o $@
@@ -52,5 +52,5 @@ re: fclean all
 
 bonus: $(OBJECTS) $(OBJECTS_BONUS)
 	@ar rcs $(NAME) $?
-	@echo "$(NAME) created with bonuses"
+	@echo "$(NAME) has been created with bonus files"
 

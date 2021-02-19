@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:34:29 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/18 02:49:51 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/19 17:51:47 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*get_error_msg(t_error code)
 	errors[ERR_MAP_MISSING] = "Map is missing";
 	errors[ERR_GNL] = "Get_next_line caused crash";
 	errors[ERR_CANNOT_ALLOC] = "Malloc cannot allocate required memory";
-	errors[ERR_MAP_NOT_CLOSED] = "Map is not closed";
+	errors[ERR_MAP_NOT_CLOSED] = "Player can go outside the map";
 	errors[ERR_PLAYER_NOT_FOUND] = "Player not found";
 	errors[ERR_TOO_MANY_PLAYERS] = "Too many players";
 	errors[ERR_MISSING_SYMBOL] = "Missing symbol or symbol is invalid";
@@ -72,7 +72,10 @@ void	print_error(char *msg, int line, char *add)
 {
 	if (LOGS_FD > 2 && write(LOGS_FD, "1", 0) < 0)
 		return ;
-	ft_putstr_fd("Error\n[", LOGS_FD);
+	ft_putstr_fd("\033[0;31m", LOGS_FD);
+	ft_putstr_fd("Error\n", LOGS_FD);
+	ft_putstr_fd("\033[0;m", LOGS_FD);
+	ft_putstr_fd("[", LOGS_FD);
 	if (line != 0)
 	{
 		ft_putstr_fd("Line ", LOGS_FD);

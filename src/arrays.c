@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 21:40:51 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/17 22:51:17 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/19 18:02:22 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ void	print_array(char **arr)
 	int i;
 
 	i = 0;
-	//ft_putstr_fd("--------------------------------", 1);
 	while (arr[i] != NULL)
 	{
 		ft_putstr_fd("|", 1);
@@ -108,5 +107,4 @@ void	print_array(char **arr)
 		ft_putstr_fd("\n", 1);
 		i++;
 	}
-	//ft_putstr_fd("--------------------------------", 1);
 }

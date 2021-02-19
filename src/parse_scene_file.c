@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 21:46:58 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/18 02:38:00 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/19 22:39:47 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,19 @@ int		parse_map(int fd, t_map *map)
 	parse_validate_map(map);
 	replace_in_arr(map->arr, '#', '0');
 	print_status("Map's validation ", 0, "OK");
-	//print_array(map->arr);
 	return (0);
 }
 
 int		parse_prm(int fd, t_map *map)
 {
 	char	*line;
-	int		line_num;
+	int		num;
 
 	while (!is_prm_complete(map))
 	{
-		line_num = inc_line_number(1);
+		num = line_num(1);
 		if (!parse_getline(fd, &line))
-			throw_error(ERR_ID_NOT_FOUND, line_num, 0);
+			throw_error(ERR_ID_NOT_FOUND, num, 0);
 		if (ft_strcmp(line, "\0") != 0)
 			parse_identify_line(line, map);
 		free(line);
