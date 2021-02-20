@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/19 23:29:56 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/20 03:06:40 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,7 @@
 // 	printf("\nRows:%d\n", map->rows);
 // }
 
-void	skip_symbol(char **str, char c)
-{
-	while (**str == c)
-		(*str)++;
-}
+//NEW FUCTIONS
 
 int		ft_atoi_u(char *s, int *number)
 {
@@ -60,16 +56,11 @@ int		ft_atoi_u(char *s, int *number)
 }
 
 
-//NEW FUCTIONS
-
 int		check_and_skip(char *str, const char c)
 {
-	int i;
-
-	i = 0;
-	while (is_allowed(str, c))
-		i++;
-	return (i);
+	if (*str != c)
+		throw_error(ERR_MISSING_SYMBOL, line_num(0), str);
+	return (1);
 }
 
 int		is_allowed(char *str, const char c)
@@ -79,13 +70,14 @@ int		is_allowed(char *str, const char c)
 	return (1);
 }
 
-void	skip_symbol(char *str, char c)
+int		skip_symbol(char *str, char c)
 {
 	int i;
 
 	i = 0;
 	while (str[i] == c)
 		i++;
+	return (i);
 }
 
 int		get_number(char *str, char *separators, int *number)
@@ -148,8 +140,29 @@ void	parse_resolution(char *ptr, t_map *map)
 	print_status("Resolution", 0, "OK");
 }
 
+void	parse_path(char **field, char *ptr, char *name)
+{
+	int	i;
 
+	i = 0;
+	if (*field != NULL)
+		throw_error(ERR_DUPLICATE_SPEC, line_num(0), ptr);
+	
+	while (i < ft_strlen(name))
+		i += check_and_skip(&ptr[i], name[i]);
+	check_symbol(&ptr[i], ' ');
+	i += skip_symbol(&ptr[i], ' ');
+	check_file_path(&ptr[i], ".xpm");
+	*field = ft_strdup(&ptr[i]);
+	print_status("Texture", name, "OK");
+}
 //////////////
+
+void	skip_symbol(char **str, char c)
+{
+	while (**str == c)
+		(*str)++;
+}
 
 void	get_number(char **str, int *number)
 {
