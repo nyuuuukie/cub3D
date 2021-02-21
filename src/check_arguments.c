@@ -6,41 +6,44 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 21:45:51 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/20 03:29:52 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/21 09:50:46 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int		check_extension(char *path, const char *ext)
+int		check_extension(t_map *map, const char *ext)
 {
 	int i;
 	int end;
 	
-	i = 0; 
-	end = ft_strlen(path) - 1;
-	while (i < EXTENSION_LEN && end != 0 && path[end] != '.')
+	i = 0;
+	end = ft_strlen(map->line) - 1;
+	while (i < EXTENSION_LEN && end != 0 && map->line[end] != '.')
 	{
 		i++;
 		end--;
 	}
-	if (path[end] != '.' && ) //ДОПИСАТЬ
-	if (i == EXTENSION_LEN)
-		return (1);
-	if (!(end != 0 && !ft_strcmp(&path[end], ext)))
-		throw_error(ERR_WRONG_EXT, line_num(0), &path[end]);	
+	// if (path[end] != '.' && path[end - 1] != ' ') //ДОПИСАТЬ
+	// if (i == EXTENSION_LEN)
+	// 	return (1);
+	if (!(end != 0 && !ft_strcmp(&map->line[end], ext)))
+	{
+		map->tr.i = end;
+		throw_error(ERR_WRONG_EXT, 0, &map->line[end]);	
+	}
 	return (0);
 }
 
-int		check_file_path(char *file, char *ext)
+int		check_file_path(t_map *map, char *ext)
 {
 	int fd;
 
-	if (!ft_strcmp(file, "\0"))
-		throw_error(ERR_NO_FILENAME, line_num(0), 0);
-	check_extension(file, ext);
-	if ((fd = open(file, O_RDONLY)) < 0)
-		throw_error(ERR_NO_FILE, line_num(0), 0);
+	if (!ft_strcmp(&map->line[map->tr.i], "\0"))
+		throw_error(ERR_NO_FILENAME, 0, 0);
+	check_extension(map, ext);
+	if ((fd = open(&map->line[map->tr.i], O_RDONLY)) < 0)
+		throw_error(ERR_NO_FILE, 0, 0);
 	return (0);
 }
 

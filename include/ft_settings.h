@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/19 23:01:30 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/21 09:20:41 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 
 /* Resolution */
 # define R_MAX_LEN 6
-# define R_MIN_WIDTH 10
-# define R_MAX_WIDTH 10000
-# define R_MIN_HEIGHT 10
-# define R_MAX_HEIGHT 10000
+# define R_MIN_WIDTH 1
+# define R_MAX_WIDTH 1000000
+# define R_MIN_HEIGHT 1
+# define R_MAX_HEIGHT 1000000
 
 /* Colors */
 # define COLOR_MIN_VALUE 0

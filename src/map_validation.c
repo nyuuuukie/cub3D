@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:10:32 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/19 23:15:32 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/21 10:19:46 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	flood_fill_iter(char **arr, int row, int col)
 {
+	t_map *map;
 	int i;
 	int j;
 
@@ -25,7 +26,10 @@ void	flood_fill_iter(char **arr, int row, int col)
 		{
 			if ((i != row || j != col) && flood_fill(arr, i, j) > 0)
 			{
-				throw_error(ERR_MAP_NOT_CLOSED, line_num(i), 0);
+				map = get_map(0);
+				map->tr.i = col - 1;
+				map->tr.line += i - 2;
+				throw_error(ERR_MAP_NOT_CLOSED, 0, 0);
 			}
 			j--;
 		}
@@ -49,12 +53,20 @@ int		flood_fill(char **arr, int row, int col)
 	return (0);
 }
 
-void	player_check(int count, int row)
+void	player_check(int count, int row, int col)
 {
-	if (count > 1)
-		throw_error(ERR_TOO_MANY_PLAYERS, line_num(row - 1), 0);
-	if (count == 0)
-		throw_error(ERR_PLAYER_NOT_FOUND, 0, 0);
+	t_map *map;
+
+	if (count != 1)
+	{
+		map = get_map(0);
+		map->tr.i = col - 1;
+		map->tr.line += row - 1;
+		if (count == 0)
+			throw_error(ERR_PLAYER_NOT_FOUND, 0, 0);
+		else 
+			throw_error(ERR_TOO_MANY_PLAYERS, 0, 0);
+	}
 }
 
 void	parse_validate_map(t_map *map)
@@ -73,11 +85,10 @@ void	parse_validate_map(t_map *map)
 			if (ft_strchr("02NSWE", map->arr[i][j]))
 				flood_fill(map->arr, i, j);
 			if (ft_strchr("NSEW", map->arr[i][j]) != NULL)
-				player_check(++count, i);
+				player_check(++count, i, j);
 			j++;
 		}
 		i++;
 	}
-
-	player_check(count, 0);
+	player_check(count, i, j);
 }

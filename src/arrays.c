@@ -6,18 +6,18 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 21:40:51 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/19 18:02:22 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/21 09:27:12 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	delete_arr(char **arr)
+void	arr_delete(char **arr)
 {
 	int i;
 
 	i = 0;
-	while (arr[i])
+	while (arr && arr[i])
 		i++;
 	while (--i >= 0)
 		free(arr[i]);
@@ -37,7 +37,7 @@ char*	create_line(int cols, char def)
 	return (line);
 }
 
-char**	create_arr(int rows, int cols)
+char**	arr_create(int rows, int cols)
 {
 	char	**arr;
 	int		i;
@@ -54,7 +54,7 @@ char**	create_arr(int rows, int cols)
 	return (arr);
 }
 
-void	fill_arr(char **arr, t_list *lst)
+void	arr_fill(char **arr, t_list *lst)
 {
 	t_list 	*node;
 	int	i;
@@ -69,32 +69,26 @@ void	fill_arr(char **arr, t_list *lst)
 	}
 }
 
-void	replace_in_str(char *str, char to_replace, char replacer)
+void	arr_replace(char **arr, char to_replace, char replacer)
 {
 	int i;
+	int j;
 
 	i = 0;
-	while (str[i] != '\0')
+	while (arr && arr[i] != NULL)
 	{
-		if (str[i] == to_replace)
-			str[i] = replacer;
+		j = 0;
+		while (arr[i][j] != '\0')
+		{
+			if (arr[i][j] == to_replace)
+				arr[i][j] = replacer;
+			j++;
+		}
 		i++;
 	}
 }
 
-void	replace_in_arr(char **arr, char to_replace, char replacer)
-{
-	int i;
-
-	i = 0;
-	while (arr[i] != NULL)
-	{
-		replace_in_str(arr[i], to_replace, replacer);
-		i++;
-	}
-}
-
-void	print_array(char **arr)
+void	arr_print(char **arr)
 {
 	int i;
 

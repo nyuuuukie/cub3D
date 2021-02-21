@@ -21,7 +21,6 @@ OBJ_DIR		 = obj
 SOURCES =	main.c \
 			check_arguments.c \
 			parse_map.c \
-			print_error.c \
 			errors.c \
 			parse_scene_file.c \
 			arrays.c \
