@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/21 10:08:16 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/23 01:11:33 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,31 +27,27 @@ int		check_file_path(t_map *map, char *ext);
 void	parse_scene_file(t_map *prm, char *path);
 int		parse_prm(t_map *map);
 int		parse_map(t_map *map);
-int		parse_map_to_list(t_map *map);
-void	parse_validate_map(t_map *map);
-void	print_status(char *title, char *name, char *status);
-
-int		is_prm_complete(t_map *map);
+int		map_to_list(t_map *map);
+void	validate_map(t_map *map);
 int		parse_getline(t_map *map);
 void	parse_identify_line(t_map *map);
+int		is_prm_complete(t_map *map);
 
-/////////////////////////////////////////////////////////////////REMOVE
-void	print_all_params(t_map *map);
+void	print_status(char *title, char *name, char *status);
 
 
 /* Print error */
 void	print_error(char *msg, t_track *track, char *add);
-int		line_num(int add);
 
 /* Errors.c */
 char*	get_error_msg(t_error code);
-void	throw_error(t_error msg, int line, char *add);
+void	throw_error(t_error msg, char *add);
 
 /* get_next_line */
-int get_next_line(int fd, char **line);
+int		get_next_line(int fd, char **line);
 
 /* Arrays */
-char	**arr_create(int rows, int cols);
+void	arr_create(char ***arr, int rows, int cols);
 void	arr_delete(char **arr);
 void	arr_print(char **arr);
 void	arr_replace(char **arr, char to_replace, char replacer);
@@ -62,5 +58,6 @@ int		flood_fill(char **arr, int x, int y);
 void	flood_fill_iter(char **arr, int x, int y);
 
 t_map	*get_map(t_map *map);
+void	set_defaults(t_map *map);
 
 #endif

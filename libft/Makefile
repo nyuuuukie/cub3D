@@ -1,4 +1,4 @@
-.PHONY: all clean fclean re bonus create_obj_dir
+.PHONY: all clean fclean re bonus bonus_arch create_dir
 
 NAME = libft.a
 CC = gcc
@@ -29,9 +29,9 @@ BONUS_SRC = ft_lstnew.c \
 OBJECTS = $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 OBJECTS_BONUS = $(addprefix $(OBJ_DIR)/, $(BONUS_SRC:.c=.o))
 
-all: create_obj_dir $(NAME)
+all: create_dir $(NAME)
 
-create_obj_dir:
+create_dir:
 	@mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJECTS)
@@ -50,7 +50,8 @@ fclean: clean
 	
 re: fclean all 
 
-bonus: $(OBJECTS) $(OBJECTS_BONUS)
+bonus: all bonus_arch
+
+bonus_arch:	$(OBJECTS_BONUS)
 	@ar rcs $(NAME) $?
-	@echo "$(NAME) has been created with bonus files"
 

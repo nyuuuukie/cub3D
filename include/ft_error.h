@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:40:31 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/21 02:27:02 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/23 00:49:26 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ typedef enum	e_err_msg {
 	ERR_NO_FILE = 2,
 	ERR_NO_FILENAME = 3,
 	ERR_OUT_OF_BOUND = 4,
-	ERR_INVALID_SYMBOL = 5,
+	ERR_ZERO_BEFORE_NUM = 5,
 	ERR_DUPLICATE_SPEC = 6,
 	ERR_NEGATIVE_VALUE = 7,
 	ERR_ID_NOT_FOUND = 8, 
 	ERR_MAP_MISSING = 9,
-	ERR_GNL = 10,
+	ERR_GET_NEXT_LINE = 10,
 	ERR_CANNOT_ALLOC = 11,
 	ERR_MAP_NOT_CLOSED = 12,
 	ERR_PLAYER_NOT_FOUND = 13,

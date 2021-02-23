@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/21 09:55:29 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/23 01:14:08 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		ft_atoi_u(char *s, int *number)
 void	check_symbol(t_map *map, const char c)
 {
 	if (map->line[map->tr.i] != c)
-		throw_error(ERR_MISSING_SYMBOL, 0, &map->line[map->tr.i]);
+		throw_error(ERR_MISSING_SYMBOL, &map->line[map->tr.i]);
 }
 
 void	check_and_skip(t_map *map, const char c)
@@ -47,16 +47,20 @@ void	get_number(t_map *map, char *separators, int *number)
 {
 	int res;
 
+	if (map->line[map->tr.i] == '0' && ft_isdigit(map->line[map->tr.i + 1]))
+		throw_error(ERR_ZERO_BEFORE_NUM, &map->line[map->tr.i]);
 	res = ft_atoi_u(&map->line[map->tr.i], number);
 	map->tr.i += res;
+	while (ft_isdigit(map->line[map->tr.i]))
+		map->tr.i++;
 	if (res == 0 || !ft_strchr(separators, map->line[map->tr.i]))
-		throw_error(ERR_MISSING_SYMBOL, 0, &map->line[map->tr.i]);
+		throw_error(ERR_MISSING_SYMBOL, &map->line[map->tr.i]);
 }
 
 void	check_number(unsigned int num, long long min, long long max)
 {
 	if (num < min || num > max)
-		throw_error(ERR_OUT_OF_BOUND, 0, 0);
+		throw_error(ERR_OUT_OF_BOUND, 0);
 }
 
 void	parse_resolution(t_map *map)
@@ -74,7 +78,7 @@ void	parse_resolution(t_map *map)
 void	check_duplicate(char *texture, char *ptr)
 {
 	if (texture != NULL)
-		throw_error(ERR_DUPLICATE_SPEC, 0, ptr);
+		throw_error(ERR_DUPLICATE_SPEC, ptr);
 }
 
 void	parse_path(t_map *map, char **texture, char *name)
@@ -143,7 +147,7 @@ void	parse_identify_line(t_map *map)
 	else if (!ft_strncmp(map->line, "C", 1))
 		parse_color(map, &map->c, "C");
 	else
-		throw_error(ERR_ID_NOT_FOUND, 0, 0);
+		throw_error(ERR_ID_NOT_FOUND, 0);
 }
 
 int		parse_getline(t_map *map)
@@ -151,7 +155,7 @@ int		parse_getline(t_map *map)
 	int res;
 
 	if ((res = get_next_line(map->fd, &map->line)) < 0)
-		throw_error(ERR_GNL, 0, 0);
+		throw_error(ERR_GET_NEXT_LINE, 0);
 
 	return (res);
 }
@@ -186,7 +190,7 @@ void	map_add_node(t_list **head, char *line)
 		if (ft_strchr(ALLOWED_MAP_SPEC, line[i++]) == NULL)
 		{
 			ft_lstclear(head, free);
-			throw_error(ERR_MISSING_SYMBOL, 0, line);
+			throw_error(ERR_MISSING_SYMBOL, line);
 		}
 	}
 	ft_lstadd_back(head, ft_lstnew(ft_strdup(line)));
@@ -219,11 +223,11 @@ void	skip_empty_lines(t_map *map)
 	if (res == 0)
 	{
 		free(map->line);
-		throw_error(ERR_MAP_MISSING, 0, 0);
+		throw_error(ERR_MAP_MISSING, 0);
 	}
 }
 
-int		parse_map_to_list(t_map *map)
+int		map_to_list(t_map *map)
 {
 	int	res;
 

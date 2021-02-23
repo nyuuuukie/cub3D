@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 21:46:58 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/21 09:53:12 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/23 01:14:22 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,13 @@
 int		parse_map(t_map *map)
 {
 	map->tr.i = 0;
-	parse_map_to_list(map);
+	map_to_list(map);
+	
 	map->rows = ft_lstsize(map->lst) + 2;
 	map->cols = ft_lstmax_cont_len(map->lst);
-	map->arr = arr_create(map->rows, map->cols);
+	arr_create(&map->arr, map->rows, map->cols);
 	arr_fill(map->arr, map->lst);
-	parse_validate_map(map);
+	validate_map(map);
 	arr_replace(map->arr, '#', '0');
 	print_status("Map's validation ", 0, "OK");
 	return (0);
@@ -33,7 +34,7 @@ int		parse_prm(t_map *map)
 		map->tr.i = 0;
 		map->tr.line++;
 		if (!parse_getline(map))
-			throw_error(ERR_ID_NOT_FOUND, 0, 0);
+			throw_error(ERR_ID_NOT_FOUND, 0);
 		if (ft_strcmp(map->line, "") != 0)
 			parse_identify_line(map);
 		free(map->line);
