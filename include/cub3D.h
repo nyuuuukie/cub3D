@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/23 01:11:33 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/24 11:50:37 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # include "ft_error.h"
 
 /* Check input arguments */
+int		check_save_arg(int argc, char **argv);
 int		check_extension(t_map *map, const char *ext);
-int		check_save_arg(char *save);
 int		check_file_path(t_map *map, char *ext);
 
 /* Check scene file */
@@ -46,12 +46,16 @@ void	throw_error(t_error msg, char *add);
 /* get_next_line */
 int		get_next_line(int fd, char **line);
 
-/* Arrays */
-void	arr_create(char ***arr, int rows, int cols);
+/* arrays.c */
+void	arr_print(char **arr); //HELPER
 void	arr_delete(char **arr);
-void	arr_print(char **arr);
-void	arr_replace(char **arr, char to_replace, char replacer);
 void	arr_fill(char **arr, t_list *lst);
+void	arr_create(char ***arr, int rows, int cols);
+void	arr_replace(char **arr, char to_replace, char replacer);
+
+/* map.c */
+void	free_map(t_map *map);
+t_map	*get_map(t_map *map);
 
 /* Flood fill */
 int		flood_fill(char **arr, int x, int y);

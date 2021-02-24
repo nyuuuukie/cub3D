@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 21:45:51 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/23 01:15:10 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/24 10:53:02 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,12 @@ int		check_file_path(t_map *map, char *ext)
 	return (0);
 }
 
-int check_save_arg(char *save)
+int check_save_arg(int argc, char **argv)
 {
-	if (ft_strcmp(save, "--save"))
-		throw_error(ERR_INVALID_ARG, save);
+	if (argc == 3)
+	{
+		if (ft_strcmp(argv[2], "--save"))
+			throw_error(ERR_INVALID_ARG, argv[2]);
+	}
 	return (0);
 }

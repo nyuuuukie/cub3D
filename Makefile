@@ -30,7 +30,8 @@ SOURCES =	main.c \
 			errors.c \
 			parse_scene_file.c \
 			arrays.c \
-			map_validation.c
+			map_validation.c \
+			map.c
 		
 GNL_SRC = 	gnl.c
 
@@ -44,7 +45,7 @@ OBJECTS = $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 HEADERS = $(INCLUDES_DIR)/*.h
 
 ######################## INSTRUCTIONS ########################
-all: libft create_dir $(NAME)
+all: libft mlx create_dir $(NAME)
 
 create_dir:
 	@mkdir -p $(OBJ_DIR)
@@ -58,11 +59,11 @@ libft:
 mlx:
 	@$(MAKE) -C $(MLX_DIR) --no-print-directory
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(LIBFT_DIR)/$(LIBFT_NAME) $(GNL_OBJ)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(LIBFT_DIR)/$(LIBFT_NAME) $(MLX_DIR)/$(MLX_NAME) $(GNL_OBJ)
 	@$(CC) $(CFLAGS) -c $< $(INCLUDE_FLAGS) -o $@
 
 $(NAME): $(OBJECTS) $(GNL_OBJ) $(HEADERS) 
-	@$(CC) $(CFLAGS) $(GNL_OBJ) $(OBJECTS) $(LIBFT_FLAGS) -o $@
+	@$(CC) $(CFLAGS) $(GNL_OBJ) $(OBJECTS) $(LIBFT_FLAGS) $(MLX_FLAGS) -o $@
 	@echo "$(NAME) created"
 
 clean:

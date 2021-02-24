@@ -6,17 +6,41 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:10:32 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/23 01:15:57 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/24 11:56:49 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
+void	validate_map(t_map *map)
+{
+	int 	i;
+	int 	j;
+	int 	count;
+	
+	i = 1;
+	count = 0;
+	while (i < map->rows - 1)
+	{
+		j = 0;
+		while (map->arr[i][j] != '\0')
+		{
+			if (ft_strchr("02NSWE", map->arr[i][j]))
+				flood_fill(map->arr, i, j);
+			if (ft_strchr("NSEW", map->arr[i][j]) != NULL)
+				player_check(++count, i, j);
+			j++;
+		}
+		i++;
+	}
+	player_check(count, i, j);
+}
+
 void	flood_fill_iter(char **arr, int row, int col)
 {
-	t_map *map;
-	int i;
-	int j;
+	t_map	*map;
+	int		i;
+	int		j;
 
 	i = row + 1;
 	while (i >= row - 1)
@@ -67,28 +91,4 @@ void	player_check(int count, int row, int col)
 		else 
 			throw_error(ERR_TOO_MANY_PLAYERS, 0);
 	}
-}
-
-void	validate_map(t_map *map)
-{
-	int 	i;
-	int 	j;
-	int 	count;
-	
-	i = 1;
-	count = 0;
-	while (i < map->rows - 1)
-	{
-		j = 0;
-		while (map->arr[i][j] != '\0')
-		{
-			if (ft_strchr("02NSWE", map->arr[i][j]))
-				flood_fill(map->arr, i, j);
-			if (ft_strchr("NSEW", map->arr[i][j]) != NULL)
-				player_check(++count, i, j);
-			j++;
-		}
-		i++;
-	}
-	player_check(count, i, j);
 }

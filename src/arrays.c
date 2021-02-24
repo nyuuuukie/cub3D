@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 21:40:51 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/23 01:15:50 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/24 11:43:21 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,15 @@ void	arr_create(char ***arr, int rows, int cols)
 
 void	arr_fill(char **arr, t_list *lst)
 {
-	t_list 	*node;
-	int	i;
+	int		len;
+	int		i;
 
 	i = 1;
-	node = lst;
-	while (node)
+	while (lst)
 	{
-		ft_memmove(&arr[i][1], node->content, ft_strlen(node->content));
-		node = node->next;
+		len = ft_strlen(lst->content);
+		ft_memmove(&arr[i][1], lst->content, len);
+		lst = lst->next;
 		i++;
 	}
 }
@@ -82,21 +82,6 @@ void	arr_replace(char **arr, char to_replace, char replacer)
 				arr[i][j] = replacer;
 			j++;
 		}
-		i++;
-	}
-}
-
-void	arr_print(char **arr)
-{
-	int i;
-
-	i = 0;
-	while (arr[i] != NULL)
-	{
-		ft_putstr_fd("|", 1);
-		ft_putstr_fd(arr[i], 1);
-		ft_putstr_fd("|", 1);
-		ft_putstr_fd("\n", 1);
 		i++;
 	}
 }
