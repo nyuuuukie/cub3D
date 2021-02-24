@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/24 03:35:04 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/24 23:13:05 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # define MAKE_SCREENSHOT 2
 
 //# define SCALE 20
-
+# define MACOSX
 /* Resolution */
 # define R_MAX_LEN 6
 # define R_MIN_WIDTH 1

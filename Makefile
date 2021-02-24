@@ -2,14 +2,17 @@
 
 NAME = cub3D
 LIBFT_NAME = libft.a
-MLX_NAME = libmlx_Linux.a
+MLX_NAME = libmlx.dylib
+#libmlx_Linux.a
 
 ######################### CC && FLAGS ########################
 
 CC = gcc
 
 CFLAGS			= -Wall -Wextra -Werror
-MLX_FLAGS		= -L $(MLX_DIR) -lmlx_Linux -lXext -lX11 -lm -lz
+MLX_FLAGS2		= -L $(MLX_DIR) -lmlx_Linux -lXext -lX11 -lm -lz
+MLX_FLAGS		=  -Lmlx -lmlx -framework OpenGL -framework AppKit
+#  $(CC) -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 LIBFT_FLAGS		= -L $(LIBFT_DIR) -lft
 INCLUDE_FLAGS 	= -I $(INCLUDES_DIR) -I $(LIBFT_DIR) -I $(GNL_DIR) -I $(MLX_DIR)
 

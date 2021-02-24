@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:46:26 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/24 11:06:20 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/24 23:18:05 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,53 +52,53 @@ void    my_mlx_pixel_put(t_data *data, int x, int y, int color)
     *(unsigned int*)dst = color;
 }
  
-void	put_triangle(t_data *timg, int x, int y0, int y)
-{
-	int x0 = 1;
-	while (y0 < y)
-	{
-		int temp = x0;
-		while (temp--)
-			my_mlx_pixel_put(timg, x - (x0 / 2) + temp, y0, rand());
-		y0++;
-		x0++;
-	}
-}
+// void	put_triangle(t_data *timg, int x, int y0, int y)
+// {
+// 	int x0 = 1;
+// 	while (y0 < y)
+// 	{
+// 		int temp = x0;
+// 		while (temp--)
+// 			my_mlx_pixel_put(timg, x - (x0 / 2) + temp, y0, rand());
+// 		y0++;
+// 		x0++;
+// 	}
+// }
 
-void	put_circle(t_data *timg, int x, int y, int r)
-{
-	int x0 = x - r;
-	int y0 = y - r;
-	while (y0 < y + r)
-	{
-		x0 = x - r;
-		while (x0 < x + r)
-		{
-			if ((x - x0) * (x - x0) + (y - y0) * (y - y0) <= r * r)
-				my_mlx_pixel_put(timg, x0, y0, rand());
-			x0++;
-		}
-		y0++;
-	}
-}
+// void	put_circle(t_data *timg, int x, int y, int r)
+// {
+// 	int x0 = x - r;
+// 	int y0 = y - r;
+// 	while (y0 < y + r)
+// 	{
+// 		x0 = x - r;
+// 		while (x0 < x + r)
+// 		{
+// 			if ((x - x0) * (x - x0) + (y - y0) * (y - y0) <= r * r)
+// 				my_mlx_pixel_put(timg, x0, y0, rand());
+// 			x0++;
+// 		}
+// 		y0++;
+// 	}
+// }
 
-void	put_background(t_data *timg, t_map *map, int color)
-{
-	int i;
-	int j;
+// void	put_background(t_data *timg, t_map *map, int color)
+// {
+// 	int i;
+// 	int j;
 
-	i = 0;
-	while (i < map->r_height)
-	{
-		j = 0;
-		while (j < map->r_width)
-		{
-			my_mlx_pixel_put(timg, j, i, color);
-			j++;
-		}
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (i < map->r_height)
+// 	{
+// 		j = 0;
+// 		while (j < map->r_width)
+// 		{
+// 			my_mlx_pixel_put(timg, j, i, color);
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }
 
 //////////////////////////////////////////////////////////////////////
 
@@ -147,23 +147,22 @@ void	put_minimap(t_all *all, int x0, int y0, int color)
 		j = 0;
 		while (j < all->map->cols + 1)
 		{
+			if (all->map->arr[i][j] == '0')
+				put_cell(all, x0 + j * all->scale, y0 + i * all->scale, 0x00FFFFFF);
 			if (all->map->arr[i][j] == '1')
 				put_cell(all, x0 + j * all->scale, y0 + i * all->scale, color);
 			if (all->map->arr[i][j] == '2')
-				put_cell(all, x0 + j * all->scale, y0 + i * all->scale, 0xFFFFFFFF);
-			if (ft_strchr("NSWE", all->map->arr[i][j]))
-				my_mlx_pixel_put(all->img, all->plr->x + j, all->plr->y + i, 0xFFFFFFFF);
-			j++;
+				put_cell(all, x0 + j * all->scale, y0 + i * all->scale, 0x00FF0000);
+			j++;  
 		}
 		i++;
 	}
+	my_mlx_pixel_put(all->img,  x0 + all->plr->x, y0 + all->plr->y, 0x00FF0000);
 }
-
-
 
 int 	render(t_all *all)
 {
-	put_minimap(all, all->padding, all->padding, rand());
+	put_minimap(all, all->padding, all->padding, 0x000000FF);
 	mlx_put_image_to_window(all->mlx, all->mlx_win, all->img->img, 10, 10);
 	return (0);
 }
@@ -180,20 +179,25 @@ int change_pos(t_all *all, float delx, float dely)
 	{
 		all->plr->x = x;
 		all->plr->y = y;
+		printf("1 %.3f %.3f\n", all->plr->x, all->plr->y);
 	}
 	return (0);
 }
 
 int key_hook(int keycode, t_all *all)
 {
-	if (keycode == 119)
-		change_pos(all, 0, -1);
-	if (keycode == 97)
-		change_pos(all, -1, 0);
-	if (keycode == 115)
-		change_pos(all, 0, 1);
-	if (keycode == 100)
-		change_pos(all, 1, 0);
+	if (keycode == KEY_W)
+		change_pos(all, 0, -0.5);
+	if (keycode == KEY_A)
+		change_pos(all, -0.5, 0);
+	if (keycode == KEY_S)
+		change_pos(all, 0, 0.5);
+	if (keycode == KEY_D)
+		change_pos(all, 0.5, 0);
+	if (keycode == KEY_LEFT)
+		all->plr->dir += M_PI;
+	if (keycode == KEY_RIGHT)
+		all->plr->dir -= M_PI;
 	render(all);
 	return (0);
 }
@@ -211,8 +215,10 @@ void init_coord_plr(t_all *all)
 		{
 			if (ft_strchr("NSWE", all->map->arr[i][j]))
 			{
-				all->plr->x = j * all->scale;
-				all->plr->y = i * all->scale;
+				all->plr->dir = 0;
+
+				all->plr->x = (j + 0.5) * all->scale;
+				all->plr->y = (i + 0.5) * all->scale;
 			}
 			j++;
 		}

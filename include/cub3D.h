@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/24 11:50:37 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/24 21:44:21 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "ft_map.h"
 # include "ft_settings.h"
 # include "ft_error.h"
+# include "ft_keycodes.h"
 
 /* Check input arguments */
 int		check_save_arg(int argc, char **argv);
@@ -64,4 +65,6 @@ void	flood_fill_iter(char **arr, int x, int y);
 t_map	*get_map(t_map *map);
 void	set_defaults(t_map *map);
 
+
+void	player_check(int count, int row, int col);
 #endif

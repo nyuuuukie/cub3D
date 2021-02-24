@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_base.h                                          :+:      :+:    :+:   */
+/*   ft_keycodes.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/12 05:06:24 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/24 23:17:44 by mhufflep         ###   ########.fr       */
+/*   Created: 2021/02/24 21:42:43 by mhufflep          #+#    #+#             */
+/*   Updated: 2021/02/24 23:14:30 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_BASE_H
-# define FT_BASE_H
+//ADD
+# ifdef MACOSX
 
-# include <unistd.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <string.h>
-# include <math.h>
-
-# include "libft.h"
-# include "mlx.h"
+# define KEY_W 13
+# define KEY_A 0
+# define KEY_S 1
+# define KEY_D 2
+# define KEY_LEFT 123
+# define KEY_RIGHT 124
 
 #endif
