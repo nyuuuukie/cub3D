@@ -2,16 +2,30 @@
 
 NAME = cub3D
 LIBFT_NAME = libft.a
-MLX_NAME = libmlx.dylib
-#libmlx_Linux.a
+
+OFLAGS	  	 = -O2
+OS			 = $(shell uname)
+
+############################# MLX ############################
+
+ifeq ($(OS), Linux)
+	OS_FLAG		= -D LINUX
+	MLX_DIR		= minilibx/mlx_opengl
+	MLX_NAME	= libmlx.a
+	MLX_FLAGS	= -L. -lmlx -lXext -lX11 -lm
+else
+	MLX_DIR		= minilibx/mlx_mms
+	MLX_NAME	= libmlx.dylib
+	MLX_FLAGS	= -L. -lmlx -framework OpenGL -framework AppKit
+endif
 
 ######################### CC && FLAGS ########################
 
 CC = gcc
+CFLAGS = -Wall -Wextra -Werror
 
-CFLAGS			= -Wall -Wextra -Werror
-MLX_FLAGS2		= -L $(MLX_DIR) -lmlx_Linux -lXext -lX11 -lm -lz
-MLX_FLAGS		=  -Lmlx -lmlx -framework OpenGL -framework AppKit
+#MLX_FLAGS2		= -L $(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
+#MLX_FLAGS		=  -Lmlx -lmlx -framework OpenGL -framework AppKit
 #  $(CC) -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 LIBFT_FLAGS		= -L $(LIBFT_DIR) -lft
 INCLUDE_FLAGS 	= -I $(INCLUDES_DIR) -I $(LIBFT_DIR) -I $(GNL_DIR) -I $(MLX_DIR)
@@ -20,7 +34,6 @@ INCLUDE_FLAGS 	= -I $(INCLUDES_DIR) -I $(LIBFT_DIR) -I $(GNL_DIR) -I $(MLX_DIR)
 
 SRC_DIR		 = src
 OBJ_DIR		 = obj
-MLX_DIR		 = mlx
 LIBFT_DIR 	 = libft
 INCLUDES_DIR = include
 GNL_DIR		 = get_next_line
@@ -34,7 +47,7 @@ SOURCES =	main.c \
 			parse_scene_file.c \
 			arrays.c \
 			map_validation.c \
-			map.c
+			map_utils.c
 		
 GNL_SRC = 	gnl.c
 
@@ -61,9 +74,10 @@ libft:
 
 mlx:
 	@$(MAKE) -C $(MLX_DIR) --no-print-directory
+	@cp $(MLX_DIR)/$(MLX_NAME) ./
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(LIBFT_DIR)/$(LIBFT_NAME) $(MLX_DIR)/$(MLX_NAME) $(GNL_OBJ)
-	@$(CC) $(CFLAGS) -c $< $(INCLUDE_FLAGS) -o $@
+	@$(CC) $(OS_FLAG) $(CFLAGS) -c $< $(INCLUDE_FLAGS) -o $@
 
 $(NAME): $(OBJECTS) $(GNL_OBJ) $(HEADERS) 
 	@$(CC) $(CFLAGS) $(GNL_OBJ) $(OBJECTS) $(LIBFT_FLAGS) $(MLX_FLAGS) -o $@
@@ -77,5 +91,8 @@ fclean: clean
 	@$(MAKE) fclean -C $(LIBFT_DIR) --no-print-directory
 	@rm -rf $(NAME)
 	@echo "$(NAME) has been deleted"
+
+bonus:
+	@make BONUS="TRUE" all --no-print-directory
 
 re: fclean all

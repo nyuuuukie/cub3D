@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/24 21:44:21 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/01 07:04:35 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int		is_prm_complete(t_map *map);
 
 void	print_status(char *title, char *name, char *status);
 
-
 /* Print error */
 void	print_error(char *msg, t_track *track, char *add);
 
@@ -48,7 +47,7 @@ void	throw_error(t_error msg, char *add);
 int		get_next_line(int fd, char **line);
 
 /* arrays.c */
-void	arr_print(char **arr); //HELPER
+
 void	arr_delete(char **arr);
 void	arr_fill(char **arr, t_list *lst);
 void	arr_create(char ***arr, int rows, int cols);
@@ -56,15 +55,16 @@ void	arr_replace(char **arr, char to_replace, char replacer);
 
 /* map.c */
 void	free_map(t_map *map);
+void	set_defaults(t_map *map);
 t_map	*get_map(t_map *map);
+
 
 /* Flood fill */
 int		flood_fill(char **arr, int x, int y);
 void	flood_fill_iter(char **arr, int x, int y);
-
-t_map	*get_map(t_map *map);
-void	set_defaults(t_map *map);
-
-
 void	player_check(int count, int row, int col);
+
+
+
+void	arr_print(char **arr); //HELPER
 #endif

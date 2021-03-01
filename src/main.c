@@ -6,20 +6,20 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:46:26 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/24 23:18:05 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/01 08:32:49 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-typedef struct  s_data {
+typedef struct  s_data
+{
     void        *img;
     char        *addr;
     int         bits_per_pixel;
     int         line_length;
     int         endian;
 }               t_data;
-
 
 typedef struct	s_plr
 {
@@ -35,6 +35,7 @@ typedef struct	s_all
 	void    *mlx;
 	void    *mlx_win;
 	t_data	*img;
+	t_data 	*mapimg;
 	t_map	*map;
 	t_plr	*plr;
 	int		scale;
@@ -51,56 +52,6 @@ void    my_mlx_pixel_put(t_data *data, int x, int y, int color)
     dst = data->addr + offset;
     *(unsigned int*)dst = color;
 }
- 
-// void	put_triangle(t_data *timg, int x, int y0, int y)
-// {
-// 	int x0 = 1;
-// 	while (y0 < y)
-// 	{
-// 		int temp = x0;
-// 		while (temp--)
-// 			my_mlx_pixel_put(timg, x - (x0 / 2) + temp, y0, rand());
-// 		y0++;
-// 		x0++;
-// 	}
-// }
-
-// void	put_circle(t_data *timg, int x, int y, int r)
-// {
-// 	int x0 = x - r;
-// 	int y0 = y - r;
-// 	while (y0 < y + r)
-// 	{
-// 		x0 = x - r;
-// 		while (x0 < x + r)
-// 		{
-// 			if ((x - x0) * (x - x0) + (y - y0) * (y - y0) <= r * r)
-// 				my_mlx_pixel_put(timg, x0, y0, rand());
-// 			x0++;
-// 		}
-// 		y0++;
-// 	}
-// }
-
-// void	put_background(t_data *timg, t_map *map, int color)
-// {
-// 	int i;
-// 	int j;
-
-// 	i = 0;
-// 	while (i < map->r_height)
-// 	{
-// 		j = 0;
-// 		while (j < map->r_width)
-// 		{
-// 			my_mlx_pixel_put(timg, j, i, color);
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }
-
-//////////////////////////////////////////////////////////////////////
 
 void	set_scale(t_all *all)
 {
@@ -118,7 +69,41 @@ void	set_scale(t_all *all)
 	#endif
 }
 
-void	put_cell(t_all *all, int x0, int y0, int color)
+float	get_radian(float angle)
+{
+	return angle * M_PI / 180;
+}
+
+void	throw_ray(t_all *all, t_plr *ray, int color)
+{
+	float radian = get_radian(ray->start);
+
+	while (all->map->arr[(int)(ray->y / all->scale)][(int)(ray->x / all->scale)] != '1')
+	{
+		ray->x += cos(radian);
+		ray->y += sin(radian);
+		my_mlx_pixel_put(all->img, ray->x, ray->y, color);
+	}
+}
+
+void	ft_cast_rays(t_all *all, int color)
+{
+	t_plr	ray = *all->plr;
+	ray.start = ray.dir - (FOV / 2);
+	ray.end = ray.dir + (FOV / 2);
+ 
+	//printf("%.3f %.3f\n", ray.start, ray.end);
+  	while (ray.start <= ray.end)
+	{
+		ray.x = all->plr->x;
+		ray.y = all->plr->y;
+
+		throw_ray(all, &ray, color);
+		ray.start += (float)FOV / (float)RPA;
+	}
+}
+
+void	put_cell(t_all *all, t_data *img, int x0, int y0, int color)
 {
 	int i;
 	int j;
@@ -129,14 +114,14 @@ void	put_cell(t_all *all, int x0, int y0, int color)
 		j = 0;
 		while (j < all->scale)
 		{
-			my_mlx_pixel_put(all->img, x0 + j, y0 + i, color);
+			my_mlx_pixel_put(img, x0 + j, y0 + i, color);
 			j++;
 		}
 		i++;
 	}
 }
 
-void	put_minimap(t_all *all, int x0, int y0, int color)
+void	get_minimap_img(t_all *all, int x0, int y0, int color)
 {
 	int i;
 	int j;
@@ -147,27 +132,52 @@ void	put_minimap(t_all *all, int x0, int y0, int color)
 		j = 0;
 		while (j < all->map->cols + 1)
 		{
-			if (all->map->arr[i][j] == '0')
-				put_cell(all, x0 + j * all->scale, y0 + i * all->scale, 0x00FFFFFF);
 			if (all->map->arr[i][j] == '1')
-				put_cell(all, x0 + j * all->scale, y0 + i * all->scale, color);
-			if (all->map->arr[i][j] == '2')
-				put_cell(all, x0 + j * all->scale, y0 + i * all->scale, 0x00FF0000);
+				put_cell(all, all->mapimg, x0 + j * all->scale, y0 + i * all->scale, color);
+			else
+				put_cell(all, all->mapimg, x0 + j * all->scale, y0 + i * all->scale, 0x00FFFFFF);
 			j++;  
 		}
 		i++;
 	}
-	my_mlx_pixel_put(all->img,  x0 + all->plr->x, y0 + all->plr->y, 0x00FF0000);
 }
 
-int 	render(t_all *all)
+void	put_minimap(t_all *all, int x0, int y0, int color)
 {
-	put_minimap(all, all->padding, all->padding, 0x000000FF);
-	mlx_put_image_to_window(all->mlx, all->mlx_win, all->img->img, 10, 10);
+	static int raycolor = 0x00010101;
+	int i;
+	int j;
+
+	i = 0;
+	while (i < all->map->rows)
+	{
+		j = 0;
+		while (j < all->map->cols + 1)
+		{
+			if (all->map->arr[i][j] == '1')
+				put_cell(all, all->img, x0 + j * all->scale, y0 + i * all->scale, color);
+			else if (all->map->arr[i][j] == '2')
+				put_cell(all, all->img, x0 + j * all->scale, y0 + i * all->scale, 0x00FF0000);
+			else
+				put_cell(all, all->img, x0 + j * all->scale, y0 + i * all->scale, 0x00FFFFFF);
+			j++;  
+		}
+		i++;
+	}
+	my_mlx_pixel_put(all->img,  x0 + all->plr->x, y0 + all->plr->y, 0x00FF00FF);
+	//put_cell(all, x0 + all->plr->x, y0 + all->plr->y, 0x00FF0000);
+	raycolor += 10000;
+	ft_cast_rays(all, raycolor);
+}
+
+int 	render(t_all *all, t_data *img)
+{
+	put_minimap(all, all->padding, all->padding, 0x00242424);
+	mlx_put_image_to_window(all->mlx, all->mlx_win, img->img, 0, 0);
 	return (0);
 }
 
-int change_pos(t_all *all, float delx, float dely)
+int		change_pos(t_all *all, float delx, float dely)
 {
 	float x;
 	float y;
@@ -175,34 +185,37 @@ int change_pos(t_all *all, float delx, float dely)
 	x = all->plr->x + delx;
 	y = all->plr->y + dely;
 
-	if (all->map->arr[(int)(y / all->scale)][(int)(x / all->scale)] != '1')
+	if (all->map->arr[(int)(y / all->scale)][(int)(x / all->scale)] != '1') //TO FIX
 	{
 		all->plr->x = x;
 		all->plr->y = y;
-		printf("1 %.3f %.3f\n", all->plr->x, all->plr->y);
+		//printf("1 %.3f %.3f\n", all->plr->x, all->plr->y);
 	}
 	return (0);
 }
 
-int key_hook(int keycode, t_all *all)
+int		key_hook(int keycode, t_all *all)
 {
+	printf("key:%d\n", keycode);
+	mlx_do_sync(all->mlx);
 	if (keycode == KEY_W)
-		change_pos(all, 0, -0.5);
-	if (keycode == KEY_A)
-		change_pos(all, -0.5, 0);
-	if (keycode == KEY_S)
-		change_pos(all, 0, 0.5);
-	if (keycode == KEY_D)
-		change_pos(all, 0.5, 0);
-	if (keycode == KEY_LEFT)
-		all->plr->dir += M_PI;
-	if (keycode == KEY_RIGHT)
+		change_pos(all, 0, -1);
+	else if (keycode == KEY_S)
+		change_pos(all, 0, 1);
+	else if (keycode == KEY_A)
+		change_pos(all, -1, 0);
+	else if (keycode == KEY_D)
+		change_pos(all, 1, 0);
+	else if (keycode == KEY_LEFT)
 		all->plr->dir -= M_PI;
-	render(all);
+	else if (keycode == KEY_RIGHT)
+		all->plr->dir += M_PI;
+	printf("dir: %.3f\n", get_radian(all->plr->dir));
+	render(all, all->img);
 	return (0);
 }
 
-void init_coord_plr(t_all *all)
+void	init_coord_plr(t_all *all)
 {
 	int i;
 	int j;
@@ -226,8 +239,7 @@ void init_coord_plr(t_all *all)
 	}
 }
 
-
-int check_screen_size(t_all *all)
+int		check_screen_size(t_all *all)
 {
 	int current_width;
 	int current_height;
@@ -240,12 +252,12 @@ int check_screen_size(t_all *all)
 	return (0);	
 }
 
-
 int		mlx_try(t_map *map)
 {
 	t_all all;
 	t_plr plr;
 	t_data img;
+	//t_data mapimg;
 	all.plr = &plr;
 	all.map = map;
 	all.padding = 0;
@@ -257,15 +269,24 @@ int		mlx_try(t_map *map)
 
 	//Get image
 	img.img = mlx_new_image(all.mlx, map->r_width, map->r_height);
+	//mapimg.img = mlx_new_image(all.mlx, map->r_width, map->r_height);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	all.img = &img;
+	//mapimg.addr = mlx_get_data_addr(mapimg.img, &mapimg.bits_per_pixel, &mapimg.line_length, &mapimg.endian);
+	
 
+	all.img = &img;
+	//all.mapimg = &mapimg;
+	//get_minimap_img(&all, 0, 0, 0x00FF0000);
+	
 	//Set default values
 	set_scale(&all);
 	init_coord_plr(&all);
 	
+	//printf("!!!\n");
+	//render(&all, all.mapimg);
 	mlx_hook(all.mlx_win, 2, 1L, key_hook, &all);
 	mlx_loop(all.mlx);
+
 	return (0);
 }
 
@@ -280,30 +301,6 @@ int 	start_engine(t_map *map, int mode)
 		return (2);
 	}
 	return (0);
-}
-
-void	set_defaults(t_map *map)
-{
-	map->r_height = 0;
-	map->r_width = 0;
-	map->NO_path = 0;  
-	map->SO_path = 0;
-	map->WE_path = 0;
-	map->EA_path = 0;
-	map->sprite = 0;
-	map->f.val[0] = 0;
-	map->f.val[1] = 0;
-	map->f.val[2] = 0;
-	map->c.val[0] = 0;
-	map->c.val[1] = 0;
-	map->c.val[2] = 0;
-	map->f.set = 0;
-	map->c.set = 0;
-	map->lst = 0;
-	map->arr = 0;
-	map->tr.i = 0;
-	map->tr.line = 0;
-	get_map(map);
 }
 
 int		main(int argc, char **argv)

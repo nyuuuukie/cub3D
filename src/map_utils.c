@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map.c                                              :+:      :+:    :+:   */
+/*   map_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:47:11 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/24 11:50:02 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/01 07:03:17 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,28 @@ t_map	*get_map(t_map *map)
 	if (ptr == NULL)
 		ptr = map;
 	return (ptr);
+}
+
+void	set_defaults(t_map *map)
+{
+	map->r_height = 0;
+	map->r_width = 0;
+	map->NO_path = 0;  
+	map->SO_path = 0;
+	map->WE_path = 0;
+	map->EA_path = 0;
+	map->sprite = 0;
+	map->f.val[0] = 0;
+	map->f.val[1] = 0;
+	map->f.val[2] = 0;
+	map->c.val[0] = 0;
+	map->c.val[1] = 0;
+	map->c.val[2] = 0;
+	map->f.set = 0;
+	map->c.set = 0;
+	map->lst = 0;
+	map->arr = 0;
+	map->tr.i = 0;
+	map->tr.line = 0;
+	get_map(map);
 }

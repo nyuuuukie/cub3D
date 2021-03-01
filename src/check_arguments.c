@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 21:45:51 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/24 10:53:02 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/02/28 11:40:53 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,6 @@ int		check_extension(t_map *map, const char *ext)
 		i++;
 		end--;
 	}
-	// if (path[end] != '.' && path[end - 1] != ' ') //ДОПИСАТЬ
-	// if (i == EXTENSION_LEN)
-	// 	return (1);
 	if (!(end != 0 && !ft_strcmp(&map->line[end], ext)))
 	{
 		map->tr.i = end;
