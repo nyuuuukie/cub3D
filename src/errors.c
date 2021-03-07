@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:34:29 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/01 15:41:51 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/07 12:36:33 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 char	*get_error_msg(t_error code)
 {
-	static char *errors[17];
+	static char *errors[18];
 
-	if (code < 0 || code > 16)
+	if (code < 0 || code > 17)
 		code = 0;
 	errors[ERR_ARG_NUM] = "Invalid number of arguments";
 	errors[ERR_INVALID_ARG] = "Invalid argument";
@@ -35,6 +35,7 @@ char	*get_error_msg(t_error code)
 	errors[ERR_PLAYER_NOT_FOUND] = "Player not found";
 	errors[ERR_TOO_MANY_PLAYERS] = "Too many players";
 	errors[ERR_MISSING_SYMBOL] = "Missing symbol or symbol is invalid";
+	errors[ERR_TEXTURE_FAIL] = "Cannot read texture file";
 	return (errors[code]);
 }
 

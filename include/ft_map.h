@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/06 20:20:06 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/07 16:54:38 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,6 @@ typedef struct		s_map
 }					t_map;
 
 
-
-
-
 typedef struct  s_data
 {
     void        *img;
@@ -70,6 +67,22 @@ typedef struct	s_plr
 	float		end;
 }				  t_plr;
 
+
+typedef struct s_vector
+{
+	double x;
+	double y;
+}				t_vector;
+
+typedef struct s_texture
+{
+    int     w;
+    int     h;
+    void    *img;
+    char    *path;
+}				t_texture;
+
+
 typedef struct	s_all
 {
 	void    *mlx;
@@ -77,9 +90,23 @@ typedef struct	s_all
 	t_data	*img;
 	t_map	*map;
 	t_plr	*plr;
+	t_texture no;
+	t_texture so;
+	t_texture we;
+	t_texture ea;
 	int		scale;
 	int		padding;
+	
+	t_vector pos;
+	t_vector dir;
+	t_vector plane;
 
+	// double time;
+	// double oldTime;
+
+	int 	isEnabled;
+	double moveSpeed;
+	double rotSpeed;
 }				t_all;
 
 #endif

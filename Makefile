@@ -24,8 +24,6 @@ endif
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
-#MLX_FLAGS2		= -L $(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
-#MLX_FLAGS		=  -Lmlx -lmlx -framework OpenGL -framework AppKit
 LIBFT_FLAGS		= -L $(LIBFT_DIR) -lft
 INCLUDE_FLAGS 	= -I $(INCLUDES_DIR) -I $(LIBFT_DIR) -I $(GNL_DIR) -I $(MLX_DIR)
 
@@ -46,7 +44,9 @@ SOURCES =	main.c \
 			parse_scene_file.c \
 			arrays.c \
 			map_validation.c \
-			map_utils.c
+			map_utils.c \
+			vector.c \
+			raycasting.c
 		
 GNL_SRC = 	gnl.c
 

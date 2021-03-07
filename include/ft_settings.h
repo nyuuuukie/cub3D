@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/28 17:11:52 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/07 11:51:56 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,8 @@
 
 # define FOV 60
 # define RPA 720
+
+# define TEXTURE_W 64
+# define TEXTURE_H 64
+
 #endif

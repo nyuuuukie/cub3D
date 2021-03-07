@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/01 15:56:52 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/07 17:08:19 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,16 @@ int		flood_fill(char **arr, int x, int y);
 void	flood_fill_iter(char **arr, int x, int y);
 void	player_check(int count, int row, int col);
 
+
+/* raycasting.c */
+void    raycasting(t_map *map);
+void	setup_textures(t_all *all);
+
+/* vector.c */
+void    vector_init(t_vector *vect, double x, double y);
+double  vector_mlp(t_vector *v1, t_vector *v2);
+double  vector_len(t_vector *v);
+double  vector_angle(t_vector *v1, t_vector *v2);
 
 
 void	arr_print(char **arr); //HELPER
