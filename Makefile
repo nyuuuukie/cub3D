@@ -26,7 +26,6 @@ CFLAGS = -Wall -Wextra -Werror
 
 #MLX_FLAGS2		= -L $(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
 #MLX_FLAGS		=  -Lmlx -lmlx -framework OpenGL -framework AppKit
-#  $(CC) -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME)
 LIBFT_FLAGS		= -L $(LIBFT_DIR) -lft
 INCLUDE_FLAGS 	= -I $(INCLUDES_DIR) -I $(LIBFT_DIR) -I $(GNL_DIR) -I $(MLX_DIR)
 
@@ -85,12 +84,14 @@ $(NAME): $(OBJECTS) $(GNL_OBJ) $(HEADERS)
 
 clean:
 	@$(MAKE) clean -C $(LIBFT_DIR) --no-print-directory 
+	@$(MAKE) clean -C $(MLX_DIR) --no-print-directory 
 	@rm -rf $(OBJ_DIR)
 
 fclean: clean
 	@$(MAKE) fclean -C $(LIBFT_DIR) --no-print-directory
-	@rm -rf $(NAME)
-	@echo "$(NAME) has been deleted"
+	@rm -rf ${MLX_NAME}
+	@rm -rf ${NAME}
+	@echo "${NAME} has been deleted"
 
 bonus:
 	@make BONUS="TRUE" all --no-print-directory

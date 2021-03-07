@@ -6,42 +6,11 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:46:26 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/01 08:32:49 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/06 20:35:38 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-typedef struct  s_data
-{
-    void        *img;
-    char        *addr;
-    int         bits_per_pixel;
-    int         line_length;
-    int         endian;
-}               t_data;
-
-typedef struct	s_plr
-{
-	float		x;
-	float		y;
-	float		dir;
-	float		start;
-	float		end;
-}				  t_plr;
-
-typedef struct	s_all
-{
-	void    *mlx;
-	void    *mlx_win;
-	t_data	*img;
-	t_data 	*mapimg;
-	t_map	*map;
-	t_plr	*plr;
-	int		scale;
-	int		padding;
-
-}				t_all;
 
 void    my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -257,7 +226,6 @@ int		mlx_try(t_map *map)
 	t_all all;
 	t_plr plr;
 	t_data img;
-	//t_data mapimg;
 	all.plr = &plr;
 	all.map = map;
 	all.padding = 0;
@@ -269,21 +237,14 @@ int		mlx_try(t_map *map)
 
 	//Get image
 	img.img = mlx_new_image(all.mlx, map->r_width, map->r_height);
-	//mapimg.img = mlx_new_image(all.mlx, map->r_width, map->r_height);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	//mapimg.addr = mlx_get_data_addr(mapimg.img, &mapimg.bits_per_pixel, &mapimg.line_length, &mapimg.endian);
 	
-
 	all.img = &img;
-	//all.mapimg = &mapimg;
-	//get_minimap_img(&all, 0, 0, 0x00FF0000);
 	
 	//Set default values
 	set_scale(&all);
 	init_coord_plr(&all);
-	
-	//printf("!!!\n");
-	//render(&all, all.mapimg);
+
 	mlx_hook(all.mlx_win, 2, 1L, key_hook, &all);
 	mlx_loop(all.mlx);
 
@@ -294,7 +255,8 @@ int 	start_engine(t_map *map, int mode)
 {
 	if (mode == 2)
 	{
-		mlx_try(map);
+		raycastring(map);
+		//mlx_try(map);
 	}
 	else if (mode == 3)
 	{

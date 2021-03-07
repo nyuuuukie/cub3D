@@ -6,13 +6,13 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:10:32 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/24 11:56:49 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/01 15:53:30 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	validate_map(t_map *map)
+void	map_validate(t_map *map)
 {
 	int 	i;
 	int 	j;

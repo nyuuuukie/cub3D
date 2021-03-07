@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/01 07:04:35 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/01 15:56:52 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	parse_scene_file(t_map *prm, char *path);
 int		parse_prm(t_map *map);
 int		parse_map(t_map *map);
 int		map_to_list(t_map *map);
-void	validate_map(t_map *map);
-int		parse_getline(t_map *map);
+void	map_validate(t_map *map);
+int		map_getline(t_map *map);
 void	parse_identify_line(t_map *map);
 int		is_prm_complete(t_map *map);
 

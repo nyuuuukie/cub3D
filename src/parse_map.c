@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/24 23:11:01 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/01 15:56:52 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ void	parse_identify_line(t_map *map)
 		throw_error(ERR_ID_NOT_FOUND, 0);
 }
 
-int		parse_getline(t_map *map)
+int		map_getline(t_map *map)
 {
 	int res;
 
@@ -217,7 +217,7 @@ void	skip_empty_lines(t_map *map)
 	int	res;
 	
 	res = 1;
-	while ((res = parse_getline(map)) > 0 && is_empty_line(map->line))
+	while ((res = map_getline(map)) > 0 && is_empty_line(map->line))
 	{
 		map->tr.line++;
 		free(map->line);
@@ -240,10 +240,12 @@ int		map_to_list(t_map *map)
 	{
 		map_add_node(&map->lst, map->line);
 		free(map->line);
-		res = parse_getline(map);
+		res = map_getline(map);
 	}
 	map_add_node(&map->lst, map->line);
 	free(map->line);
+	map->rows = ft_lstsize(map->lst) + 2;
+	map->cols = ft_lstmax_cont_len(map->lst);
 	return (0);
 }
 

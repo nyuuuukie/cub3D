@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/21 02:29:40 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/06 20:20:06 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,39 @@ typedef struct		s_map
 	int				fd;
 	t_track			tr;
 }					t_map;
+
+
+
+
+
+typedef struct  s_data
+{
+    void        *img;
+    char        *addr;
+    int         bits_per_pixel;
+    int         line_length;
+    int         endian;
+}               t_data;
+
+typedef struct	s_plr
+{
+	float		x;
+	float		y;
+	float		dir;
+	float		start;
+	float		end;
+}				  t_plr;
+
+typedef struct	s_all
+{
+	void    *mlx;
+	void    *mlx_win;
+	t_data	*img;
+	t_map	*map;
+	t_plr	*plr;
+	int		scale;
+	int		padding;
+
+}				t_all;
 
 #endif

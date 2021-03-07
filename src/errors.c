@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:34:29 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/24 11:47:25 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/01 15:41:51 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ char	*get_error_msg(t_error code)
 {
 	static char *errors[17];
 
-	code = (code < 0 || code > 16) ? 0 : code;
+	if (code < 0 || code > 16)
+		code = 0;
 	errors[ERR_ARG_NUM] = "Invalid number of arguments";
 	errors[ERR_INVALID_ARG] = "Invalid argument";
 	errors[ERR_WRONG_EXT] = "Wrong file extension";
@@ -43,7 +44,7 @@ void	throw_error(t_error msg, char *add)
 
 	map = get_map(0);
 	print_error(get_error_msg(msg), &map->tr, add);
-	free_map(get_map(0));
+	free_map(map);
 	exit(1);
 }
 
