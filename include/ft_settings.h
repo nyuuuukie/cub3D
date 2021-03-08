@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/07 11:51:56 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/08 02:16:09 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # define START_CUB3D 1
 # define MAKE_SCREENSHOT 2
 
-//# define SCALE 20
+# define SCALE 6
 
 /* Resolution */
 # define R_MAX_LEN 6

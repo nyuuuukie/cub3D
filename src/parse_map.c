@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/01 15:56:52 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/08 11:41:52 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,17 +199,9 @@ void	map_add_node(t_list **head, char *line)
 	ft_lstadd_back(head, ft_lstnew(ft_strdup(line)));
 }
 
-int		is_empty_line(char *str)
+int		is_empty(char *str)
 {
 	return (!str || *str == '\0');
-	// 	return (1);
-	// while (*str)
-	// {
-	// 	if (*str != ' ')
-	// 		return (0);
-	// 	str++;
-	// }
-	// return (1);
 }
 
 void	skip_empty_lines(t_map *map)
@@ -217,7 +209,7 @@ void	skip_empty_lines(t_map *map)
 	int	res;
 	
 	res = 1;
-	while ((res = map_getline(map)) > 0 && is_empty_line(map->line))
+	while ((res = map_getline(map)) > 0 && is_empty(map->line))
 	{
 		map->tr.line++;
 		free(map->line);

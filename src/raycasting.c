@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/07 19:25:36 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/08 13:14:52 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	know_text(t_all *all)
 	t_vector norm;
 	double angle;
 
-	vector_init(&norm, 0.0, 1.0);
+	vector_init(&norm, 0.0, -1.0);
 	angle = vector_angle(&norm, &all->dir) * 180 / M_PI;
 	printf("v1(%.2f:%.2f) v2(%.2f:%.2f), angle: %.2f\n", all->dir.x, all->dir.y, norm.x, norm.y, vector_angle(&norm, &all->dir) * 180 / M_PI);
 	
@@ -52,6 +52,7 @@ void	move(t_all *all, int sign)
 	t_vector	new;
 	char		**map;
 
+	printf("op(%.2f:%.2f) dir(%.2f:%.2f)", all->pos.x, all->pos.y, all->dir.x, all->dir.y);
 	map = all->map->arr;
 	new.x = all->pos.x + (sign * all->dir.x * all->moveSpeed);
 	new.y = all->pos.y + (sign * all->dir.y * all->moveSpeed);
@@ -59,10 +60,7 @@ void	move(t_all *all, int sign)
 		all->pos.x = new.x;
 	if (map[(int)all->pos.x][(int)new.y] != '1')
 		all->pos.y = new.y;
-		
-	t_vector norm;
-	vector_init(&norm, 0.0, 1.0);
-	printf("v1(%.2f:%.2f) v2(%.2f:%.2f), angle: %.2f\n", all->dir.x, all->dir.y, norm.x, norm.y, vector_angle(&norm, &all->dir) * 180 / M_PI);
+	printf(" np(%.2f:%.2f)\n", all->pos.x, all->pos.y);
 }
 
 void	stop_engine(t_all *all)
@@ -81,6 +79,108 @@ void    my_mlx_pixel_put(t_data *data, int x, int y, int color)
     *(unsigned int*)dst = color;
 }
 
+
+
+
+ void	set_scale(t_all *all)
+ {
+ 	int scale_w;
+ 	int scale_h;
+
+ 	#ifdef SCALE
+ 		scale_w = 1;
+ 		scale_h = 1;
+ 		all->scale = SCALE * scale_w * scale_h;
+ 	#else
+ 		scale_w = (all->map->r_width - 2 * all->padding) / all->map->cols;
+ 		scale_h = (all->map->r_height - 2 * all->padding) / all->map->rows;
+ 		all->scale = scale_h < scale_w ? scale_h : scale_w; 
+ 	#endif
+ }
+
+ float	get_radian(float angle)
+ {
+ 	return angle * M_PI / 180;
+ }
+
+ void	throw_ray(t_all *all, t_plr *ray, int color)
+ {
+ 	float radian = get_radian(ray->start);
+
+ 	while (all->map->arr[(int)(ray->y / all->scale)][(int)(ray->x / all->scale)] != '1')
+ 	{
+ 		ray->x += cos(radian);
+ 		ray->y += sin(radian);
+ 		my_mlx_pixel_put(all->img, ray->x, ray->y, color);
+ 	}
+ }
+
+void	ft_cast_rays(t_all *all, int color)
+{
+ 	t_plr	ray = *all->plr;
+ 	ray.start = ray.dir - (FOV / 2);
+ 	ray.end = ray.dir + (FOV / 2);
+ 
+ 	while (ray.start <= ray.end)
+ 	{
+ 		ray.x = all->plr->x;
+ 		ray.y = all->plr->y;
+
+ 		throw_ray(all, &ray, color);
+ 		ray.start += (float)FOV / (float)RPA;
+ 	}
+}
+
+ void	put_cell(t_all *all, t_data *img, int x0, int y0, int color)
+ {
+ 	int i;
+ 	int j;
+
+ 	i = 0;
+ 	while (i < all->scale)
+ 	{
+ 		j = 0;
+ 		while (j < all->scale)
+ 		{
+ 			my_mlx_pixel_put(img, x0 + j, y0 + i, color);
+ 			j++;
+ 		}
+ 		i++;
+ 	}
+ }
+
+ void	put_minimap(t_all *all, int color)
+ {
+ 	//static int raycolor = 0x00ADADAD;
+ 	int i;
+ 	int j;
+
+ 	i = 0;
+ 	while (i < all->map->rows)
+ 	{
+ 		j = 0;
+ 		while (j < all->map->cols + 1)
+ 		{
+ 			if (all->map->arr[i][j] == '1')
+ 				put_cell(all, all->img, j * all->scale, i * all->scale, color);
+ 			else if (all->map->arr[i][j] == '2')
+ 				put_cell(all, all->img, j * all->scale, i * all->scale, 0x00FF0000);
+ 			else
+ 				put_cell(all, all->img, j * all->scale, i * all->scale, 0x00FFFFFF);
+ 			j++;  
+ 		}
+ 		i++;
+ 	}
+ 	put_cell(all, all->img, all->pos.y * all->scale, all->pos.x * all->scale, 0x00FFFF00);
+}
+
+ int 	render(t_all *all, t_data *img)
+ {
+    put_minimap(all, 0x00242424);
+ 	mlx_put_image_to_window(all->mlx, all->mlx_win, img->img, 0, 0);
+ 	return (0);
+ }
+
 int		key_hook(int keycode, t_all *all)
 {
 	mlx_do_sync(all->mlx);
@@ -94,6 +194,7 @@ int		key_hook(int keycode, t_all *all)
 		rotate(all, 1);
 	else if (keycode == KEY_RIGHT)
 		rotate(all, -1);
+	mlx_put_image_to_window(all->mlx, all->mlx_win, all->img->img, 0, 0);
 	//render(all, all->img);
 	return (0);
 }
@@ -135,6 +236,53 @@ int		check_screen_size(t_all *all)
 	return (0);	
 }
 
+
+void	init_dir_vector(t_all *all, int i, int j)
+{
+	if (all->map->arr[i][j] == 'N')
+	{
+		vector_init(&all->dir, 0.0, -1.0);
+		vector_init(&all->plane, 0.66, 0);
+	}
+	if (all->map->arr[i][j] == 'E')
+	{
+		vector_init(&all->dir, 1.0, 0.0);
+		vector_init(&all->plane, 0.0, -0.66);
+	}
+	if (all->map->arr[i][j] == 'W')
+	{
+		vector_init(&all->dir, -1.0, 0.0);
+		vector_init(&all->plane, 0.0, 0.66);
+	}
+	if (all->map->arr[i][j] == 'S')
+	{
+		vector_init(&all->dir, 0.0, 1.0);
+		vector_init(&all->plane, -0.66, 0);
+	}
+	vector_init(&all->pos, j + 0.5, i + 0.5);
+}
+
+void	init_coord_plr(t_all *all)
+{
+ 	int i;
+ 	int j;
+
+ 	i = 1;
+ 	while (i < all->map->rows)
+ 	{
+ 		j = 1;
+ 		while (j < all->map->cols + 1)
+ 		{	
+			if (ft_strchr("NSWE", all->map->arr[i][j]))
+ 			{
+				init_dir_vector(all, i, j);
+			}
+ 			j++;
+ 		}
+ 		i++;
+	}	
+}
+
 void  raycasting(t_map *map)
 {
 	t_all all;
@@ -142,9 +290,10 @@ void  raycasting(t_map *map)
 
 	all.map = map;
 	all.isEnabled = 1;
-	vector_init(&all.pos, 22, 11.5);
-	vector_init(&all.dir, -1.0, 0.0);
-	vector_init(&all.plane, 0.0, 0.66);
+	init_coord_plr(&all);
+	//vector_init(&all.pos, 22, 11.5);
+	//vector_init(&all.dir, -1.0, 0.0);
+	//vector_init(&all.plane, 0.0, 0.66);
 	// all.pos.x = 22; all.pos.y = 11.5;
 	// all.dir.x = -1.0; all.dir.y = 0.0;
 	// all.plane.x = 0.0; all.plane.y = 0.66;
@@ -165,7 +314,7 @@ void  raycasting(t_map *map)
 	all.img = &img;
 	
 	//Set default values
-	// set_scale(&all);
+	set_scale(&all);
 	// init_coord_plr(&all);
 
 	setup_textures(&all);
@@ -264,41 +413,44 @@ void  raycasting(t_map *map)
 			//texturing calculations
 			// int texNum = all.map->arr[mapX][mapY] - 1; //1 subtracted from it so that texture 0 can be used!
 
-			// //calculate value of wallX
-			// double wallX; //where exactly the wall was hit
-			// if (side == 0)
-			// 	wallX = all.pos.y + perpWallDist * rayDirY;
-			// else
-			// 	wallX = all.pos.x + perpWallDist * rayDirX;
-			// wallX -= floor((wallX));
+			 //calculate value of wallX
+			 double wallX; //where exactly the wall was hit
+			 if (side == 0)
+			 	wallX = all.pos.y + perpWallDist * rayDirY;
+			 else
+			 	wallX = all.pos.x + perpWallDist * rayDirX;
+			 wallX -= floor((wallX));
 
 			//x coordinate on the texture
-			// int texX = (int)(wallX * (double)texWidth);
+			 int texX = (int)(wallX * (double)all.no.w);
 			
-			// if (side == 0 && rayDirX > 0) 
-			// 	texX = texWidth - texX - 1;
-			// if (side == 1 && rayDirY < 0)
-			// 	texX = texWidth - texX - 1;
+			 if (side == 0 && rayDirX > 0) 
+			 	texX = all.no.w - texX - 1;
+			 if (side == 1 && rayDirY < 0)
+			 	texX = all.no.w - texX - 1;
 
 
 			// // TODO: an integer-only bresenham or DDA like algorithm could make the texture coordinate stepping faster
 			// // How much to increase the texture coordinate per screen pixel
-			// double step = 1.0 * texHeight / lineHeight;
-			// // Starting texture coordinate
-			// double texPos = (drawStart - h / 2 + lineHeight / 2) * step;
+			
+			 double step = 1.0 * all.no.h / lineHeight;
+			 // Starting texture coordinate
+			 double texPos = (drawStart - all.map->r_height / 2 + lineHeight / 2) * step;
 
-			// for (int y = drawStart; y < drawEnd; y++)
-			// {
-			// 	// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-			// 	int texY = (int)texPos & (texHeight - 1);
-			// 	texPos += step;
-			// 	Uint32 color = texture[texNum][texHeight * texY + texX];
-			// 	//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
-			// 	if (side == 1)
-			// 		color = (color >> 1) & 8355711;
-			// 	my_mlx_pixel_put(all.img, x, y, color);
-			// 	// buffer[y][x] = color;
-			// }
+			 for (int y = drawStart; y < drawEnd; y++)
+			 {
+			 	// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
+			 	int texY = (int)texPos & (all.no.h - 1);
+			 	texPos += step;
+			 	int* color = (int *)(all.no.img + all.no.h * texY + texX);
+			 	//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
+			 	
+				 if (side == 1)
+			 		color = (color >> 1) & 8355711;
+			 	
+				 my_mlx_pixel_put(all.img, x, y, *color);
+			 	// buffer[y][x] = color;
+			 }
     	}
 
 		// drawBuffer(buffer[0]);
