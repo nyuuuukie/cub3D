@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:46:26 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/08 22:56:33 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/09 21:29:56 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@
 // 		scale_h = 1;
 // 		all->scale = SCALE * scale_w * scale_h;
 // 	#else
-// 		scale_w = (all->map->r_width - 2 * all->padding) / all->map->cols;
-// 		scale_h = (all->map->r_height - 2 * all->padding) / all->map->rows;
+// 		scale_w = (all->map->w - 2 * all->padding) / all->map->cols;
+// 		scale_h = (all->map->h - 2 * all->padding) / all->map->rows;
 // 		all->scale = scale_h < scale_w ? scale_h : scale_w; 
 // 	#endif
 // }
@@ -210,15 +210,12 @@
 // 	int current_height;
 
 // 	mlx_get_screen_size(all->mlx, &current_width, &current_height);
-// 	if (all->map->r_height > current_height)
-// 		all->map->r_height = current_height;
-// 	if (all->map->r_width > current_width)
-// 		all->map->r_width = current_width;
+// 	if (all->map->h > current_height)
+// 		all->map->h = current_height;
+// 	if (all->map->w > current_width)
+// 		all->map->w = current_width;
 // 	return (0);	
 // }
-
-
-
 
 // int		mlx_try(t_map *map)
 // {
@@ -231,15 +228,14 @@
 	
 // 	//Init
 // 	all.mlx = mlx_init();
-// 	all.mlx_win = mlx_new_window(all.mlx, map->r_width, map->r_height, "cub3D");
+// 	all.mlx_win = mlx_new_window(all.mlx, map->w, map->h, "cub3D");
 // 	check_screen_size(&all);
 
 // 	//Get image
-// 	img.img = mlx_new_image(all.mlx, map->r_width, map->r_height);
+// 	img.img = mlx_new_image(all.mlx, map->w, map->h);
 // 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	
 // 	setup_textures(&all);
-	
 // 	all.img = &img;
 
 // 	//Set default values
@@ -252,20 +248,6 @@
 // 	return (0);
 // }
 
-int 	start_engine(t_map *map, int mode)
-{
-	if (mode == 2)
-	{
-		init_raycast(map);
-		//raycasting(map);
-		//mlx_try(map);
-	}
-	else if (mode == 3)
-	{
-		return (2);
-	}
-	return (0);
-}
 
 int		main(int argc, char **argv)
 {

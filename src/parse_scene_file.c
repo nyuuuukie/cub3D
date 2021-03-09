@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 21:46:58 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/01 15:56:52 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/09 20:35:00 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ void	parse_scene_file(t_map *map, char *path)
 int		parse_map(t_map *map)
 {
 	map->tr.i = 0;
-	map_to_list(map);
-
-	
-	
+	map_to_list(map);	
 	arr_create(&map->arr, map->rows, map->cols);
 	arr_fill(map->arr, map->lst);
 	map_validate(map);
@@ -50,5 +47,3 @@ int		parse_prm(t_map *map)
 	}
 	return (0);
 }
-
-

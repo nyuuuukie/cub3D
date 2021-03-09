@@ -46,7 +46,11 @@ SOURCES =	main.c \
 			map_validation.c \
 			map_utils.c \
 			vector.c \
-			raycasting.c
+			raycasting.c \
+			key_action.c \
+			engine_move.c \
+			engine.c \
+			init.c
 		
 GNL_SRC = 	gnl.c
 

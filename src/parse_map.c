@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/08 11:41:52 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/09 21:29:06 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ void	parse_resolution(t_map *map)
 	check_and_skip(map, 'R');
 	check_and_skip(map, ' ');
 	skip_symbol(map, ' ');
-	get_number(map, " ", &map->r_width);
+	get_number(map, " ", &map->w);
 	check_and_skip(map, ' ');
 	skip_symbol(map, ' ');
-	get_number(map, " ", &map->r_height);
+	get_number(map, " ", &map->h);
 	skip_symbol(map, ' ');
 	check_symbol(map, '\0');
 	print_status("Resolution", 0, "OK");
@@ -168,7 +168,7 @@ int		is_prm_complete(t_map *map)
 	int res;
 
 	res = 1;
-	if (map->r_width == 0 || map->r_height == 0)
+	if (map->w == 0 || map->h == 0)
 		res = 0;
 	if (map->SO_path == 0 || map->NO_path == 0)
 		res = 0;

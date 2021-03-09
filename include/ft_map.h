@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/09 00:23:00 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/09 21:28:17 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ typedef struct	s_track
 
 typedef struct		s_map
 {
-	int 			r_width;
-	int 			r_height;
+	int				fd;
+	int 			w;
+	int 			h;
 	char			*NO_path;
 	char			*SO_path;
 	char			*WE_path;
@@ -36,36 +37,32 @@ typedef struct		s_map
 	char			*sprite;
 	t_clr			f;
 	t_clr			c;
-	
+	char			*line;
 	int				rows;
 	int				cols;
-	int				f_set;
-	int				c_set;
 	char			**arr;
 	t_list			*lst;
-	char			*line;
-	int				fd;
 	t_track			tr;
 }					t_map;
 
 
-typedef struct  s_data
+typedef struct  s_img
 {
     void        *img;
     char        *addr;
-    int         bits_per_pixel;
-    int         line_length;
-    int         endian;
-}               t_data;
+    int         bpp;
+    int         len;
+    int         end;
+}               t_img;
 
-typedef struct	s_plr
-{
-	float		x;
-	float		y;
-	float		dir;
-	float		start;
-	float		end;
-}				  t_plr;
+//typedef struct	s_plr
+//{
+//	float		x;
+//	float		y;
+//	float		dir;
+//	float		start;
+//	float		end;
+//}				  t_plr;
 
 
 typedef struct s_vector
@@ -78,41 +75,42 @@ typedef struct s_texture
 {
     int     w;
     int     h;
-    void    *img;
-	char	*addr;
-    char    *path;
-
-	int         bits_per_pixel;
-    int         line_length;
-    int         endian;
+    t_img	img;
+	char    *path;
 }				t_texture;
 
+typedef struct 	s_keys
+{
+	char w;
+	char s;
+	char a;
+	char d;
+	char r;
+	char l;
+}				t_keys;
 
 typedef struct	s_all
 {
 	void    *mlx;
-	void    *mlx_win;
-	t_data	*img;
+	void    *win;
 	t_map	*map;
-	t_plr	*plr;
+	t_img	img;
+	
 	t_texture no;
 	t_texture so;
 	t_texture we;
 	t_texture ea;
 	t_texture *active;
-	int		scale;
-	int		padding;
 	
 	t_vector pos;
 	t_vector dir;
 	t_vector plane;
 	t_vector norm;
-	// double time;
-	// double oldTime;
-
-	int 	isEnabled;
-	double moveSpeed;
-	double rotSpeed;
+	
+	t_keys	keys;
+	
+	double m_speed;
+	double r_angle;
 }				t_all;
 
 #endif

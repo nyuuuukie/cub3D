@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:40:31 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/07 12:36:16 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/09 21:35:54 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef enum	e_err_msg {
 	ERR_TOO_MANY_PLAYERS = 14,
 	ERR_INVALID_ARG = 15,
 	ERR_MISSING_SYMBOL = 16,
-	ERR_TEXTURE_FAIL = 17
+	ERR_MLX_FAIL = 17
 }				t_error;
 
 #endif
