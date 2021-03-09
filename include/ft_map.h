@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/07 16:54:38 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/09 00:23:00 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,12 @@ typedef struct s_texture
     int     w;
     int     h;
     void    *img;
+	char	*addr;
     char    *path;
+
+	int         bits_per_pixel;
+    int         line_length;
+    int         endian;
 }				t_texture;
 
 
@@ -94,13 +99,14 @@ typedef struct	s_all
 	t_texture so;
 	t_texture we;
 	t_texture ea;
+	t_texture *active;
 	int		scale;
 	int		padding;
 	
 	t_vector pos;
 	t_vector dir;
 	t_vector plane;
-
+	t_vector norm;
 	// double time;
 	// double oldTime;
 

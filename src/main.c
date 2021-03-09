@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:46:26 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/07 17:10:56 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/08 22:56:33 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,7 +256,8 @@ int 	start_engine(t_map *map, int mode)
 {
 	if (mode == 2)
 	{
-		raycasting(map);
+		init_raycast(map);
+		//raycasting(map);
 		//mlx_try(map);
 	}
 	else if (mode == 3)

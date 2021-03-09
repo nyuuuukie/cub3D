@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/07 17:08:19 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/08 22:56:24 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ void	player_check(int count, int row, int col);
 
 
 /* raycasting.c */
-void    raycasting(t_map *map);
+void	init_raycast(t_map *map);
+void    raycasting(t_all *all);
 void	setup_textures(t_all *all);
 
 /* vector.c */

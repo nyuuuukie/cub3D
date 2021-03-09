@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 21:42:43 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/07 15:20:39 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/09 01:06:32 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define KEY_D 100
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
-# define KEY_ESC 27
+# define KEY_ESC 65307
 
 # else
 
