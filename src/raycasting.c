@@ -6,34 +6,32 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/09 22:31:26 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/11 21:52:36 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	recognize_texture(t_all *all, double x, double y, int side)
+void	recognize_texture(t_all *all, int side)
 {
-	t_vector ray;
-	double angle;
-
-	vector_init(&ray, x, y);
-	angle = vector_angle(&all->norm, &ray) * 180 / M_PI;
+	double ang;
 	
+	ang = vector_angle(&all->norm, &all->ray);
 	all->active = &all->ea;
-	if (side == 1)
+
+	if (side == 0)
 	{
-		if (angle >= 0.0f && angle <= 45.0f) 
+		if (ang >= 180.0f && ang <= 360.0f)
 			all->active = &all->no;
 		else
 			all->active = &all->so;
-	}
+	}	
 	else
 	{
-		if (x > 0.0f)
-			all->active = &all->ea;
-		else
+		if (ang >= 90.0f && ang <= 270.0f)
 			all->active = &all->we;
+		else
+			all->active = &all->ea;
 	}
 }
 
@@ -86,26 +84,32 @@ void	init_vectors(t_all *all, int i, int j)
 {
 	if (all->map->arr[i][j] == 'N')
 	{
-		vector_init(&all->dir, 0.0, -1.0);
-		vector_init(&all->plane, 0.66, 0);
+		all->angle = 270;
+		vector_init(&all->dir, -1.0, 0.0);
+		vector_init(&all->plane, 0.0, 0.66);
+		
 	}
 	if (all->map->arr[i][j] == 'E')
 	{
-		vector_init(&all->dir, 1.0, 0.0);
-		vector_init(&all->plane, 0.0, -0.66);
+		all->angle = 0;
+		vector_init(&all->dir, 0.0, 1.0);
+		vector_init(&all->plane, 0.66, 0);
 	}
 	if (all->map->arr[i][j] == 'W')
 	{
-		vector_init(&all->dir, -1.0, 0.0);
-		vector_init(&all->plane, 0.0, 0.66);
+		all->angle = 180;
+		vector_init(&all->dir, 0.0, -1.0);
+		vector_init(&all->plane, -0.66, 0);
+		
 	}
 	if (all->map->arr[i][j] == 'S')
 	{
-		vector_init(&all->dir, 0.0, 1.0);
-		vector_init(&all->plane, -0.66, 0);
+		all->angle = 90;
+		vector_init(&all->dir, 1.0, 0.0);
+		vector_init(&all->plane, 0.0, -0.66);
 	}
-	//printf("x = %.3f y= %.3f\n", i + 0.5, j + 0.5);
-	//printf("dir[%.3f %.3f]\n", all->dir.x, all->dir.y);
+	printf("x = %.3f y= %.3f\n", i + 0.5, j + 0.5);
+	printf("dir[%.3f %.3f]\n", all->dir.x, all->dir.y);
 }
 
 void	init_coord(t_all *all)
@@ -128,7 +132,7 @@ void	init_coord(t_all *all)
  		}
  		i++;
 	}
-	vector_init(&all->norm, 0.0, -1.0);	
+	vector_init(&all->norm, 0.0, 1.0);	
 }
 
 void	start_main_loop(t_map *map)
@@ -139,14 +143,14 @@ void	start_main_loop(t_map *map)
 	init_all(&all);
 	mlx_hook(all.win, 2, 1L<<0, key_press, &all);
 	mlx_hook(all.win, 3, 1L<<1, key_release, &all);
-	mlx_loop_hook(all.mlx, render, &all);
+	//mlx_loop_hook(all.mlx, render, &all);
 	mlx_loop(all.mlx);
 }
 
 void	init_all(t_all *all)
 {
-	all->m_speed = 0.134f;
-	all->r_angle = 0.084f;
+	all->m_speed = 0.154f;
+	all->r_angle = 0.154f;
 	
 	init_window(all);	
 	init_img(all, &all->img);
@@ -157,13 +161,17 @@ void	init_all(t_all *all)
 
 void  raycasting(t_all *all)
 {
+
+
 	for (int x = 0; x < all->map->w; x++)
 	{	
 		//calculate ray position and direction
-		double cameraX = 2 * x / (double)all->map->w - 1; //x-coordinate in camera space
+		 //x-coordinate in camera space
+		double cameraX = 2 * x / (double)all->map->w - 1;
+	
+		all->ray.x = all->dir.x + all->plane.x * cameraX;
+		all->ray.y = all->dir.y + all->plane.y * cameraX;
 		
-		double rayDirX = all->dir.x + all->plane.x * cameraX;
-		double rayDirY = all->dir.y + all->plane.y * cameraX;
 
 		//which box of the map we're in
 		int mapX = (int)all->pos.x;
@@ -174,8 +182,8 @@ void  raycasting(t_all *all)
 		double sideDistY;
 
 		//length of ray from one x or y-side to next x or y-side
-		double deltaDistX = fabs(1 / rayDirX);
-		double deltaDistY = fabs(1 / rayDirY);
+		double deltaDistX = fabs(1 / all->ray.x);
+		double deltaDistY = fabs(1 / all->ray.y);
 		double perpWallDist;
 
 		//what direction to step in x or y-direction (either +1 or -1)
@@ -186,7 +194,7 @@ void  raycasting(t_all *all)
 		int side; //was a NS or a EW wall hit?
 
 		//calculate step and initial sideDist
-		if(rayDirX < 0)
+		if(all->ray.x < 0)
 		{
 			stepX = -1;
 			sideDistX = (all->pos.x - mapX) * deltaDistX;
@@ -197,7 +205,7 @@ void  raycasting(t_all *all)
 			sideDistX = (mapX + 1.0 - all->pos.x) * deltaDistX;
 		}
 		
-		if (rayDirY < 0)
+		if (all->ray.y < 0)
 		{
 			stepY = -1;
 			sideDistY = (all->pos.y - mapY) * deltaDistY;
@@ -232,39 +240,41 @@ void  raycasting(t_all *all)
 		//Calculate distance of perpendicular ray (Euclidean distance will give fisheye effect!
 		//printf("%d %d\n", mapX, mapY);
 		if (side == 0)
-			perpWallDist = (mapX - all->pos.x + (1 - stepX) / 2) / rayDirX;
+			perpWallDist = (mapX - all->pos.x + (1 - stepX) / 2) / all->ray.x;
 		else
-			perpWallDist = (mapY - all->pos.y + (1 - stepY) / 2) / rayDirY;
+			perpWallDist = (mapY - all->pos.y + (1 - stepY) / 2) / all->ray.y;
 
 		//Calculate height of line to draw on screen
 		int lineHeight = (int)(all->map->h / perpWallDist);
 
+		// if (lineHeight > all->map->h)
+		// 	lineHeight = all->map->h;
 		//calculate lowest and highest pixel to fill in current stripe
 		int drawStart = -lineHeight / 2 + all->map->h / 2;
 		if (drawStart < 0)
 			drawStart = 0;
 		
 		int drawEnd = lineHeight / 2 + all->map->h / 2;
-		if (drawEnd >= all->map->h)
-			drawEnd = all->map->h - 1;
+		if (drawEnd > all->map->h)
+			drawEnd = all->map->h;
 
 		//texturing calculations
 		// int texNum = all->map->arr[mapX][mapY] - 1; //1 subtracted from it so that texture 0 can be used!
-		recognize_texture(all, rayDirX, rayDirY, side);
+		recognize_texture(all, side);
 		 //calculate value of wallX
 		double wallX; //where exactly the wall was hit
 		if (side == 0)
-			wallX = all->pos.y + perpWallDist * rayDirY;
+			wallX = all->pos.y + perpWallDist * all->ray.y;
 		else
-			wallX = all->pos.x + perpWallDist * rayDirX;
+			wallX = all->pos.x + perpWallDist * all->ray.x;
 		wallX -= floor((wallX));
 
 		//x coordinate on the texture
 		int texX = (int)(wallX * (double)all->active->w);
 		//printf("texX:%d all->no.w:%d\n", texX, all->no.w);
-		if (side == 0 && rayDirX > 0) 
+		if (side == 0 && all->ray.x > 0) 
 			texX = all->active->w - texX - 1;
-		if (side == 1 && rayDirY < 0)
+		if (side == 1 && all->ray.y < 0)
 			texX = all->active->w - texX - 1;
 
 		// // TODO: an integer-only bresenham or DDA like algorithm could make the texture coordinate stepping faster
@@ -284,8 +294,8 @@ void  raycasting(t_all *all)
 			int offset = texY * all->active->w + texX;
 			unsigned int *dst = (unsigned int *)all->active->img.addr + offset;
 
-		 	//if (side == 1)
-		 	//	*dst = *dst & 0xFF404040;//8355711;
+		 	// if (side == 1)
+		 	// 	*dst = *dst & 0xFF808080;
 			write_pixel_to_img(&all->img, x, y, *dst);
 		}
 	}

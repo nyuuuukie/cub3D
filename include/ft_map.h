@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/09 21:28:17 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/11 21:10:40 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,11 @@ typedef struct	s_all
 	t_vector dir;
 	t_vector plane;
 	t_vector norm;
+	t_vector ray;
 	
 	t_keys	keys;
 	
+	double angle;
 	double m_speed;
 	double r_angle;
 }				t_all;
