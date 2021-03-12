@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/11 21:10:40 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/12 16:05:20 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ typedef struct	s_all
 	
 	t_keys	keys;
 	
+	int	 **buf;
 	double angle;
 	double m_speed;
 	double r_angle;

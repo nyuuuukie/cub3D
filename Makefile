@@ -14,8 +14,8 @@ ifeq ($(OS), Linux)
 	MLX_NAME	= libmlx.a
 	MLX_FLAGS	= -L. -lmlx -lXext -lX11 -lm
 else
-	MLX_DIR		= minilibx/mlx_mms
-	MLX_NAME	= libmlx.dylib
+	MLX_DIR		= minilibx/mlx_mac
+	MLX_NAME	= libmlx.a
 	MLX_FLAGS	= -L. -lmlx -framework OpenGL -framework AppKit
 endif
 
@@ -65,6 +65,10 @@ OBJECTS = $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 HEADERS = $(INCLUDES_DIR)/*.h
 
 ######################## INSTRUCTIONS ########################
+
+run: all
+	./${NAME} maps/1.cub
+
 all: libft mlx create_dir $(NAME)
 
 create_dir:
@@ -99,6 +103,6 @@ fclean: clean
 	@echo "${NAME} has been deleted"
 
 bonus:
-	@make BONUS="TRUE" all --no-print-directory
+	@$(MAKE) BONUS="TRUE" all --no-print-directory
 
 re: fclean all

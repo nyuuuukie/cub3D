@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/12 02:38:57 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/12 18:30:10 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ void	set_background(t_all *all)
 		 	color = get_color_from_params(&all->map->c);
 		while (j < all->map->w)
  		{
- 			write_pixel_to_img(&all->img, j, i, color);
+			all->buf[i][j] = color;
+ 			//write_pixel_to_img(&all->img, j, i, color);
 			j++;
 		}
  		i++;
@@ -149,9 +150,17 @@ void	start_main_loop(t_map *map)
 
 void	init_all(t_all *all)
 {
-	all->m_speed = 0.200f;
-	all->r_angle = 0.150f;
+	all->m_speed = 0.111f;
+	all->r_angle = 0.066f;
 	
+	all->buf = (int **)malloc((sizeof(int *)) * all->map->h);
+	int i = 0;
+	while (i < all->map->h)
+	{
+		all->buf[i] = (int *)malloc(sizeof(int) * all->map->w);
+		i++;
+	}
+
 	init_window(all);	
 	init_img(all, &all->img);
 	init_keys(all);
@@ -295,6 +304,20 @@ void	init_all(t_all *all)
 //	}
 //}
 
+void draw_walls(t_all *all)
+{
+	char *dst;
+	for (int i = 0; i < all->map->h; i++)
+	{
+		for (int j = 0; j < all->map->w; j++)
+		{
+			int offset = i * all->img.len + j;
+			dst = all->img.addr + offset;
+			*dst = all->buf[i][j];
+		}
+	}
+}
+
 void  raycasting(t_all *all)
 {
 	for (int x = 0; x < all->map->w; x++)
@@ -327,7 +350,7 @@ void  raycasting(t_all *all)
 		int side; //was a NS or a EW wall hit?
 
 		//calculate step and initial sideDist
-		if(all->ray.x < 0)
+		if (all->ray.x < 0)
 		{
 			stepX = -1;
 			sideDistX = (all->pos.x - mapX) * deltaDistX;
@@ -348,10 +371,11 @@ void  raycasting(t_all *all)
 			stepY = 1;
 			sideDistY = (mapY + 1.0 - all->pos.y) * deltaDistY;
 		}
-
+		int count = 0;
 		//perform DDA
 		while (hit == 0)
 		{
+			count++;
 			//jump to next map square, OR in x-direction, OR in y-direction
 			if (sideDistX < sideDistY)
 			{
@@ -374,15 +398,15 @@ void  raycasting(t_all *all)
 		
 
 		//if (side == 0) ????
-			perpWallDist = vector_len(&all->ray) * sin(90 - vector_angle(&all->dir, &all->ray));
+			//perpWallDist = vector_len(&all->ray) * sin(90 - vector_angle(&all->dir, &all->ray));
 		//else
 		//	perpWallDist = ;
 		//printf("pwd:%.3f\n", perpWallDist);
 
-		//if (side == 0)
-		//	perpWallDist = (mapX - all->pos.x + (1 - stepX) / 2) / all->ray.x;
-		//else
-		//	perpWallDist = (mapY - all->pos.y + (1 - stepY) / 2) / all->ray.y;
+		if (side == 0)
+			perpWallDist = (mapX - all->pos.x + (1 - stepX) / 2) / all->ray.x;
+		else
+			perpWallDist = (mapY - all->pos.y + (1 - stepY) / 2) / all->ray.y;
 
 		//Calculate height of line to draw on screen
 		int lineHeight = (int)(all->map->h / perpWallDist);
@@ -430,18 +454,11 @@ void  raycasting(t_all *all)
 		 	
 			//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
 			int offset = texY * all->active->w + texX;
-			unsigned int *dst = (unsigned int *)all->active->img.addr + offset;
-
-			////if (side == 1)
-			//	*dst = *dst & 0x80808080;
-			//double dist;
-			//if (side == 1)
-			//	dist = perpWallDist / all->map->cols;
-			//else
-			//	dist = perpWallDist / all->map->rows;
-						
-			write_pixel_to_img(&all->img, x, y, *dst);
+			unsigned int dst = *((unsigned int *)all->active->img.addr + offset);
+			all->buf[y][x] = dst;
+			write_pixel_to_img(&all->img, x, y, dst);
 			//write_pixel_to_img(&all->img, x + 1, y, *dst);
 		}
 	}
+	draw_walls(all);
 }

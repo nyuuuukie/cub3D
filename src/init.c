@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 21:48:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/09 22:19:44 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/12 15:01:32 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	init_screen_size(t_all *all)
 	int current_width;
 	int current_height;
 
-	mlx_get_screen_size(all->mlx, &current_width, &current_height);
+	mlx_get_screen_size(&current_width, &current_height);
 	if (all->map->h > current_height)
 		all->map->h = current_height;
 	if (all->map->w > current_width)

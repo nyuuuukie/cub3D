@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 19:39:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/12 02:29:19 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/12 18:06:31 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int key_action(t_all *all)
 		rotate(all, 1);
 	if (all->keys.r && !all->keys.l)
 		rotate(all, -1);
-	render(all);
+	//render(all);
 	return (0);
 }
 
@@ -60,7 +60,7 @@ int		key_release(int keycode, t_all *all)
 
 int		key_press(int keycode, t_all *all)
 {
-	mlx_do_key_autorepeaton(all->mlx);
+	//mlx_do_key_autorepeaton(all->mlx);
 	if (!all->keys.w && keycode == KEY_W)
 		all->keys.w = 1;
 	else if (!all->keys.s && keycode == KEY_S)
