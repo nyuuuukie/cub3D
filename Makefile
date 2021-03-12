@@ -50,7 +50,8 @@ SOURCES =	main.c \
 			key_action.c \
 			engine_move.c \
 			engine.c \
-			init.c
+			init.c \
+			colors.c
 		
 GNL_SRC = 	gnl.c
 

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 19:39:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/11 21:46:26 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/12 02:29:19 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ void init_keys(t_all* all)
 int key_action(t_all *all)
 {
 	mlx_do_sync(all->mlx);
-	mlx_string_put(all->mlx, all->win, 10, 10, 0x00FF00FF, "hello!");
-	// mlx_sync(MLX_SYNC_IMAGE_WRITABLE, all->mlx);
 	if (all->keys.w && !all->keys.s)
 		move(all, 1);
 	if (all->keys.s && !all->keys.w)
@@ -62,6 +60,7 @@ int		key_release(int keycode, t_all *all)
 
 int		key_press(int keycode, t_all *all)
 {
+	mlx_do_key_autorepeaton(all->mlx);
 	if (!all->keys.w && keycode == KEY_W)
 		all->keys.w = 1;
 	else if (!all->keys.s && keycode == KEY_S)

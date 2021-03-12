@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/09 22:20:14 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/12 01:17:38 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,14 @@ int		key_press(int keycode, t_all *all);
 void	move(t_all *all, int sign);
 void	rotate(t_all *all, int sign);
 void	move_side(t_all *all, int sign);
+
+/* colors.c */
+int		color_trgb(int t, int r, int g, int b);
+int		color_get_t(int trgb);
+int		color_get_r(int trgb);
+int		color_get_g(int trgb);
+int		color_get_b(int trgb);
+int		color_add_shade(double dist, int color);
+int		get_opposite(int color);
 
 #endif
