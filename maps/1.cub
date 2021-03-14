@@ -1,4 +1,4 @@
-R 800 600
+R 640 480
 
 S sprites/sprite.xpm
 
@@ -7,7 +7,7 @@ SO textures/textureSO.xpm
 WE textures/textureWE.xpm
 EA textures/textureEA.xpm
 
-F 40, 40, 40                            
+F 60, 74, 81                           
 C 255, 154, 141
 
 1111111111111111111111111

@@ -1,4 +1,4 @@
-.PHONY: all clean fclean re bonus bonus_arch create_dir
+.PHONY: all clean fclean re bonus bonus_files_add create_dir
 
 NAME = libft.a
 CC = gcc
@@ -50,8 +50,8 @@ fclean: clean
 	
 re: fclean all 
 
-bonus: all bonus_arch
+bonus: all bonus_files_add
 
-bonus_arch:	$(OBJECTS_BONUS)
+bonus_files_add: $(OBJECTS_BONUS)
 	@ar rcs $(NAME) $?
 

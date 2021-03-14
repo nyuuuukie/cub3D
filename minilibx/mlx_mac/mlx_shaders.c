@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <OpenGL/gl3.h>
 #include "mlx_int.h"
+#include <GLES2/gl2.h>
 
 
 void display_log(GLuint object, void (*param_func)(), void (*getlog_func)())

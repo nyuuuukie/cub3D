@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/09 21:29:06 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/13 19:37:21 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,4 +240,3 @@ int		map_to_list(t_map *map)
 	map->cols = ft_lstmax_cont_len(map->lst);
 	return (0);
 }
-

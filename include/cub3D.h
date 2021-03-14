@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/12 01:17:38 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/13 20:04:51 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int		color_get_t(int trgb);
 int		color_get_r(int trgb);
 int		color_get_g(int trgb);
 int		color_get_b(int trgb);
-int		color_add_shade(double dist, int color);
+int		color_make_darker(double perc, int color);
 int		get_opposite(int color);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:34:29 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/09 21:36:21 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/13 13:40:44 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ char	*get_error_msg(t_error code)
 {
 	static char *errors[18];
 
-	if (code < 0 || code > 17)
-		code = 0;
 	errors[ERR_ARG_NUM] = "Invalid number of arguments";
 	errors[ERR_INVALID_ARG] = "Invalid argument";
 	errors[ERR_WRONG_EXT] = "Wrong file extension";
@@ -35,7 +33,9 @@ char	*get_error_msg(t_error code)
 	errors[ERR_PLAYER_NOT_FOUND] = "Player not found";
 	errors[ERR_TOO_MANY_PLAYERS] = "Too many players";
 	errors[ERR_MISSING_SYMBOL] = "Missing symbol or symbol is invalid";
-	errors[ERR_MLX_FAIL] = "Internal mlx failure";
+	errors[ERR_MLX_TXT_FAIL] = "Cannot load texture";
+	errors[ERR_MLX_WIN_FAIL] = "Cannot create window";
+	errors[ERR_MLX_IMG_FAIL] = "Cannot create screen image";
 	return (errors[code]);
 }
 

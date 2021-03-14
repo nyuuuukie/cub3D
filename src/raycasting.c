@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/12 18:30:10 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/13 23:37:02 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ void	set_background(t_all *all)
 		 	color = get_color_from_params(&all->map->c);
 		while (j < all->map->w)
  		{
-			all->buf[i][j] = color;
- 			//write_pixel_to_img(&all->img, j, i, color);
+			//all->buf[i][j] = color;
+ 			write_pixel_to_img(&all->img, j, i, color);
 			j++;
 		}
  		i++;
@@ -75,9 +75,10 @@ void	set_background(t_all *all)
 
 int		render(t_all *all)
 {
-	set_background(all);
+	mlx_do_sync(all->mlx);
 	raycasting(all);
 	mlx_put_image_to_window(all->mlx, all->win, all->img.img, 0, 0);
+	key_action(all);
  	return (0);
 }
 
@@ -144,6 +145,7 @@ void	start_main_loop(t_map *map)
 	init_all(&all);
 	mlx_hook(all.win, 2, 1L<<0, key_press, &all);
 	mlx_hook(all.win, 3, 1L<<1, key_release, &all);
+	mlx_hook(all.win, 17, 1L<<0, key_press, &all);
 	mlx_loop_hook(all.mlx, render, &all);
 	mlx_loop(all.mlx);
 }
@@ -168,155 +170,16 @@ void	init_all(t_all *all)
 	init_textures(all);
 }
 
-//void  raycasting(t_all *all)
+//void draw_walls(t_all *all)
 //{
-//	for (int x = 0; x < all->map->w; x++)
-//	{	
-//		//calculate ray position and direction
-//		 //x-coordinate in camera space
-//		double cameraX = 2 * x / (double)all->map->w - 1;
-//		all->ray.x = all->dir.x + all->plane.x * cameraX;
-//		all->ray.y = all->dir.y + all->plane.y * cameraX;
-		
-//		//which box of the map we're in
-//		int mapX = (int)all->pos.x;
-//		int mapY = (int)all->pos.y;
-
-//		//length of ray from current position to next x or y-side
-//		double sideDistX;
-//		double sideDistY;
-
-//		//length of ray from one x or y-side to next x or y-side
-//		double deltaDistX = fabs(1 / all->ray.x);
-//		double deltaDistY = fabs(1 / all->ray.y);
-//		double perpWallDist;
-
-//		//what direction to step in x or y-direction (either +1 or -1)
-//		int stepX;
-//		int stepY;
-
-//		int hit = 0; //was there a wall hit?
-//		int side; //was a NS or a EW wall hit?
-
-//		//calculate step and initial sideDist
-//		if(all->ray.x < 0)
+//	for (int i = 0; i < all->map->h; i++)
+//	{
+//		for (int j = 0; j < all->map->w; j++)
 //		{
-//			stepX = -1;
-//			sideDistX = (all->pos.x - mapX) * deltaDistX;
-//		}
-//		else
-//		{
-//			stepX = 1;
-//			sideDistX = (mapX + 1.0 - all->pos.x) * deltaDistX;
-//		}
-		
-//		if (all->ray.y < 0)
-//		{
-//			stepY = -1;
-//			sideDistY = (all->pos.y - mapY) * deltaDistY;
-//		}
-//		else
-//		{
-//			stepY = 1;
-//			sideDistY = (mapY + 1.0 - all->pos.y) * deltaDistY;
-//		}
-
-//		//perform DDA
-//		while (hit == 0)
-//		{
-//			//jump to next map square, OR in x-direction, OR in y-direction
-//			if (sideDistX < sideDistY)
-//			{
-//				sideDistX += deltaDistX;
-//				mapX += stepX;
-//				side = 0;
-//			}
-//			else
-//			{
-//				sideDistY += deltaDistY;
-//				mapY += stepY;
-//				side = 1;
-//			}
-//			//Check if ray has hit a wall
-//			if (all->map->arr[mapX][mapY] == '1') 
-//				hit = 1;
-//		}
-
-//		//Calculate distance of perpendicular ray (Euclidean distance will give fisheye effect!
-//		//printf("%d %d\n", mapX, mapY);
-//		if (side == 0)
-//			perpWallDist = (mapX - all->pos.x + (1 - stepX) / 2) / all->ray.x;
-//		else
-//			perpWallDist = (mapY - all->pos.y + (1 - stepY) / 2) / all->ray.y;
-
-//		//Calculate height of line to draw on screen
-//		int lineHeight = (int)(all->map->h / perpWallDist);
-//		// if (lineHeight > all->map->h)
-//		// 	lineHeight = all->map->h;
-//		//calculate lowest and highest pixel to fill in current stripe
-//		int drawStart = -lineHeight / 2 + all->map->h / 2;
-//		if (drawStart < 0)
-//			drawStart = 0;
-		
-//		int drawEnd = lineHeight / 2 + all->map->h / 2;
-//		if (drawEnd > all->map->h)
-//			drawEnd = all->map->h;
-
-//		//texturing calculations
-//		// int texNum = all->map->arr[mapX][mapY] - 1; //1 subtracted from it so that texture 0 can be used!
-//		recognize_texture(all, side);
-//		 //calculate value of wallX
-//		double wallX; //where exactly the wall was hit
-//		if (side == 0)
-//			wallX = all->pos.y + perpWallDist * all->ray.y;
-//		else
-//			wallX = all->pos.x + perpWallDist * all->ray.x;
-//		wallX -= floor((wallX));
-
-//		//x coordinate on the texture
-//		int texX = (int)(wallX * (double)all->active->w);
-//		//printf("texX:%d all->no.w:%d\n", texX, all->no.w);
-//		if (side == 0 && all->ray.x > 0) 
-//			texX = all->active->w - texX - 1;
-//		if (side == 1 && all->ray.y < 0)
-//			texX = all->active->w - texX - 1;
-
-//		// // TODO: an integer-only bresenham or DDA like algorithm could make the texture coordinate stepping faster
-//		// // How much to increase the texture coordinate per screen pixel		
-//		double step = 1.0 * all->active->w / lineHeight;
-//		// Starting texture coordinate
-//		double texPos = (drawStart - all->map->h / 2 + lineHeight / 2) * step;
-
-//		for (int y = drawStart; y < drawEnd; y++)
-//		{
-//		 	// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-//			int texY = (int)texPos; //& (all->active->h - 1);
-//		 	texPos += step;
-		 	
-//			//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
-//			int offset = texY * all->active->w + texX;
-//			unsigned int *dst = (unsigned int *)all->active->img.addr + offset;
-
-//		 	// if (side == 1)
-//		 	// 	*dst = *dst & 0xFF808080;
-//			write_pixel_to_img(&all->img, x, y, *dst);
+//			all->img.addr[i * all->img.len + j * (all->img.bpp / 8)] = all->buf[i][j];
 //		}
 //	}
 //}
-
-void draw_walls(t_all *all)
-{
-	char *dst;
-	for (int i = 0; i < all->map->h; i++)
-	{
-		for (int j = 0; j < all->map->w; j++)
-		{
-			int offset = i * all->img.len + j;
-			dst = all->img.addr + offset;
-			*dst = all->buf[i][j];
-		}
-	}
-}
 
 void  raycasting(t_all *all)
 {
@@ -396,7 +259,6 @@ void  raycasting(t_all *all)
 
 		//Calculate distance of perpendicular ray (Euclidean distance will give fisheye effect!
 		
-
 		//if (side == 0) ????
 			//perpWallDist = vector_len(&all->ray) * sin(90 - vector_angle(&all->dir, &all->ray));
 		//else
@@ -446,19 +308,34 @@ void  raycasting(t_all *all)
 		// Starting texture coordinate
 		double texPos = (drawStart - all->map->h / 2 + lineHeight / 2) * step;
 
-		for (int y = drawStart; y < drawEnd; y++)
+		for (int y = 0; y < all->map->h; y++)
 		{
-		 	// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-			int texY = (int)texPos & (all->active->h - 1);
-		 	texPos += step;
-		 	
-			//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
-			int offset = texY * all->active->w + texX;
-			unsigned int dst = *((unsigned int *)all->active->img.addr + offset);
-			all->buf[y][x] = dst;
-			write_pixel_to_img(&all->img, x, y, dst);
-			//write_pixel_to_img(&all->img, x + 1, y, *dst);
+			int color;
+			
+			
+			if (y < drawStart)
+			{
+				color = get_color_from_params(&all->map->f);
+			}
+			else if (y > drawEnd)
+			{
+				color = get_color_from_params(&all->map->c);
+				if (y < drawEnd + (all->map->h - drawEnd) * 0.5)
+				{
+					color = color_make_darker(1 - ((double)(y - drawEnd) / (1.25 * (all->map->h - drawEnd))), color);	
+					//color = color_make_darker(1 - ((double)y / (double)all->map->h) / 4, color);	
+				}
+			}
+			else
+			{
+				// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
+				int texY = (int)texPos & (all->active->h - 1);
+			 	texPos += step;
+			 	
+				color = *(int *)(all->active->img.addr + texY * all->active->img.len + texX * (all->active->img.bpp / 8));
+				color = color_make_darker(perpWallDist / 4, color);				
+			}
+			write_pixel_to_img(&all->img, x, y, color);
 		}
 	}
-	draw_walls(all);
 }

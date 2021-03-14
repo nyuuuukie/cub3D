@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:06:24 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/12 15:00:32 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/13 04:27:45 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 
 # include "libft.h"
 
-#ifndef LINUX
-    # include "mlx.h"
-#endif
+# include "mlx.h"
 
 #endif
