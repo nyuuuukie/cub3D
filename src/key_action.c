@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 19:39:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/13 19:37:26 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/14 17:28:33 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ void init_keys(t_all* all)
 int key_action(t_all *all)
 {
 	if (all->keys.w && !all->keys.s)
-		move(all, 1);
+		move(all, &all->dir, 1);
 	if (all->keys.s && !all->keys.w)
-		move(all, -1);
+		move(all, &all->dir, -1);
 	if (all->keys.a && !all->keys.d)
-		move_side(all, 1);
+		move(all, &all->plane, -1);
 	if (all->keys.d && !all->keys.a)
-		move_side(all, -1);
+		move(all, &all->plane, 1);
 	if (all->keys.l && !all->keys.r)
 		rotate(all, 1);
 	if (all->keys.r && !all->keys.l)

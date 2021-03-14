@@ -1,0 +1,13 @@
+Parser norm
+Fix parser (the part with map and \n and spaces)
+Split raycasting into parts
+
+Sprites
+bmp screenshot
+
+add FOV formula
+Makefile fix relink
+
+create both functions to work properly 
+engine_error  function
+parse_error function

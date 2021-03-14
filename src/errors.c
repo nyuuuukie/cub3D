@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:34:29 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/13 13:40:44 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/14 10:22:08 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*get_error_msg(t_error code)
 {
-	static char *errors[18];
+	static char *errors[20];
 
 	errors[ERR_ARG_NUM] = "Invalid number of arguments";
 	errors[ERR_INVALID_ARG] = "Invalid argument";

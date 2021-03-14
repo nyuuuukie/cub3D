@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 01:16:02 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/13 23:23:47 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/14 11:41:38 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,15 @@ int		color_make_darker(double perc, int color)
 	int g = color_get_g(color);
 	int b = color_get_b(color);
 	
-	
-	
 	r -= perc * r;
 	g -= perc * g;
 	b -= perc * b; 
-	if (r < 25)
-		r = 25;	
-	if (g < 25)
-		g = 25;
-	if (b < 25)
-		b = 25;
-	
+	if (r < 40)
+		r = 40;	
+	if (g < 40)
+		g = 40;
+	if (b < 40)
+		b = 40;
 	return (color_trgb(t, r, g, b));
 }
 

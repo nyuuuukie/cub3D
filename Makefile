@@ -14,8 +14,8 @@ ifeq ($(OS), Linux)
 	MLX_NAME	= libmlx.a
 	MLX_FLAGS	= -L. -lmlx -lXext -lX11 -lm
 else
-	MLX_DIR		= minilibx/mlx_mac
-	MLX_NAME	= libmlx.a
+	MLX_DIR		= minilibx/mlx_mms
+	MLX_NAME	= libmlx.dylib
 	MLX_FLAGS	= -L. -lmlx -framework OpenGL -framework AppKit
 endif
 
@@ -24,16 +24,16 @@ endif
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
-LIBFT_FLAGS		= -L $(LIBFT_DIR) -lft
-INCLUDE_FLAGS 	= -I $(INCLUDES_DIR) -I $(LIBFT_DIR) -I $(GNL_DIR) -I $(MLX_DIR)
+LIBFT_FLAGS		= -L $(LFT_DIR) -lft
+INCLUDE_FLAGS 	= -I $(INC_DIR) -I $(LFT_DIR) -I $(GNL_DIR) -I $(MLX_DIR)
 
 ######################### DIRECTORIES ########################
 
-SRC_DIR		 = src
-OBJ_DIR		 = obj
-LIBFT_DIR 	 = libft
-INCLUDES_DIR = include
-GNL_DIR		 = get_next_line
+SRC_DIR = src
+OBJ_DIR = obj
+LFT_DIR = libft
+INC_DIR = include
+GNL_DIR = get_next_line
 
 ######################### SOURCES ############################
 
@@ -51,7 +51,10 @@ SOURCES =	main.c \
 			engine_move.c \
 			engine.c \
 			init.c \
-			colors.c
+			init2.c \
+			colors.c\
+			angle_radian.c\
+			save.c
 		
 GNL_SRC = 	gnl.c
 
@@ -62,12 +65,16 @@ OBJECTS = $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 
 ######################## HEADERS #############################
 
-HEADERS = $(INCLUDES_DIR)/*.h
+HEADERS = $(INC_DIR)/*.h
 
 ######################## INSTRUCTIONS ########################
 
 run: all
 	./${NAME} maps/1.cub
+
+scr: all
+	echo rm -rf screen.bmp
+	./${NAME} maps/1.cub --save
 
 all: libft mlx create_dir $(NAME)
 
@@ -78,13 +85,13 @@ $(GNL_OBJ): $(GNL_DIR)/$(GNL_SRC)
 	@$(CC) $(CFLAGS) -c $< $(INCLUDE_FLAGS) -o $@
 
 libft:
-	@$(MAKE) bonus -C $(LIBFT_DIR) --no-print-directory
+	@$(MAKE) bonus -C $(LFT_DIR) --no-print-directory
 
 mlx:
 	@$(MAKE) -C $(MLX_DIR) --no-print-directory
 	@cp $(MLX_DIR)/$(MLX_NAME) ./
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(LIBFT_DIR)/$(LIBFT_NAME) $(MLX_DIR)/$(MLX_NAME) $(GNL_OBJ)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(LFT_DIR)/$(LIBFT_NAME) $(MLX_DIR)/$(MLX_NAME) $(GNL_OBJ)
 	@$(CC) $(OS_FLAG) $(CFLAGS) -c $< $(INCLUDE_FLAGS) -o $@
 
 $(NAME): $(OBJECTS) $(GNL_OBJ) $(HEADERS) 
@@ -92,12 +99,12 @@ $(NAME): $(OBJECTS) $(GNL_OBJ) $(HEADERS)
 	@echo "$(NAME) created"
 
 clean:
-	@$(MAKE) clean -C $(LIBFT_DIR) --no-print-directory 
+	@$(MAKE) clean -C $(LFT_DIR) --no-print-directory 
 	@$(MAKE) clean -C $(MLX_DIR) --no-print-directory 
 	@rm -rf $(OBJ_DIR)
 
 fclean: clean
-	@$(MAKE) fclean -C $(LIBFT_DIR) --no-print-directory
+	@$(MAKE) fclean -C $(LFT_DIR) --no-print-directory
 	@rm -rf ${MLX_NAME}
 	@rm -rf ${NAME}
 	@echo "${NAME} has been deleted"

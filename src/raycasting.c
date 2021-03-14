@@ -6,32 +6,33 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/13 23:37:02 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/14 19:14:38 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	recognize_texture(t_all *all, int side)
+void	recognize_texture(t_all *all)
 {
 	double ang;
 	
 	ang = vector_angle(&all->norm, &all->ray);
-	all->active = &all->ea;
-
-	if (side == 0)
+	ang = get_angle(ang);
+	if (all->ray.x < 0.0f)
+		ang = 360 - ang;
+	if (all->side_wall == 0)
 	{
 		if (ang >= 180.0f && ang <= 360.0f)
-			all->active = &all->no;
+			all->cur = &all->no;
 		else
-			all->active = &all->so;
+			all->cur = &all->so;
 	}	
 	else
 	{
 		if (ang >= 90.0f && ang <= 270.0f)
-			all->active = &all->we;
+			all->cur = &all->we;
 		else
-			all->active = &all->ea;
+			all->cur = &all->ea;
 	}
 }
 
@@ -82,260 +83,170 @@ int		render(t_all *all)
  	return (0);
 }
 
-void	init_vectors(t_all *all, int i, int j)
+void	start_main_loop(t_all *all)
 {
-	if (all->map->arr[i][j] == 'N')
-	{
-		all->angle = 270;
-		vector_init(&all->dir, -1.0, 0.0);
-		vector_init(&all->plane, 0.0, 0.66);
-		
-	}
-	if (all->map->arr[i][j] == 'E')
-	{
-		all->angle = 0;
-		vector_init(&all->dir, 0.0, 1.0);
-		vector_init(&all->plane, 0.66, 0);
-	}
-	if (all->map->arr[i][j] == 'W')
-	{
-		all->angle = 180;
-		vector_init(&all->dir, 0.0, -1.0);
-		vector_init(&all->plane, -0.66, 0);
-		
-	}
-	if (all->map->arr[i][j] == 'S')
-	{
-		all->angle = 90;
-		vector_init(&all->dir, 1.0, 0.0);
-		vector_init(&all->plane, 0.0, -0.66);
-	}
-	printf("x = %.3f y= %.3f\n", i + 0.5, j + 0.5);
-	printf("dir[%.3f %.3f]\n", all->dir.x, all->dir.y);
+	init_all(all);
+	mlx_hook(all->win, 2, 1L<<0, key_press, all);
+	mlx_hook(all->win, 3, 1L<<1, key_release, all);
+	mlx_hook(all->win, 17, 1L<<0, stop_engine, all);
+	mlx_loop_hook(all->mlx, render, all);
+	mlx_loop(all->mlx);
 }
 
-void	init_coord(t_all *all)
+void	throw_ray(t_all *all)
 {
- 	int i;
- 	int j;
-
- 	i = 1;
- 	while (i < all->map->rows)
- 	{
- 		j = 1;
- 		while (j < all->map->cols + 1)
- 		{	
-			if (ft_strchr("NSWE", all->map->arr[i][j]))
- 			{
-				init_vectors(all, i, j);
-				vector_init(&all->pos, i + 0.5, j + 0.5);
-			}
- 			j++;
- 		}
- 		i++;
+	while (all->hit_wall == 0)
+	{
+		//jump to next map square, OR in x-direction, OR in y-direction
+		if (all->next.x < all->next.y)
+		{
+			all->next.x += all->delta.x;
+			all->grid.x += all->step.x;
+			all->side_wall = 0;
+		}
+		else
+		{
+			all->next.y += all->delta.y;
+			all->grid.y += all->step.y;
+			all->side_wall = 1;
+		}
+		//Check if ray has hit a wall
+		if (all->map->arr[all->grid.x][all->grid.y] == '1') 
+			all->hit_wall = 1;
 	}
-	vector_init(&all->norm, 0.0, 1.0);	
 }
 
-void	start_main_loop(t_map *map)
+void init_next_dist(t_all *all)
 {
-	t_all all;
+	if (all->ray.x < 0)
+	{
+		all->step.x = -1;
+		all->next.x = (all->pos.x - all->grid.x) * all->delta.x;
+	}
+	else
+	{
+		all->step.x = 1;
+		all->next.x = (all->grid.x + 1.0 - all->pos.x) * all->delta.x;
+	}
 	
-	all.map = map;
-	init_all(&all);
-	mlx_hook(all.win, 2, 1L<<0, key_press, &all);
-	mlx_hook(all.win, 3, 1L<<1, key_release, &all);
-	mlx_hook(all.win, 17, 1L<<0, key_press, &all);
-	mlx_loop_hook(all.mlx, render, &all);
-	mlx_loop(all.mlx);
-}
-
-void	init_all(t_all *all)
-{
-	all->m_speed = 0.111f;
-	all->r_angle = 0.066f;
-	
-	all->buf = (int **)malloc((sizeof(int *)) * all->map->h);
-	int i = 0;
-	while (i < all->map->h)
+	if (all->ray.y < 0)
 	{
-		all->buf[i] = (int *)malloc(sizeof(int) * all->map->w);
-		i++;
+		all->step.y = -1;
+		all->next.y = (all->pos.y - all->grid.y) * all->delta.y;
 	}
-
-	init_window(all);	
-	init_img(all, &all->img);
-	init_keys(all);
-	init_coord(all);
-	init_textures(all);
+	else
+	{
+		all->step.y = 1;
+		all->next.y = (all->grid.y + 1.0 - all->pos.y) * all->delta.y;
+	}
 }
 
-//void draw_walls(t_all *all)
-//{
-//	for (int i = 0; i < all->map->h; i++)
-//	{
-//		for (int j = 0; j < all->map->w; j++)
-//		{
-//			all->img.addr[i * all->img.len + j * (all->img.bpp / 8)] = all->buf[i][j];
-//		}
-//	}
-//}
+void	calculate_distance_to_wall(t_all *all)
+{
+	if (all->side_wall == 0)
+		all->dist_to_wall = (all->grid.x - all->pos.x + (1 - all->step.x) / 2) / all->ray.x;
+	else
+		all->dist_to_wall = (all->grid.y - all->pos.y + (1 - all->step.y) / 2) / all->ray.y;
+}
+
+void	calculate_wall_height(t_all *all)
+{
+	all->wall_h = (int)(all->map->h / all->dist_to_wall);
+}
+
+void	calculate_wall_borders(t_all *all)
+{
+	all->wall_beg = -all->wall_h / 2 + all->map->h / 2;
+	if (all->wall_beg < 0)
+		all->wall_beg = 0;
+		
+	all->wall_end = all->wall_h / 2 + all->map->h / 2;
+	if (all->wall_end > all->map->h)
+		all->wall_end = all->map->h;
+}
+
+void	calculate_texture_column(t_all *all)
+{
+	double wallX;
+	if (all->side_wall == 0)
+		wallX = all->pos.y + all->dist_to_wall * all->ray.y;
+	else
+		wallX = all->pos.x + all->dist_to_wall * all->ray.x;
+	wallX -= floor((wallX));
+
+	all->tex.x = (int)(wallX * (double)all->cur->w);
+	if (all->side_wall == 0 && all->ray.x > 0) 
+		all->tex.x = all->cur->w - all->tex.x - 1;
+	if (all->side_wall == 1 && all->ray.y < 0)
+		all->tex.x = all->cur->w - all->tex.x - 1;
+}
 
 void  raycasting(t_all *all)
 {
 	for (int x = 0; x < all->map->w; x++)
 	{	
-		//calculate ray position and direction
-		//x-coordinate in camera space
-		double cameraX = 2 * x / (double)all->map->w - 1;
+		//noise
+		int r = rand() % 7;
 	
-		all->ray.x = all->dir.x + all->plane.x * cameraX;
-		all->ray.y = all->dir.y + all->plane.y * cameraX;
+		vector_init(&all->cam, 2 * x / (double)all->map->w - 1, 0.0f);
+		vector_init(&all->ray, all->dir.x + all->plane.x * all->cam.x, all->dir.y + all->plane.y * all->cam.x);
 
-		//which box of the map we're in
-		int mapX = (int)all->pos.x;
-		int mapY = (int)all->pos.y;
-
-		//length of ray from current position to next x or y-side
-		double sideDistX;
-		double sideDistY;
-
-		//length of ray from one x or y-side to next x or y-side
-		double deltaDistX = fabs(1 / all->ray.x);
-		double deltaDistY = fabs(1 / all->ray.y);
-		double perpWallDist;
-
-		//what direction to step in x or y-direction (either +1 or -1)
-		int stepX;
-		int stepY;
-
-		int hit = 0; //was there a wall hit?
-		int side; //was a NS or a EW wall hit?
-
-		//calculate step and initial sideDist
-		if (all->ray.x < 0)
-		{
-			stepX = -1;
-			sideDistX = (all->pos.x - mapX) * deltaDistX;
-		}
-		else
-		{
-			stepX = 1;
-			sideDistX = (mapX + 1.0 - all->pos.x) * deltaDistX;
-		}
+		all->grid.x = (int)all->pos.x;
+		all->grid.y = (int)all->pos.y;
 		
-		if (all->ray.y < 0)
-		{
-			stepY = -1;
-			sideDistY = (all->pos.y - mapY) * deltaDistY;
-		}
-		else
-		{
-			stepY = 1;
-			sideDistY = (mapY + 1.0 - all->pos.y) * deltaDistY;
-		}
-		int count = 0;
-		//perform DDA
-		while (hit == 0)
-		{
-			count++;
-			//jump to next map square, OR in x-direction, OR in y-direction
-			if (sideDistX < sideDistY)
-			{
-				sideDistX += deltaDistX;
-				mapX += stepX;
-				side = 0;
-			}
-			else
-			{
-				sideDistY += deltaDistY;
-				mapY += stepY;
-				side = 1;
-			}
-			//Check if ray has hit a wall
-			if (all->map->arr[mapX][mapY] == '1') 
-				hit = 1;
-		}
-
-		//Calculate distance of perpendicular ray (Euclidean distance will give fisheye effect!
+		all->hit_wall = 0;
 		
-		//if (side == 0) ????
-			//perpWallDist = vector_len(&all->ray) * sin(90 - vector_angle(&all->dir, &all->ray));
-		//else
-		//	perpWallDist = ;
-		//printf("pwd:%.3f\n", perpWallDist);
+		vector_init(&all->delta, fabs(1 / all->ray.x), fabs(1 / all->ray.y));
+		init_next_dist(all);
 
-		if (side == 0)
-			perpWallDist = (mapX - all->pos.x + (1 - stepX) / 2) / all->ray.x;
-		else
-			perpWallDist = (mapY - all->pos.y + (1 - stepY) / 2) / all->ray.y;
-
-		//Calculate height of line to draw on screen
-		int lineHeight = (int)(all->map->h / perpWallDist);
-
-		//calculate lowest and highest pixel to fill in current stripe
-		int drawStart = -lineHeight / 2 + all->map->h / 2;
-		if (drawStart < 0)
-			drawStart = 0;
+		throw_ray(all);
 		
-		int drawEnd = lineHeight / 2 + all->map->h / 2;
-		if (drawEnd > all->map->h)
-			drawEnd = all->map->h;
+		calculate_distance_to_wall(all);
+		calculate_wall_height(all);
+		calculate_wall_borders(all);
+		recognize_texture(all);
+		calculate_texture_column(all);
 
-		//texturing calculations
-		recognize_texture(all, side);
-		
-		//calculate value of wallX
-		double wallX; //where exactly the wall was hit
-		if (side == 0)
-			wallX = all->pos.y + perpWallDist * all->ray.y;
-		else
-			wallX = all->pos.x + perpWallDist * all->ray.x;
-		wallX -= floor((wallX));
-
-		//x coordinate on the texture
-		int texX = (int)(wallX * (double)all->active->w);
-		
-		if (side == 0 && all->ray.x > 0) 
-			texX = all->active->w - texX - 1;
-		if (side == 1 && all->ray.y < 0)
-			texX = all->active->w - texX - 1;
-
-		// // TODO: an integer-only bresenham or DDA like algorithm could make the texture coordinate stepping faster
-		// // How much to increase the texture coordinate per screen pixel
-		
-		double step = 1.0 * all->active->w / lineHeight;
+		double step = 1.0 * all->cur->w / all->wall_h;
 		// Starting texture coordinate
-		double texPos = (drawStart - all->map->h / 2 + lineHeight / 2) * step;
+		double texPos = (all->wall_beg - all->map->h / 2 + all->wall_h / 2) * step;
 
 		for (int y = 0; y < all->map->h; y++)
 		{
-			int color;
-			
-			
-			if (y < drawStart)
+			// int color;
+			if (y < all->wall_beg)
 			{
-				color = get_color_from_params(&all->map->f);
+				int TextY = y / all->sky.h;
+				int TextX = x / all->sky.w; 
+				// all->color = get_color_from_params(&all->map->f);
+				all->color = *(int *)(all->sky.img.addr + TextY * all->cur->img.len + TextX * (all->cur->img.bpp / 8));
+				//or skybox
 			}
-			else if (y > drawEnd)
+			else if (y > all->wall_end)
 			{
-				color = get_color_from_params(&all->map->c);
-				if (y < drawEnd + (all->map->h - drawEnd) * 0.5)
+				all->color = get_color_from_params(&all->map->c);
+				if (y - r < all->a * x * x + all->b * x + all->c)
 				{
-					color = color_make_darker(1 - ((double)(y - drawEnd) / (1.25 * (all->map->h - drawEnd))), color);	
-					//color = color_make_darker(1 - ((double)y / (double)all->map->h) / 4, color);	
+					//color = color_make_darker(0.9, color);
+					all->color = color_make_darker(1 - ((double)(y - all->wall_end) / (2 * (all->map->h - all->wall_end))), all->color);
+				}
+				else
+				{
+					//color = color_make_darker(0.8, color);
+					all->color = color_make_darker(1 - ((double)(y - all->wall_end) / (1.95 * (all->map->h - all->wall_end))), all->color);
 				}
 			}
 			else
 			{
 				// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-				int texY = (int)texPos & (all->active->h - 1);
+				int texY = (int)texPos & (all->cur->h - 1);
 			 	texPos += step;
 			 	
-				color = *(int *)(all->active->img.addr + texY * all->active->img.len + texX * (all->active->img.bpp / 8));
-				color = color_make_darker(perpWallDist / 4, color);				
+				all->color = *(int *)(all->cur->img.addr + texY * all->cur->img.len + all->tex.x * (all->cur->img.bpp / 8));
+				
+				all->color = color_make_darker(all->dist_to_wall / 4, all->color);				
 			}
-			write_pixel_to_img(&all->img, x, y, color);
+			write_pixel_to_img(&all->img, x, y, all->color);
 		}
 	}
 }

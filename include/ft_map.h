@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/12 16:05:20 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/14 19:08:49 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ typedef struct		s_map
 	t_track			tr;
 }					t_map;
 
-
 typedef struct  s_img
 {
     void        *img;
@@ -55,21 +54,17 @@ typedef struct  s_img
     int         end;
 }               t_img;
 
-//typedef struct	s_plr
-//{
-//	float		x;
-//	float		y;
-//	float		dir;
-//	float		start;
-//	float		end;
-//}				  t_plr;
-
-
 typedef struct s_vector
 {
 	double x;
 	double y;
 }				t_vector;
+
+typedef struct s_v_int
+{
+	int x;
+	int y;
+}				t_v_int;
 
 typedef struct s_texture
 {
@@ -93,6 +88,7 @@ typedef struct	s_all
 {
 	void    *mlx;
 	void    *win;
+	t_keys	keys;
 	t_map	*map;
 	t_img	img;
 	
@@ -100,20 +96,41 @@ typedef struct	s_all
 	t_texture so;
 	t_texture we;
 	t_texture ea;
-	t_texture *active;
+	t_texture sky;
+	t_texture *cur;
+	int		color;
 	
+	
+	/*raycast*/
 	t_vector pos;
 	t_vector dir;
 	t_vector plane;
 	t_vector norm;
 	t_vector ray;
 	
-	t_keys	keys;
+	t_vector next;
+	t_vector delta;
+	t_vector step;
+	t_vector cam;
 	
-	int	 **buf;
-	double angle;
+	t_v_int grid;
+
+	t_v_int tex;
+	
+	int		wall_beg;
+	int		wall_end;
+	int		hit_wall;
+	int		side_wall;
+
+	int		wall_h;
 	double m_speed;
 	double r_angle;
+	double 	dist_to_wall;
+
+	/* shadows' parabola koefficients */
+	double a;
+	double b;
+	double c;
 }				t_all;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/13 20:04:51 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/14 18:23:04 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int 	start_engine(t_map *map, int mode);
 int		stop_engine(void *ptr);
 
 /* raycasting.c */
-void	start_main_loop(t_map *map);
+void	start_main_loop(t_all *all);
 void    raycasting(t_all *all);
 int		render(t_all *all);
 
@@ -80,12 +80,16 @@ void	init_img(t_all *all, t_img *img);
 void	init_vectors(t_all *all, int i, int j);
 void	init_texture(void *mlx, char *path, t_texture *t);
 
+void	init_shadow_params(t_all *all);
+
+
 
 /* vector.c */
 void    vector_init(t_vector *vect, double x, double y);
 double  vector_mlp(t_vector *v1, t_vector *v2);
 double  vector_len(t_vector *v);
 double  vector_angle(t_vector *v1, t_vector *v2);
+void	vector_rotate(t_vector *v, double angle);
 
 /* key_action.c */
 void	init_keys(t_all* all);
@@ -94,9 +98,8 @@ int		key_release(int keycode, t_all *all);
 int		key_press(int keycode, t_all *all);
 
 /* engine_move.c */
-void	move(t_all *all, int sign);
 void	rotate(t_all *all, int sign);
-void	move_side(t_all *all, int sign);
+void	move(t_all *all, t_vector *base, int sign);
 
 /* colors.c */
 int		color_trgb(int t, int r, int g, int b);
@@ -106,5 +109,13 @@ int		color_get_g(int trgb);
 int		color_get_b(int trgb);
 int		color_make_darker(double perc, int color);
 int		get_opposite(int color);
+
+
+/* angle_radian.c */
+double	get_radian(double angle);
+double	get_angle(double radian);
+
+
+void make_screenshot(t_all *all);
 
 #endif
