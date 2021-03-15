@@ -11,7 +11,8 @@ files ierarchy?
 Sprites
 bmp screenshot (why didnt work on Mac)
 
-add plane vector dependency from FOV
+[x] add plane vector dependency from FOV
+
 Makefile fix relink
 
 Skybox:
@@ -19,9 +20,9 @@ Skybox:
 	check if calculations are correct
 
 create both functions to work properly 
-engine_error  function
-parse_error function
+[x] engine_error  function
+[x] parse_error function
 
-clean all function
+[x] clean all function
 
-add rain
+[o] add rain

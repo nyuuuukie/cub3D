@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/15 02:49:53 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/15 15:29:05 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,8 @@ typedef struct	s_all
 	double a;
 	double b;
 	double c;
+
+	double brightness;
 }				t_all;
 
 #endif

@@ -104,6 +104,7 @@ clean:
 
 fclean: clean
 	@$(MAKE) fclean -C $(LFT_DIR) --no-print-directory
+	@rm -rf *.bmp
 	@rm -rf ${MLX_NAME}
 	@rm -rf ${NAME}
 	@echo "${NAME} has been deleted"

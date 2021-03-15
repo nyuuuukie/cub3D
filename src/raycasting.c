@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/15 05:54:02 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:26:43 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,9 @@ void	set_background(t_all *all)
 int		render(t_all *all)
 {
 	mlx_do_sync(all->mlx);
+	// int h;
+	// int w;
+	// all->img.img = mlx_xpm_file_to_image(all->mlx, "./textures/bluecloud_bk.xpm", &w, &h);
 	key_action(all);
 	raycasting(all);
 	mlx_put_image_to_window(all->mlx, all->win, all->img.img, 0, 0);
@@ -190,14 +193,38 @@ int		random_number(int min, int max)
 	return (rand() % (max - min) + min);
 }
 
+void	draw_rain(t_all *all, int x)
+{
+	int rain_drops;
+	int rain_drop_len;
+	int	start_y;
+	int y;
+
+	y = 0;
+	start_y = 0;
+	rain_drops = 1;
+	while (rain_drops--)
+	{
+		rain_drop_len = random_number(5, 50);
+		start_y = random_number(y, all->map->h);
+		y = start_y;
+		while (y < start_y + rain_drop_len && y < all->map->h)
+		{
+			write_pixel_to_img(&all->img, x, y, 0x3F3F3F);
+			y++;
+		}
+	}
+}
+
 void  raycasting(t_all *all)
 {
+	// int r;
+	// srand(time(0));
 	for (int x = 0; x < all->map->w; x++)
 	{	
-		//noise
-		//int r = rand() % 7;
-	
-		int rain_drops = random_number(0, 2);
+		// if (x % 10 == 0)
+		// 	r = rand() % 10;
+
 		all->hit_wall = 0;
 		vector_init(&all->cam, 2 * x / (double)all->map->w - 1, 0.0f);
 		vector_init(&all->ray, all->dir.x + all->plane.x * all->cam.x, all->dir.y + all->plane.y * all->cam.x);
@@ -217,24 +244,31 @@ void  raycasting(t_all *all)
 		double step = 1.0 * all->cur->w / all->wall_h;
 		// Starting texture coordinate
 		double texPos = (all->wall_beg - all->map->h / 2 + all->wall_h / 2) * step;
-
+		
+		double skystep = 1.0 * all->sky.w / all->map->h;
+		double skytexPos = (0 - all->map->h / 2 + all->map->h / 2) * step;
+		
+		//ADD brightness
+		all->brightness = get_angle(vector_angle(&all->norm, &all->ray)) / 540.0;
+		if (all->brightness > 0.95)
+			all->brightness = 0.95;
+		
 		for (int y = 0; y < all->map->h; y++)
 		{
-			// int color;
 			if (y < all->wall_beg)
 			{
-				#ifndef BONUS
-					int TextY = y / all->sky.h;
-					int TextX = x / all->sky.w; 
-					all->color = *(int *)(all->sky.img.addr + TextY * all->cur->img.len + TextX * (all->cur->img.bpp / 8));
+				#ifdef BONUS
+					int texY = (int)skytexPos;
+			 		skytexPos += skystep;
+					int TextX = x / all->sky.h;
+					all->color = *(int *)(all->sky.img.addr + texY * all->sky.img.len + TextX);
 				#else
-					all->color = get_color_from_params(&all->map->f);
+					all->color = get_color_from_params(&all->map->c);
 				#endif
-				
 			}
 			else if (y > all->wall_end)
 			{
-				all->color = get_color_from_params(&all->map->c);
+				all->color = get_color_from_params(&all->map->f);
 				
 				#ifdef BONUS
 				if (y < all->a * x * x + all->b * x + all->c)
@@ -245,7 +279,7 @@ void  raycasting(t_all *all)
 				else
 				{
 					//all->color = color_make_darker(0.4, all->color);
-					all->color = color_make_darker(1 - ((double)(y - all->wall_end) / (1.75 * (all->map->h - all->wall_end))), all->color);
+					all->color = color_make_darker(1 - ((double)(y - all->wall_end) / (1.9 * (all->map->h - all->wall_end))), all->color);
 				}
 				#endif
 			}
@@ -256,18 +290,15 @@ void  raycasting(t_all *all)
 			 	texPos += step;
 			 	
 				all->color = *(int *)(all->cur->img.addr + texY * all->cur->img.len + all->tex.x * (all->cur->img.bpp / 8));				
+				
 				#ifdef BONUS
 					all->color = color_make_darker(all->dist_to_wall / 5, all->color);				
 				#endif
 			}
+			all->color = color_make_darker(all->brightness, all->color);
 			write_pixel_to_img(&all->img, x, y, all->color);
 		}
-		while (rain_drops--)
-		{
-			int len = random_number(20, 25);
-			int coordY = random_number(0, all->map->h);
-			for (int y = coordY; y < coordY + len && y < all->map->h; y++)
-				write_pixel_to_img(&all->img, x, y, 0x007F7F7F);
-		}
+		draw_rain(all, x);
+		// printf("%d\n", x);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:06:24 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/13 04:27:45 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/15 21:49:27 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,12 @@
 # include "libft.h"
 
 # include "mlx.h"
+
+//HERE
+# define BONUS
+
+#ifdef BONUS
+# include <time.h>
+#endif
 
 #endif

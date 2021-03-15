@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/15 03:09:22 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/15 21:49:38 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # define START_CUB3D 1
 # define MAKE_SCREENSHOT 2
-# define BONUS
+
 # define SCALE 6
 
 /* Resolution */
@@ -34,7 +34,5 @@
 
 /* Map */
 # define ALLOWED_MAP_SPEC "012NSWE "
-
-# define FOV 60
 
 #endif
