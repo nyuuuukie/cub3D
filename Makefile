@@ -73,7 +73,6 @@ run: all
 	./${NAME} maps/1.cub
 
 scr: all
-	echo rm -rf screen.bmp
 	./${NAME} maps/1.cub --save
 
 all: libft mlx create_dir $(NAME)

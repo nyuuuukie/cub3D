@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/14 19:14:38 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/15 05:54:02 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,9 @@ void	set_background(t_all *all)
 int		render(t_all *all)
 {
 	mlx_do_sync(all->mlx);
+	key_action(all);
 	raycasting(all);
 	mlx_put_image_to_window(all->mlx, all->win, all->img.img, 0, 0);
-	key_action(all);
  	return (0);
 }
 
@@ -97,7 +97,6 @@ void	throw_ray(t_all *all)
 {
 	while (all->hit_wall == 0)
 	{
-		//jump to next map square, OR in x-direction, OR in y-direction
 		if (all->next.x < all->next.y)
 		{
 			all->next.x += all->delta.x;
@@ -110,7 +109,6 @@ void	throw_ray(t_all *all)
 			all->grid.y += all->step.y;
 			all->side_wall = 1;
 		}
-		//Check if ray has hit a wall
 		if (all->map->arr[all->grid.x][all->grid.y] == '1') 
 			all->hit_wall = 1;
 	}
@@ -128,7 +126,6 @@ void init_next_dist(t_all *all)
 		all->step.x = 1;
 		all->next.x = (all->grid.x + 1.0 - all->pos.x) * all->delta.x;
 	}
-	
 	if (all->ray.y < 0)
 	{
 		all->step.y = -1;
@@ -168,6 +165,7 @@ void	calculate_wall_borders(t_all *all)
 void	calculate_texture_column(t_all *all)
 {
 	double wallX;
+
 	if (all->side_wall == 0)
 		wallX = all->pos.y + all->dist_to_wall * all->ray.y;
 	else
@@ -181,32 +179,41 @@ void	calculate_texture_column(t_all *all)
 		all->tex.x = all->cur->w - all->tex.x - 1;
 }
 
+void	vector_int_init(t_v_int *vect, int x, int y)
+{
+	vect->x = x;
+	vect->y = y;
+}
+
+int		random_number(int min, int max)
+{
+	return (rand() % (max - min) + min);
+}
+
 void  raycasting(t_all *all)
 {
 	for (int x = 0; x < all->map->w; x++)
 	{	
 		//noise
-		int r = rand() % 7;
+		//int r = rand() % 7;
 	
+		int rain_drops = random_number(0, 2);
+		all->hit_wall = 0;
 		vector_init(&all->cam, 2 * x / (double)all->map->w - 1, 0.0f);
 		vector_init(&all->ray, all->dir.x + all->plane.x * all->cam.x, all->dir.y + all->plane.y * all->cam.x);
-
-		all->grid.x = (int)all->pos.x;
-		all->grid.y = (int)all->pos.y;
-		
-		all->hit_wall = 0;
-		
 		vector_init(&all->delta, fabs(1 / all->ray.x), fabs(1 / all->ray.y));
+		vector_int_init(&all->grid, all->pos.x, all->pos.y);
+		
 		init_next_dist(all);
-
 		throw_ray(all);
+		
+		recognize_texture(all);
 		
 		calculate_distance_to_wall(all);
 		calculate_wall_height(all);
 		calculate_wall_borders(all);
-		recognize_texture(all);
 		calculate_texture_column(all);
-
+		
 		double step = 1.0 * all->cur->w / all->wall_h;
 		// Starting texture coordinate
 		double texPos = (all->wall_beg - all->map->h / 2 + all->wall_h / 2) * step;
@@ -216,25 +223,31 @@ void  raycasting(t_all *all)
 			// int color;
 			if (y < all->wall_beg)
 			{
-				int TextY = y / all->sky.h;
-				int TextX = x / all->sky.w; 
-				// all->color = get_color_from_params(&all->map->f);
-				all->color = *(int *)(all->sky.img.addr + TextY * all->cur->img.len + TextX * (all->cur->img.bpp / 8));
-				//or skybox
+				#ifndef BONUS
+					int TextY = y / all->sky.h;
+					int TextX = x / all->sky.w; 
+					all->color = *(int *)(all->sky.img.addr + TextY * all->cur->img.len + TextX * (all->cur->img.bpp / 8));
+				#else
+					all->color = get_color_from_params(&all->map->f);
+				#endif
+				
 			}
 			else if (y > all->wall_end)
 			{
 				all->color = get_color_from_params(&all->map->c);
-				if (y - r < all->a * x * x + all->b * x + all->c)
+				
+				#ifdef BONUS
+				if (y < all->a * x * x + all->b * x + all->c)
 				{
-					//color = color_make_darker(0.9, color);
+					//all->color = color_make_darker(0.9, all->color);
 					all->color = color_make_darker(1 - ((double)(y - all->wall_end) / (2 * (all->map->h - all->wall_end))), all->color);
 				}
 				else
 				{
-					//color = color_make_darker(0.8, color);
-					all->color = color_make_darker(1 - ((double)(y - all->wall_end) / (1.95 * (all->map->h - all->wall_end))), all->color);
+					//all->color = color_make_darker(0.4, all->color);
+					all->color = color_make_darker(1 - ((double)(y - all->wall_end) / (1.75 * (all->map->h - all->wall_end))), all->color);
 				}
+				#endif
 			}
 			else
 			{
@@ -242,11 +255,19 @@ void  raycasting(t_all *all)
 				int texY = (int)texPos & (all->cur->h - 1);
 			 	texPos += step;
 			 	
-				all->color = *(int *)(all->cur->img.addr + texY * all->cur->img.len + all->tex.x * (all->cur->img.bpp / 8));
-				
-				all->color = color_make_darker(all->dist_to_wall / 4, all->color);				
+				all->color = *(int *)(all->cur->img.addr + texY * all->cur->img.len + all->tex.x * (all->cur->img.bpp / 8));				
+				#ifdef BONUS
+					all->color = color_make_darker(all->dist_to_wall / 5, all->color);				
+				#endif
 			}
 			write_pixel_to_img(&all->img, x, y, all->color);
+		}
+		while (rain_drops--)
+		{
+			int len = random_number(20, 25);
+			int coordY = random_number(0, all->map->h);
+			for (int y = coordY; y < coordY + len && y < all->map->h; y++)
+				write_pixel_to_img(&all->img, x, y, 0x007F7F7F);
 		}
 	}
 }

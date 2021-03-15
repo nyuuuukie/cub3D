@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 21:48:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/14 18:49:16 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/15 05:52:26 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,12 @@ void	init_window(t_all *all)
 	if (!all->mlx)
 		throw_error(ERR_MLX_WIN_FAIL, 0);
 	init_screen_size(all);
-	all->win = mlx_new_window(all->mlx, all->map->w, all->map->h, "cub3D");
-	if (!all->win)
-		throw_error(ERR_MLX_WIN_FAIL, 0);
+	if (all->screen == 0)
+	{
+		all->win = mlx_new_window(all->mlx, all->map->w, all->map->h, "cub3D");
+		if (!all->win)
+			throw_error(ERR_MLX_WIN_FAIL, 0);
+	}
 }
 
 void	init_img(t_all *all, t_img *img)

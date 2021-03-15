@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/14 18:23:04 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/15 02:50:53 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	init_shadow_params(t_all *all);
 
 /* vector.c */
 void    vector_init(t_vector *vect, double x, double y);
+void	vector_int_init(t_v_int *vect, int x, int y);
 double  vector_mlp(t_vector *v1, t_vector *v2);
 double  vector_len(t_vector *v);
 double  vector_angle(t_vector *v1, t_vector *v2);

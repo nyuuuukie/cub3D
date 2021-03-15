@@ -1,13 +1,27 @@
 Parser norm
 Fix parser (the part with map and \n and spaces)
-Split raycasting into parts
+Split raycasting into parts add draw function
+
+add shadow functions
+add get_texture_color function
+add bonus dependencies
+
+files ierarchy?
 
 Sprites
-bmp screenshot
+bmp screenshot (why didnt work on Mac)
 
-add FOV formula
+add plane vector dependency from FOV
 Makefile fix relink
+
+Skybox:
+	find text
+	check if calculations are correct
 
 create both functions to work properly 
 engine_error  function
 parse_error function
+
+clean all function
+
+add rain

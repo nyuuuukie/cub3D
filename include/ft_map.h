@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/14 19:08:49 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/15 02:49:53 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,10 @@ typedef struct 	s_keys
 
 typedef struct	s_all
 {
+	int		screen;
 	void    *mlx;
 	void    *win;
+
 	t_keys	keys;
 	t_map	*map;
 	t_img	img;
@@ -123,8 +125,8 @@ typedef struct	s_all
 	int		side_wall;
 
 	int		wall_h;
-	double m_speed;
-	double r_angle;
+	double	m_speed;
+	double	r_angle;
 	double 	dist_to_wall;
 
 	/* shadows' parabola koefficients */

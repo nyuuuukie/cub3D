@@ -6,83 +6,100 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 17:05:13 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/14 18:51:34 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/15 02:40:03 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	header_bmp(t_all *all, int fd)
+void	bitmap_header(t_all *all, int fd)
 {
-	int		bytes_t;
-	short	bytes_d;
+	int		lint;
+	short	sint;
 
 	write(fd, "BM", 2);
-	bytes_t = 14 + 40 + all->map->w * all->map->h * 4;//размер файла в байтах
-	write(fd, &bytes_t, sizeof(bytes_t));
-	bytes_d =0;
-	write(fd, &bytes_d, sizeof(bytes_d));
-	write(fd, &bytes_d, sizeof(bytes_d));
-	bytes_t = 14 + 40;//размер хедеров в байтах
-	write(fd, &bytes_t, sizeof(bytes_t));
+	lint = 14 + 40 + all->map->w * all->map->h * 4;
+	write(fd, &lint, sizeof(lint));
+	sint = 0;
+	write(fd, &sint, sizeof(sint));
+	write(fd, &sint, sizeof(sint));
+	lint = 14 + 40;
+	write(fd, &lint, sizeof(lint));
 }
 
-void	header_img(t_all *all, int fd)
+void	bitmap_info_header(t_all *all, int fd)
 {
-	int		bytes_t;
-	short	bytes_d;
+	int		lint;
+	short	sint;
 
-	bytes_t = 40;//размер 2-го хедера
-	write(fd, &bytes_t, sizeof(bytes_t));
-	bytes_t = all->map->w;//ширина изображения
-	write(fd, &bytes_t, sizeof(bytes_t));
-	bytes_t = all->map->h;//высота изображения
-	write(fd, &bytes_t, sizeof(bytes_t));
-	bytes_d =1;
-	write(fd, &bytes_d, sizeof(bytes_d));
-	bytes_d =32;
-	write(fd, &bytes_d, sizeof(bytes_d));
-	bytes_t = 0;
-	write(fd, &bytes_t, sizeof(bytes_t));
-	bytes_t = all->map->w * all->map->h * 4;
-	write(fd, &bytes_t, sizeof(bytes_t));
-	bytes_t = 2795;
-	write(fd, &bytes_t, sizeof(bytes_t));
-	write(fd, &bytes_t, sizeof(bytes_t));
-	bytes_t = 0;
-	write(fd, &bytes_t, sizeof(bytes_t));
-	write(fd, &bytes_t, sizeof(bytes_t));
+	lint = 40;
+	write(fd, &lint, sizeof(lint));
+	lint = all->map->w;
+	write(fd, &lint, sizeof(lint));
+	lint = all->map->h;
+	write(fd, &lint, sizeof(lint));
+	sint = 1;
+	write(fd, &sint, sizeof(sint));
+	sint = 32;
+	write(fd, &sint, sizeof(sint));
+	lint = 0;
+	write(fd, &lint, sizeof(lint));
+	lint = all->map->w * all->map->h * 4;
+	write(fd, &lint, sizeof(lint));
+	lint = 2795;
+	write(fd, &lint, sizeof(lint));
+	write(fd, &lint, sizeof(lint));
+	lint = 0;
+	write(fd, &lint, sizeof(lint));
+	write(fd, &lint, sizeof(lint));
 }
 
-void	bmp(t_all *all)
+char	*bitmap_check_exist()
+{
+	static int index;
+	char *filename;
+	char *num;
+	int fd;
+
+	fd = 1;
+	while (fd > 0)
+	{
+		num = ft_itoa(index++);
+		filename = ft_strjoin(num, ".bmp");
+		fd = open(filename, O_RDONLY);
+		if (fd < 0)
+			return (filename);
+		free(num);
+		free(filename);
+		close(fd);
+	}
+	return (NULL);
+}
+
+void	bitmap_write_to_file(t_all *all)
 {
 	int		fd;
 	int		index;
+	char	*filename;
 
-	fd = open("screen.bmp", O_RDWR | O_CREAT | O_TRUNC, 00600 | 00060 | 00006);
-	header_bmp(all, fd);
-	header_img(all, fd);
-	index = (all->map->h) * all->map->w * 4;
-
+	filename = bitmap_check_exist();
+	fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0666);
+	if (fd < 0)
+		throw_error(ERR_NO_FILE, 0);
+	bitmap_header(all, fd);
+	bitmap_info_header(all, fd);
+	index = all->map->h;
 	while (index >= 0)
 	{
-		write(fd, all->img.addr + index, all->map->w * 4);
-		index -= all->map->w * 4;
+		write(fd, all->img.addr + index * all->map->w * 4, all->map->w * 4);
+		index--;
 	}
 	close(fd);
 }
 
 void make_screenshot(t_all *all)
 {
-	all->mlx = mlx_init();
-	if (!all->mlx)
-		throw_error(ERR_MLX_WIN_FAIL, 0);
-
-	init_screen_size(all);
-	init_img(all, &all->img);
-	init_coord(all);
-	init_textures(all);
-	init_shadow_params(all);
+	init_all(all);
 	raycasting(all);
-	bmp(all);
+	bitmap_write_to_file(all);
 }
