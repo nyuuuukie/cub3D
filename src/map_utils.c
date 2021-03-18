@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:47:11 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/09 21:29:20 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/18 06:49:25 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ void	set_defaults(t_map *map)
 	map->arr = 0;
 	map->tr.i = 0;
 	map->tr.line = 0;
+	map->sprites = 0;
 	get_map(map);
 }

@@ -6,18 +6,38 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/15 02:50:53 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/18 19:18:43 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "ft_base.h"
-# include "ft_map.h"
-# include "ft_settings.h"
-# include "ft_error.h"
-# include "ft_keycodes.h"
+/* standard headers */
+# include <unistd.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include <stdio.h>
+# include <string.h>
+# include <math.h>
+# define _USE_MATH_DEFINES
+
+////HERE
+//# define BONUS
+
+//#ifdef BONUS
+//# include <time.h>
+//#endif
+
+# include "mlx.h"
+# include "libft.h"
+# include "error.h"
+# include "events.h"
+# include "keycodes.h"
+# include "settings.h"
+# include "structures.h"
+
+
 
 /* Check input arguments */
 int		check_save_arg(int argc, char **argv);
@@ -66,7 +86,7 @@ int		stop_engine(void *ptr);
 
 /* raycasting.c */
 void	start_main_loop(t_all *all);
-void    raycasting(t_all *all);
+void    draw_walls(t_all *all);
 int		render(t_all *all);
 
 void	init_all(t_all *all);
@@ -103,13 +123,15 @@ void	rotate(t_all *all, int sign);
 void	move(t_all *all, t_vector *base, int sign);
 
 /* colors.c */
-int		color_trgb(int t, int r, int g, int b);
-int		color_get_t(int trgb);
-int		color_get_r(int trgb);
-int		color_get_g(int trgb);
-int		color_get_b(int trgb);
+//int		color_trgb(int t, int r, int g, int b);
+//int		color_get_t(int trgb);
+//int		color_get_r(int trgb);
+//int		color_get_g(int trgb);
+//int		color_get_b(int trgb);
 int		color_make_darker(double perc, int color);
-int		get_opposite(int color);
+int		color_from_img(t_img *img, int x, int y);
+int		color_negative(int color);
+int		color_from_prm(t_clr *clr);
 
 
 /* angle_radian.c */

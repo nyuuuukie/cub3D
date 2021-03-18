@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 21:48:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/15 15:14:46 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/18 14:53:37 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	init_textures(t_all *all)
 	init_texture(all->mlx, all->map->SO_path, &all->so);
 	init_texture(all->mlx, all->map->WE_path, &all->we);
 	init_texture(all->mlx, all->map->EA_path, &all->ea);
+	init_texture(all->mlx, all->map->sprite, &all->s);
 	init_texture(all->mlx, "./textures/bluecloud_bk.xpm", &all->sky);
 }
 
@@ -63,7 +64,11 @@ void	init_screen_size(t_all *all)
 	int current_width;
 	int current_height;
 
-	mlx_get_screen_size(all->mlx, &current_width, &current_height);
+	#ifdef LINUX
+		mlx_get_screen_size(all->mlx, &current_width, &current_height);
+	#else
+		mlx_get_screen_size(&current_width, &current_height);
+	#endif
 	if (all->map->h > current_height)
 		all->map->h = current_height;
 	if (all->map->w > current_width)

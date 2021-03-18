@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_map.h                                           :+:      :+:    :+:   */
+/*   structures.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/15 15:29:05 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/18 19:22:36 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct		s_map
 	char			*line;
 	int				rows;
 	int				cols;
+	int				sprites;
 	char			**arr;
 	t_list			*lst;
 	t_track			tr;
@@ -58,6 +59,7 @@ typedef struct s_vector
 {
 	double x;
 	double y;
+	double dist;
 }				t_vector;
 
 typedef struct s_v_int
@@ -82,6 +84,8 @@ typedef struct 	s_keys
 	char d;
 	char r;
 	char l;
+	char p;
+	char sh;
 }				t_keys;
 
 typedef struct	s_all
@@ -94,15 +98,16 @@ typedef struct	s_all
 	t_map	*map;
 	t_img	img;
 	
+	t_texture s;
 	t_texture no;
 	t_texture so;
 	t_texture we;
 	t_texture ea;
 	t_texture sky;
+	t_texture flr;
 	t_texture *cur;
 	int		color;
-	
-	
+
 	/*raycast*/
 	t_vector pos;
 	t_vector dir;
@@ -115,6 +120,8 @@ typedef struct	s_all
 	t_vector step;
 	t_vector cam;
 	
+	t_vector *sprites;
+	
 	t_v_int grid;
 
 	t_v_int tex;
@@ -125,9 +132,11 @@ typedef struct	s_all
 	int		side_wall;
 
 	int		wall_h;
+	double	k_speed;
 	double	m_speed;
 	double	r_angle;
 	double 	dist_to_wall;
+	double	ratio;
 
 	/* shadows' parabola koefficients */
 	double a;
@@ -135,6 +144,10 @@ typedef struct	s_all
 	double c;
 
 	double brightness;
+	int opposite;
+	unsigned int frame_count;
+	double *ZBuffer;
+	int *s_order;
 }				t_all;
 
 #endif

@@ -3,7 +3,7 @@
 NAME = cub3D
 LIBFT_NAME = libft.a
 
-OFLAGS	  	 = -O2
+OFLAGS	  	 = -O
 OS			 = $(shell uname)
 
 ############################# MLX ############################
@@ -55,7 +55,9 @@ SOURCES =	main.c \
 			colors.c\
 			angle_radian.c\
 			save.c
-		
+
+B_SOURCES = 
+
 GNL_SRC = 	gnl.c
 
 ######################## OBJECT FILES ########################
@@ -69,12 +71,22 @@ HEADERS = $(INC_DIR)/*.h
 
 ######################## INSTRUCTIONS ########################
 
-run: all
+
+r: all
 	./${NAME} maps/1.cub
 
-scr: all
+s: all
 	./${NAME} maps/1.cub --save
 
+br: bonus
+	./${NAME} maps/1.cub
+
+bs: bonus
+	./${NAME} maps/1.cub --save
+
+debug:
+	$(MAKE) DEBUG="-g" bonus
+	
 all: libft mlx create_dir $(NAME)
 
 create_dir:
@@ -91,10 +103,10 @@ mlx:
 	@cp $(MLX_DIR)/$(MLX_NAME) ./
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(LFT_DIR)/$(LIBFT_NAME) $(MLX_DIR)/$(MLX_NAME) $(GNL_OBJ)
-	@$(CC) $(OS_FLAG) $(CFLAGS) -c $< $(INCLUDE_FLAGS) -o $@
+	@$(CC) $(DEBUG) $(BONUS) $(OS_FLAG) $(CFLAGS) -c $< $(INCLUDE_FLAGS) -o $@
 
 $(NAME): $(OBJECTS) $(GNL_OBJ) $(HEADERS) 
-	@$(CC) $(CFLAGS) $(GNL_OBJ) $(OBJECTS) $(LIBFT_FLAGS) $(MLX_FLAGS) -o $@
+	@$(CC) $(DEBUG) $(BONUS) $(CFLAGS) $(GNL_OBJ) $(OBJECTS) $(LIBFT_FLAGS) $(MLX_FLAGS) -o $@
 	@echo "$(NAME) created"
 
 clean:
@@ -110,6 +122,6 @@ fclean: clean
 	@echo "${NAME} has been deleted"
 
 bonus:
-	@$(MAKE) BONUS="TRUE" all --no-print-directory
+	@$(MAKE) BONUS="-D BONUS" all --no-print-directory
 
 re: fclean all

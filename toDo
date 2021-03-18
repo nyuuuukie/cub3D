@@ -1,28 +1,23 @@
-Parser norm
-Fix parser (the part with map and \n and spaces)
-Split raycasting into parts add draw function
-
-add shadow functions
-add get_texture_color function
-add bonus dependencies
-
-files ierarchy?
-
-Sprites
-bmp screenshot (why didnt work on Mac)
-
-[x] add plane vector dependency from FOV
-
-Makefile fix relink
-
-Skybox:
-	find text
-	check if calculations are correct
-
-create both functions to work properly 
+0.	change sort sprite algorythm maybe
+1.	change keycodes on MacOS
+2.	add skybox
+3.	makefile fix relink
+4.	clean all function
+5.	create both functions to work properly:
 [x] engine_error  function
 [x] parse_error function
-
-[x] clean all function
-
-[o] add rain
+6.	fix bmp screenshot on MacOS (get_screen_size failure maybe?)
+7.	add bonus dependencies
+8.	add shadow functions
+9.	add get_texture_color function
+10. fix parser (the part with map and \n and spaces)
+11. split draw_column function
+12. parser norm
+13. files ierarchy?
+14. change write_pixel_to_img function
+15. check leaks (valgrind & leaks)
+16. try textures of different sizes
+17. rename all files!
+18. split calculations and writing to image
+19. fix screenshot (left border printed with wrong color)
+20. sprite on the wall (need to skip black color)

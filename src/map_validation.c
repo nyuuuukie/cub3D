@@ -6,11 +6,12 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:10:32 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/08 11:44:42 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/18 06:58:33 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
+
 
 void	map_validate(t_map *map)
 {
@@ -29,6 +30,8 @@ void	map_validate(t_map *map)
 				flood_fill(map->arr, i, j);
 			if (ft_strchr("NSEW", map->arr[i][j]) != NULL)
 				player_check(++count, i, j);
+			if (map->arr[i][j] == '2')
+				map->sprites++;
 			j++;
 		}
 		i++;

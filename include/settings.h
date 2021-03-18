@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_settings.h                                      :+:      :+:    :+:   */
+/*   settings.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/15 21:49:38 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/18 19:32:44 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,15 @@
 # define COLOR_MIN_VALUE 0
 # define COLOR_MAX_VALUE 255
 
+# define MIN_R 30
+# define MIN_G 30
+# define MIN_B 30
+
 /* File */
 # define EXTENSION_LEN 5
 
 /* Map */
 # define ALLOWED_MAP_SPEC "012NSWE "
+
 
 #endif

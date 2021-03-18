@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 17:05:13 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/15 02:40:03 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/18 19:33:16 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ void	bitmap_write_to_file(t_all *all)
 
 void make_screenshot(t_all *all)
 {
+	//DO
 	init_all(all);
-	raycasting(all);
+	draw_walls(all);
 	bitmap_write_to_file(all);
 }

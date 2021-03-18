@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 19:39:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/14 17:28:33 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/18 18:28:31 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void init_keys(t_all* all)
 	all->keys.d = 0;
 	all->keys.l = 0;
 	all->keys.r = 0;
+	all->keys.sh = 0;
 }
 
 int key_action(t_all *all)
@@ -36,6 +37,8 @@ int key_action(t_all *all)
 		rotate(all, 1);
 	if (all->keys.r && !all->keys.l)
 		rotate(all, -1);
+	
+	all->k_speed = all->keys.sh * 0.5 + 1.0;
 	return (0);
 }
 
@@ -53,6 +56,8 @@ int		key_release(int keycode, t_all *all)
 		all->keys.l = 0;
 	else if (keycode == KEY_RIGHT)
 		all->keys.r = 0;
+	else if (keycode == KEY_SHIFT)
+		all->keys.sh = 0;
 	return (0);
 }
 
@@ -70,6 +75,10 @@ int		key_press(int keycode, t_all *all)
 		all->keys.l = 1;
 	else if (keycode == KEY_RIGHT)
 		all->keys.r = 1;
+	else if (keycode == KEY_P)
+		all->keys.p = !all->keys.p;
+	else if (keycode == KEY_SHIFT)
+		all->keys.sh = 1;
 	else if (keycode == KEY_ESC)
 		stop_engine(all);
 	return (0);

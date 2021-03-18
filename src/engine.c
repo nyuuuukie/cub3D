@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:35:59 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/15 02:41:02 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/18 18:34:10 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,6 @@ int	stop_engine(void *ptr)
 
 	all = (t_all *)ptr;
 	printf("Stopped! %d\n", all->map->w);
-	//CLEAN ALL
+	//clean_all((t_all *)ptr);
 	exit(0);
 }
