@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:10:32 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/18 06:58:33 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/18 23:42:35 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ void	map_validate(t_map *map)
 				flood_fill(map->arr, i, j);
 			if (ft_strchr("NSEW", map->arr[i][j]) != NULL)
 				player_check(++count, i, j);
-			if (map->arr[i][j] == '2')
-				map->sprites++;
 			j++;
 		}
 		i++;
@@ -72,6 +70,8 @@ int		flood_fill(char **arr, int row, int col)
 			return (row);
 		else if (ft_strchr("02NSEW", arr[row][col]))
 		{
+			if (arr[row][col] == '2')
+				arr[row][col] = 'x';
 			if (arr[row][col] == '0')
 				arr[row][col] = '#';
 			flood_fill_iter(arr, row, col);

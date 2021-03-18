@@ -6,11 +6,11 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 07:10:17 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/14 10:25:43 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/18 22:22:12 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_base.h"
+#include "cub3D.h"
 
 int   get_next_line(int fd, char **line)
 {

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/18 19:45:08 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/19 01:12:24 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@ void    write_pixel_to_img(t_img *img, int x, int y, int color)
     *(int*)(img->addr + y * img->len + x * (img->bpp / 8)) = color;
 }
 
-//void	show_sprites_dist(t_all *all)
-//{
-//	int i;
-//	i = 0;
-//	while (i < all->map->sprites)
-//	{
-//		printf("%d %.3f %.3f %.3f\n", i, all->sprites[i].x, all->sprites[i].y, all->sprites[i].dist);		
-//		i++;
-//	}
-//}
+void	show_sprites_dist(t_all *all)
+{
+	int i;
+	i = 0;
+	while (i < all->map->sprites)
+	{
+		printf("%d %.3f %.3f %.3f\n", i, all->sprites[i].x, all->sprites[i].y, all->sprites[i].dist);		
+		i++;
+	}
+}
 
 void	calculate_dist_to_sprite(t_all *all)
 {
@@ -40,6 +40,7 @@ void	calculate_dist_to_sprite(t_all *all)
 		all->sprites[i].dist = a.x * a.x + a.y * a.y;
 		i++;
 	}
+	//show_sprites_dist(all);
 }
 
 void	sort_sprites(t_all *all)
@@ -66,6 +67,7 @@ void	sort_sprites(t_all *all)
 
 void	draw_sprites(t_all *all)
 {
+	
 	calculate_dist_to_sprite(all);
 	if (all->map->sprites > 1)
 		sort_sprites(all);
@@ -192,6 +194,7 @@ void	recognize_texture(t_all *all)
 		else
 			all->cur = &all->ea;
 	}
+	all->n = ang;
 }
 
 
@@ -349,8 +352,6 @@ void	vector_int_init(t_v_int *vect, int x, int y)
 
 
 
-
-
 int		random_number(int min, int max)
 {
 	return (rand() % (max - min) + min);
@@ -365,14 +366,13 @@ void	draw_rain(t_all *all, int x)
 	y = 0;
 	while (y < all->map->h)
 	{
-		drop_len = random_number(20, 30);
+		drop_len = random_number(5, 40);
 		start = y + random_number(0, drop_len + 1);
-		
 		while (y < start + drop_len && y < all->map->h)
 		{
-			if (rand() % 100 < 10 && y < all->a * x * x + all->b * x + all->c)
+			if (rand() % 100 < 20 && y < all->a * x * x + all->b * x + all->c + all->wall_h)
 				write_pixel_to_img(&all->img, x, y, 0x005F5F5F);
-			else if (x % 10 == 0 && y > all->a * x * x + all->b * x + all->c)
+			else if (x % 5 == 0 && y > all->a * x * x + all->b * x + all->c - all->wall_h)
 				write_pixel_to_img(&all->img, x, y, 0x005F5F5F);
 			y++;
 		}
@@ -421,6 +421,12 @@ int		calculate_floor_color(t_all *all, int y)
 	return (color_from_img(&all->so.img, tex.x, tex.y));
 }
 
+int		calculate_skybox_color(t_all *all, int y)
+{
+	return (color_from_img(&all->sky.img, (all->n / 360.0 * all->sky.w), \
+									(1.0 * y / all->map->h * all->sky.h)));
+}
+
 void	draw_floor(t_all *all)
 {
 	int y;
@@ -435,7 +441,7 @@ void	draw_floor(t_all *all)
 			{
 				all->color = color_from_prm(&all->map->c);
 				if (all->keys.p)
-					all->color = color_make_darker(-((double)y / (all->map->h / 1.5)), all->color);
+					all->color = color_make_lighter((1.0 * y / (all->map->h / 1.5)), all->color);
 			}
 			else if (y > all->wall_end)
 			{		
@@ -445,6 +451,7 @@ void	draw_floor(t_all *all)
 					d_k = 5.0;
 				else
 					d_k = 4.3;
+
 				#ifdef BONUS
 					all->color = calculate_floor_color(all, y);
 				#else
@@ -452,7 +459,7 @@ void	draw_floor(t_all *all)
 				#endif
 				
 				if (all->keys.p)
-					all->color = color_make_darker(1 - (double)y / (d_k * all->map->h), all->color);
+					all->color = color_make_darker(1.0 - (double)y / (d_k * all->map->h), all->color);
 			}
 			write_pixel_to_img(&all->img, x, y, all->color);
 			//mlx_string_put()
@@ -470,12 +477,9 @@ void	write_column_to_img(t_all *all, int x)
 
 	//ADD brightness
 	#ifdef BONUS
-		//double skystep = 1.0 * all->sky.w / all->map->h;
-		//double skytexPos = (0 - all->map->h / 2 + all->map->h / 2) * step;
-
-		all->brightness = get_angle(vector_angle(&all->norm, &all->ray)) / 360.0;
-		if (all->brightness > 0.8)
-			all->brightness = 0.8;
+		//all->brightness = (all->n / 360.0);
+		//if (all->brightness < 0.2)
+		//	all->brightness = 0.2;
 	#endif
 
 	t_vector k;
@@ -491,24 +495,29 @@ void	write_column_to_img(t_all *all, int x)
 	{
 		if (y < all->wall_beg)
 		{
-			all->color = color_from_prm(&all->map->c);
+			#ifdef BONUS
+				all->color = calculate_skybox_color(all, y);
+			#else
+				all->color = color_from_prm(&all->map->c);
+			#endif
 			if (all->keys.p)
-				all->color = color_make_darker(-((double)y / (all->map->h / 1.5)), all->color);
+				all->color = color_make_lighter(((double)y / (all->map->h / 1.5)), all->color);
 		}
 		else if (y > all->wall_end)
 		{		
 			double d_k;
-
-			if (y < all->a * x * x + all->b * x + all->c)
-				d_k = 5.0;
-			else
-				d_k = 4.3;
-
+			
 			#ifdef BONUS
 				all->color = calculate_floor_color(all, y);
 			#else
 				all->color = color_from_prm(&all->map->f);				
 			#endif
+			
+			if (y < all->a * x * x + all->b * x + all->c)
+				d_k = 5.0;
+			else
+				d_k = 4.3;
+
 			//all->color = color_make_darker(1 - ((double)(y - all->wall_end) / (d_k * (all->map->h - all->wall_end))), all->color);
 			if (all->keys.p)
 				all->color = color_make_darker(1 - (double)y / (d_k * all->map->h), all->color);
@@ -519,8 +528,7 @@ void	write_column_to_img(t_all *all, int x)
 			all->tex.y = (int)texPos & (all->cur->h - 1); 
 			texPos += step;
 		 	
-			all->color = color_from_img(&all->cur->img, all->tex.x, all->tex.y);// *(int *)(all->cur->img.addr + texY * all->cur->img.len + all->tex.x * (all->cur->img.bpp / 8));				
-
+			all->color = color_from_img(&all->cur->img, all->tex.x, all->tex.y);
 			#ifdef BONUS
 				if (all->keys.p)
 					all->color = color_make_darker(all->dist_to_wall / 4, all->color);				
@@ -531,7 +539,8 @@ void	write_column_to_img(t_all *all, int x)
 		if (all->keys.p && all->frame_count % 100 < 5)
 			all->color = color_negative(all->color);
 		
-		write_pixel_to_img(&all->img, x, y, all->color);
+		if ((all->color & 0x00FFFFFF) != 0)
+			write_pixel_to_img(&all->img, x, y, all->color);
 	}
 	#ifdef BONUS
 		if (all->keys.p)

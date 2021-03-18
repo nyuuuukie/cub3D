@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/18 19:22:36 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/19 00:01:11 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,8 @@ typedef struct	s_all
 
 	t_v_int tex;
 	
+	double n;
+
 	int		wall_beg;
 	int		wall_end;
 	int		hit_wall;

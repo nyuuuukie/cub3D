@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 01:16:02 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/18 19:33:04 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/18 22:32:47 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,22 @@ int		color_make_darker(double perc, int color)
 	b += (b < MIN_B) * (MIN_B - b);
 	return ((color & 0xFF000000) | (r << 16) | (g << 8) | b);
 }
+
+int		color_make_lighter(double perc, int color)
+{
+ 	int r;
+	int g;
+	int b;
+
+	r = ((color & 0x00FF0000) >> 16) * (1 + perc);
+	g = ((color & 0x0000FF00) >> 8) * (1 + perc);
+	b = ((color & 0x000000FF) >> 0) * (1 + perc);	
+	r -= (r > MAX_R) * (r - MAX_R);
+	g -= (g > MAX_G) * (g - MAX_G);
+	b -= (b > MAX_B) * (b - MAX_B);
+	return ((color & 0xFF000000) | (r << 16) | (g << 8) | b);
+}
+
 
 int	color_negative(int color)
 {

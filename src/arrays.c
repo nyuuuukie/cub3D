@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 21:40:51 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/24 11:43:21 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/18 23:52:38 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,21 +67,27 @@ void	arr_fill(char **arr, t_list *lst)
 	}
 }
 
-void	arr_replace(char **arr, char to_replace, char replacer)
+int		arr_replace(char **arr, char to_replace, char replacer)
 {
 	int i;
 	int j;
+	int n;
 
 	i = 0;
+	n = 0;
 	while (arr && arr[i] != NULL)
 	{
 		j = 0;
 		while (arr[i][j] != '\0')
 		{
 			if (arr[i][j] == to_replace)
+			{
 				arr[i][j] = replacer;
+				n++;
+			}
 			j++;
 		}
 		i++;
 	}
+	return (n);
 }

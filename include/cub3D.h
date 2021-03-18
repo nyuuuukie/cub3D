@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/18 19:18:43 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/18 23:53:05 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@
 # include "settings.h"
 # include "structures.h"
 
-
-
 /* Check input arguments */
 int		check_save_arg(int argc, char **argv);
 int		check_extension(t_map *map, const char *ext);
@@ -68,7 +66,7 @@ int		get_next_line(int fd, char **line);
 void	arr_delete(char **arr);
 void	arr_fill(char **arr, t_list *lst);
 void	arr_create(char ***arr, int rows, int cols);
-void	arr_replace(char **arr, char to_replace, char replacer);
+int		arr_replace(char **arr, char to_replace, char replacer);
 
 /* map.c */
 void	free_map(t_map *map);
@@ -128,6 +126,7 @@ void	move(t_all *all, t_vector *base, int sign);
 //int		color_get_r(int trgb);
 //int		color_get_g(int trgb);
 //int		color_get_b(int trgb);
+int		color_make_lighter(double perc, int color);
 int		color_make_darker(double perc, int color);
 int		color_from_img(t_img *img, int x, int y);
 int		color_negative(int color);
