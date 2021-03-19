@@ -21,4 +21,5 @@
 18. split calculations and writing to image
 19. fix screenshot (left border printed with wrong color)
 20. sprite on the wall (need to skip black color)
-21. fix brightness (switch no and so, find better dependency) 
+21. fix brightness (switch no and so, find better dependency)
+22. add more textures (for testing and high dpi)
