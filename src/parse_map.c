@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/13 19:37:21 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/19 21:53:59 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,13 @@ void	map_add_node(t_list **head, char *line)
 
 int		is_empty(char *str)
 {
+	// int i;
+
+	// i = 0;
+	// while (str[i] == ' ')
+	// {
+	// 	i++;
+	// }
 	return (!str || *str == '\0');
 }
 

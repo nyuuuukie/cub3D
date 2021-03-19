@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 21:48:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/18 21:55:19 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/19 23:16:48 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ void	init_textures(t_all *all)
 	init_texture(all->mlx, all->map->WE_path, &all->we);
 	init_texture(all->mlx, all->map->EA_path, &all->ea);
 	init_texture(all->mlx, all->map->sprite, &all->s);
-	init_texture(all->mlx, "./textures/skybox.xpm", &all->sky);
+	#ifdef BONUS
+		init_texture(all->mlx, "./textures/skybox.xpm", &all->sky);
+		init_texture(all->mlx, "./textures/mon.xpm", &all->flr);
+	#endif
 }
 
 void	init_screen_size(t_all *all)
@@ -69,6 +72,7 @@ void	init_screen_size(t_all *all)
 	#else
 		mlx_get_screen_size(&current_width, &current_height);
 	#endif
+
 	if (all->map->h > current_height)
 		all->map->h = current_height;
 	if (all->map->w > current_width)

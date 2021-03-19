@@ -1,25 +1,25 @@
-0.	change sort sprite algorythm maybe
-1.	change keycodes on MacOS
-2.	add skybox
-3.	makefile fix relink
-4.	clean all function
-5.	create both functions to work properly:
-[x] engine_error  function
-[x] parse_error function
-6.	fix bmp screenshot on MacOS (get_screen_size failure maybe?)
-7.	add bonus dependencies
-8.	add shadow functions
-9.	add get_texture_color function
-10. fix parser (the part with map and \n and spaces)
-11. split draw_column function
-12. parser norm
-13. files ierarchy?
-14. change write_pixel_to_img function
-15. check leaks (valgrind & leaks)
-16. try textures of different sizes
-17. rename all files!
-18. split calculations and writing to image
-19. fix screenshot (left border printed with wrong color)
-20. sprite on the wall (need to skip black color)
-21. fix brightness (switch no and so, find better dependency)
-22. add more textures (for testing and high dpi)
+[x] 0.	change sort sprite algorythm maybe
+[o] 1.	change keycodes on MacOS
+[o] 2.	add skybox
+[x] 3.	makefile fix relink
+[x] 4.	clean all function
+[x] 5.	create both functions to work properly:
+[x]     engine_error  function
+[x]     parse_error function
+[x] 6.	fix bmp screenshot on MacOS (get_screen_size failure maybe?)
+[x] 7.	add bonus dependencies
+[x] 8.	add shadow functions
+[x] 9.	add get_texture_color function
+[x] 10. fix parser (the part with map and \n and spaces)
+[x] 11. split draw_column function
+[x] 12. parser norm
+[x] 13. files ierarchy?
+[x] 14. change write_pixel_to_img function
+[x] 15. check leaks (valgrind & leaks)
+[x] 16. try textures of different sizes
+[x] 17. rename all files!
+[x] 18. split calculations and writing to image
+[x] 19. fix screenshot (left border printed with wrong color)
+[x] 20. sprite on the wall (need to skip black color)
+[x] 21. fix brightness (switch no and so, find better dependency)
+[x] 22. add more textures (for testing and high dpi)

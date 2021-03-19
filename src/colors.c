@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 01:16:02 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/18 22:32:47 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/19 18:01:48 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,14 @@ int		color_make_lighter(double perc, int color)
 
 int	color_negative(int color)
 {
-	return (~color - 1);
+	int r;
+	int g;
+	int b;
+
+	r = (255 - ((color & 0x00FF0000) >> 16));
+	g = (255 - ((color & 0x0000FF00) >> 8));
+	b = (255 - ((color & 0x000000FF) >> 0));	
+
+	return ((color & 0xFF000000) | (r << 16) | (g << 8) | b);
+	// return (~color - 1);
 }

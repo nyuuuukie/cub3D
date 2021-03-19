@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/19 00:01:11 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/19 23:04:03 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,8 +148,8 @@ typedef struct	s_all
 	double brightness;
 	int opposite;
 	unsigned int frame_count;
-	double *ZBuffer;
-	int *s_order;
+	double *ZBuffer; //
+	int *s_order; //not needed
 }				t_all;
 
 #endif

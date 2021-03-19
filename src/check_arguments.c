@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 21:45:51 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/28 11:40:53 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/19 21:22:35 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int		check_file_path(t_map *map, char *ext)
 		throw_error(ERR_NO_FILENAME, 0);
 	check_extension(map, ext);
 	if ((fd = open(&map->line[map->tr.i], O_RDONLY)) < 0)
-		throw_error(ERR_NO_FILE, 0);
+		throw_error(ERR_NO_FILE, &map->line[map->tr.i]);
 	return (0);
 }
 

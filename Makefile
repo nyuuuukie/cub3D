@@ -14,8 +14,8 @@ ifeq ($(OS), Linux)
 	MLX_NAME	= libmlx.a
 	MLX_FLAGS	= -L. -lmlx -lXext -lX11 -lm
 else
-	MLX_DIR		= minilibx/mlx_mms
-	MLX_NAME	= libmlx.dylib
+	MLX_DIR		= minilibx/mlx_mac
+	MLX_NAME	= libmlx.a
 	MLX_FLAGS	= -L. -lmlx -framework OpenGL -framework AppKit
 endif
 

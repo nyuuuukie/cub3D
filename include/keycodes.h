@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 21:42:43 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/18 18:02:36 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/19 20:54:08 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@
 # define KEY_A 0
 # define KEY_S 1
 # define KEY_D 2
-# define KEY_P 112
+# define KEY_P 35
 # define KEY_LEFT 123
 # define KEY_RIGHT 124
 # define KEY_ESC 53
-# define KEY_SHIFT 50
+# define KEY_SHIFT 257
 
 #endif
 

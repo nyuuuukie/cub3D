@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/19 02:11:10 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/19 20:48:46 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,19 @@ void	calculate_dist_to_sprite(t_all *all)
 		all->sprites[i].dist = a.x * a.x + a.y * a.y;
 		i++;
 	}
-	//show_sprites_dist(all);
+}
+
+void	swap_values(double *a, double *b)
+{
+	double temp;
+
+	temp = *a;
+	*a = *b;
+	*b = temp;
 }
 
 void	sort_sprites(t_all *all)
 {
-	t_vector t;
 	int i;
 
 	i = 0;
@@ -53,15 +60,50 @@ void	sort_sprites(t_all *all)
 	{
 		if (all->sprites[i].dist < all->sprites[i + 1].dist)
 		{
-			vector_init(&t, all->sprites[i].x, all->sprites[i].y);
-			t.dist = all->sprites[i].dist;
-			vector_init(&(all->sprites[i]), all->sprites[i + 1].x, all->sprites[i + 1].y);
-			all->sprites[i].dist = all->sprites[i + 1].dist;
-			vector_init(&(all->sprites[i + 1]), t.x, t.y);
-			all->sprites[i + 1].dist = t.dist;
+			swap_values(&all->sprites[i].x, &all->sprites[i + 1].x);
+			swap_values(&all->sprites[i].y, &all->sprites[i + 1].y);
+			swap_values(&all->sprites[i].dist, &all->sprites[i + 1].dist);
 			i = -1;
 		}	
 		i++;
+	}
+}
+
+
+void	vector_int_init(t_v_int *vect, int x, int y)
+{
+	vect->x = x;
+	vect->y = y;
+}
+
+int		random_number(int min, int max)
+{
+	return (rand() % (max - min) + min);
+}
+
+
+void	draw_rain(t_all *all)
+{
+	int y;
+	int drop_len;
+	int start;
+	int x;
+
+	y = 0;
+	x = 0; 
+	while (y < all->map->h)
+	{
+		drop_len = random_number(5, 40);
+		start = y + random_number(0, drop_len + 1);
+		while (y < start + drop_len && y < all->map->h)
+		{
+			if (rand() % 100 < 20 && y < all->a * x * x + all->b * x + all->c + all->wall_h)
+				write_pixel_to_img(&all->img, x, y, 0x005F5F5F);
+			else if (x % 5 == 0 && y > all->a * x * x + all->b * x + all->c - all->wall_h)
+				write_pixel_to_img(&all->img, x, y, 0x005F5F5F);
+			y++;
+		}
+		y += random_number(30, 70);
 	}
 }
 
@@ -113,7 +155,7 @@ void	draw_sprites(t_all *all)
 			drawEndY = all->map->h - 1;
 
 		//calculate width of the sprite
-		int spriteWidth = abs( (int) (all->map->h / (transformY))) / uDiv;
+		int spriteWidth = abs( (int) (all->map->w / (transformY))) / uDiv;
 		int drawStartX = -spriteWidth / 2 + spriteScreenX;
 		if(drawStartX < 0) drawStartX = 0;
 		int drawEndX = spriteWidth / 2 + spriteScreenX;
@@ -234,11 +276,15 @@ int		render(t_all *all)
 	all->frame_count++;
 	mlx_do_sync(all->mlx);
 	key_action(all);
-	//draw_floor(all);
 	draw_walls(all);
 	if (all->map->sprites > 0)
 		draw_sprites(all);
-	//draw_sprites if exist
+
+	#ifdef BONUS
+		if (all->keys.p)
+			draw_rain(all);
+	#endif
+	
 	mlx_put_image_to_window(all->mlx, all->win, all->img.img, 0, 0);
 	return (0);
 }
@@ -256,6 +302,7 @@ void	start_main_loop(t_all *all)
 	mlx_loop_hook(all->mlx, render, all);
 	mlx_loop(all->mlx);
 }
+
 
 void	calculate_collision_coordinates(t_all *all)
 {
@@ -313,7 +360,15 @@ void	calculate_distance_to_wall(t_all *all)
 
 void	calculate_wall_height(t_all *all)
 {
+	
 	all->wall_h = (int)(all->map->h / all->dist_to_wall);
+	// if (all->keys.p)
+	// {
+	// 	all->keys.p = 0;
+
+	// 	printf("%d\n", all->wall_h);
+	// 	printf("%.5f\n", all->dist_to_wall);
+	// }
 }
 
 void	calculate_wall_borders(t_all *all)
@@ -342,43 +397,8 @@ void	calculate_texture_coordinates(t_all *all)
 		all->tex.x = all->cur->w - all->tex.x - 1;
 }
 
-void	vector_int_init(t_v_int *vect, int x, int y)
-{
-	vect->x = x;
-	vect->y = y;
-}
 
 
-
-
-
-int		random_number(int min, int max)
-{
-	return (rand() % (max - min) + min);
-}
-
-void	draw_rain(t_all *all, int x)
-{
-	int y;
-	int drop_len;
-	int start;
-
-	y = 0;
-	while (y < all->map->h)
-	{
-		drop_len = random_number(5, 40);
-		start = y + random_number(0, drop_len + 1);
-		while (y < start + drop_len && y < all->map->h)
-		{
-			if (rand() % 100 < 20 && y < all->a * x * x + all->b * x + all->c + all->wall_h)
-				write_pixel_to_img(&all->img, x, y, 0x005F5F5F);
-			else if (x % 5 == 0 && y > all->a * x * x + all->b * x + all->c - all->wall_h)
-				write_pixel_to_img(&all->img, x, y, 0x005F5F5F);
-			y++;
-		}
-		y += random_number(30, 70);
-	}
-}
 
 
 void	map_iterator(t_all *all, void (*f)(t_all *))
@@ -399,32 +419,37 @@ void	map_iterator(t_all *all, void (*f)(t_all *))
 	}
 }
 
+
+
+
 int		calculate_floor_color(t_all *all, int y)
 {
 	t_vector k;
 	t_v_int tex;
-	t_vector floor_wall;
+	t_vector f_w;
 	
 	vector_init(&k, (all->ray.x < 0), (all->ray.y < 0));
+	
 	if (all->side_wall == 0)
-		vector_init(&floor_wall, all->grid.x + k.x, all->grid.y + all->ratio);
+		vector_init(&f_w, all->grid.x + k.x, all->grid.y + all->ratio);
     else
-		vector_init(&floor_wall, all->grid.x + all->ratio, all->grid.y + k.y);
+		vector_init(&f_w, all->grid.x + all->ratio, all->grid.y + k.y);
 
-	double currentDist = all->map->h / (2.0 * y - all->map->h);
-	double weight = (currentDist) / (all->dist_to_wall);
+	double w = all->map->h / (2.0 * y - all->map->h) / (all->dist_to_wall);
 
-	double currentFloorX = weight * floor_wall.x + (1.0 - weight) * all->pos.x;
-	double currentFloorY = weight * floor_wall.y + (1.0 - weight) * all->pos.y;
+	t_vector floor;
+	vector_init(&floor, w * f_w.x + (1.0 - w) * all->pos.x,
+						w * f_w.y + (1.0 - w) * all->pos.y);
 
-	vector_int_init(&tex, (int)(currentFloorX * all->so.w) % all->so.w, (int)(currentFloorY * all->so.h) % all->so.h);
-	return (color_from_img(&all->so.img, tex.x, tex.y));
+	vector_int_init(&tex, (int)(floor.x * all->flr.w) % all->flr.w, 
+						  (int)(floor.y * all->flr.h) % all->flr.h);
+	return (color_from_img(&all->flr.img, tex.x, tex.y));
 }
 
 int		calculate_skybox_color(t_all *all, int y)
 {
 	return (color_from_img(&all->sky.img, (all->n / 360.0 * all->sky.w), \
-									(1.0 * y / all->map->h * all->sky.h)));
+								(1.0 * y / all->map->h * all->sky.h)));
 }
 
 void	draw_floor(t_all *all)
@@ -432,6 +457,7 @@ void	draw_floor(t_all *all)
 	int y;
 	int x;
 
+	x = 0;
 	while (x < all->map->w)
 	{
 		y = 0;
@@ -472,10 +498,8 @@ void	draw_floor(t_all *all)
 void	write_column_to_img(t_all *all, int x)
 {
 	double step = 1.0 * all->cur->w / all->wall_h;
-	// Starting texture coordinate
 	double texPos = (all->wall_beg - all->map->h / 2 + all->wall_h / 2) * step;
 
-	//ADD brightness
 	#ifdef BONUS
 		//all->brightness = (all->n / 360.0);
 		//if (all->brightness < 0.2)
@@ -518,13 +542,11 @@ void	write_column_to_img(t_all *all, int x)
 			else
 				d_k = 4.3;
 
-			//all->color = color_make_darker(1 - ((double)(y - all->wall_end) / (d_k * (all->map->h - all->wall_end))), all->color);
 			if (all->keys.p)
 				all->color = color_make_darker(1 - (double)y / (d_k * all->map->h), all->color);
 		}
 		else if (y >= all->wall_beg)
 		{
-			// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
 			all->tex.y = (int)texPos & (all->cur->h - 1); 
 			texPos += step;
 		 	
@@ -541,11 +563,7 @@ void	write_column_to_img(t_all *all, int x)
 		
 		if ((all->color & 0x00FFFFFF) != 0)
 			write_pixel_to_img(&all->img, x, y, all->color);
-	}
-	#ifdef BONUS
-		if (all->keys.p)
-			draw_rain(all, x);
-	#endif
+	}	
 }
 
 void	draw_walls(t_all *all)
