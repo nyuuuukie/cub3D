@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 21:48:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/19 23:16:48 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/21 02:33:20 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,9 @@ void	init_textures(t_all *all)
 	init_texture(all->mlx, all->map->EA_path, &all->ea);
 	init_texture(all->mlx, all->map->sprite, &all->s);
 	#ifdef BONUS
-		init_texture(all->mlx, "./textures/skybox.xpm", &all->sky);
-		init_texture(all->mlx, "./textures/mon.xpm", &all->flr);
+		init_texture(all->mlx, "./textures/cyber.xpm", &all->sky);
+		init_texture(all->mlx, "./textures/floor.xpm", &all->flr);
+		init_texture(all->mlx, "./textures/weapon.xpm", &all->wpn);
 	#endif
 }
 

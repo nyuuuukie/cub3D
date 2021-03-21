@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/19 20:48:46 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/21 09:26:11 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void    write_pixel_to_img(t_img *img, int x, int y, int color)
 {
-    *(int*)(img->addr + y * img->len + x * (img->bpp / 8)) = color;
+    if ((color & 0x00FFFFFF) != 0)
+		*(int*)(img->addr + y * img->len + x * (img->bpp / 8)) = color;
 }
 
 void	show_sprites_dist(t_all *all)
@@ -69,7 +70,6 @@ void	sort_sprites(t_all *all)
 	}
 }
 
-
 void	vector_int_init(t_v_int *vect, int x, int y)
 {
 	vect->x = x;
@@ -81,29 +81,56 @@ int		random_number(int min, int max)
 	return (rand() % (max - min) + min);
 }
 
-
 void	draw_rain(t_all *all)
 {
 	int y;
 	int drop_len;
 	int start;
 	int x;
-
-	y = 0;
-	x = 0; 
-	while (y < all->map->h)
+	
+	x = 0;
+	while (x < all->map->w)
 	{
-		drop_len = random_number(5, 40);
-		start = y + random_number(0, drop_len + 1);
-		while (y < start + drop_len && y < all->map->h)
+		y = 0;
+		while (y < all->map->h)
 		{
-			if (rand() % 100 < 20 && y < all->a * x * x + all->b * x + all->c + all->wall_h)
-				write_pixel_to_img(&all->img, x, y, 0x005F5F5F);
-			else if (x % 5 == 0 && y > all->a * x * x + all->b * x + all->c - all->wall_h)
-				write_pixel_to_img(&all->img, x, y, 0x005F5F5F);
+			drop_len = random_number(5, 40);
+			start = y + random_number(0, drop_len + 1);
+			while (y < start + drop_len && y < all->map->h)
+			{
+				if (rand() % 100 < 20)
+					write_pixel_to_img(&all->img, x, y, 0x005F5F5F);
+				else if (x % 5 == 0)
+					write_pixel_to_img(&all->img, x, y, 0x005F5F5F);
+				y++;
+			}
+			y += random_number(30, 70);
+		}
+		x++;
+	}
+}
+
+void	draw_weapon(t_all *all)
+{
+	t_v_int tex;
+	int y;
+	int x;
+	//int r;
+
+	x = 0;
+	//r = 5 * sin(all->offset);
+	while (x < all->map->w)
+	{
+		y = 0;
+		while (y < all->map->h)
+		{
+			tex.x = 1.0 * x / all->map->w * all->wpn.w;
+			tex.y = 1.0 * y / all->map->h * all->wpn.h / 2 + all->wpn.h / 2;// - r;
+			all->color = color_from_img(&all->wpn.img, tex.x, tex.y);
+			write_pixel_to_img(&all->img, x, y, all->color);
 			y++;
 		}
-		y += random_number(30, 70);
+		x++;
 	}
 }
 
@@ -123,13 +150,7 @@ void	draw_sprites(t_all *all)
 		//int num = all->s_order[i];
 		vector_init(&s, all->sprites[i].x - all->pos.x, all->sprites[i].y - all->pos.y);
 		//translate sprite position to relative to camera
-		//double spriteX = sprite[spriteOrder[i]].x - posX;
-		//double spriteY = sprite[spriteOrder[i]].y - posY;
 
-		//transform sprite with the inverse camera matrix
-		// [ planeX   dirX ] -1                                       [ dirY      -dirX ]
-		// [               ]       =  1/(planeX*dirY-dirX*planeY) *   [                 ]
-		// [ planeY   dirY ]                                          [ -planeY  planeX ]
 
 		double invDet = 1.0 / (all->plane.x * all->dir.y - all->dir.x * all->plane.y); //required for correct matrix multiplication
 
@@ -181,7 +202,7 @@ void	draw_sprites(t_all *all)
 				if ((all->color & 0x00FFFFFF) != 0)
 				{
 					if (all->keys.p)
-						all->color = color_make_darker(all->ZBuffer[stripe] / 8, all->color);
+						all->color = color_make_darker(all->sprites[i].dist / 32, all->color);
 					write_pixel_to_img(&all->img, stripe, y, all->color); //buffer[y][stripe] = color; //paint pixel if it isn't black, black is the invisible color
 				}
 			}
@@ -239,63 +260,55 @@ void	recognize_texture(t_all *all)
 	all->n = ang;
 }
 
-
-////DO NOT NEED ANYMORE
-//void	draw_floor(t_all *all)
-//{
-////FLOOR CASTING
-//    for(int y = 0; y < all->map->h; y++)
-//    {
-//		t_vector r0;
-//		t_vector r1;
-//		t_vector floor;
-//		t_vector f_step;
-//		double rowDistance = all->map->h / (2.0 * y - all->map->h);
-//		vector_init(&r0, all->dir.x - all->plane.x, all->dir.y - all->plane.y);
-//		vector_init(&r1, all->dir.x + all->plane.x, all->dir.y + all->plane.y);
-//		vector_init(&floor, all->pos.x + rowDistance * r0.x, all->pos.y + rowDistance * r0.y);
-//		vector_init(&f_step, rowDistance * (2 * all->plane.x) / all->map->w, rowDistance * (2 * all->plane.y) / all->map->w);
-//	for (int x = 0; x < all->map->w; ++x)
-//    {
-//		int cellX = (int)(floor.x);
-//    	int cellY = (int)(floor.y);
-//		// get the texture coordinate from the fractional part
-//		int tx = (int)(all->so.w * (floor.x - cellX)) & (all->so.w - 1);
-//	    int ty = (int)(all->so.h * (floor.y - cellY)) & (all->so.h - 1);
-//	    floor.x += f_step.x;
-//	    floor.y += f_step.y;
-//	    // floor
-//		all->color = *(int *)(all->so.img.addr + ty * all->so.img.len + tx * (all->so.img.bpp / 8));
-//		write_pixel_to_img(&all->img, x, y, all->color);
-//      	}
-//    }
-//}
-
 int		render(t_all *all)
 {
 	all->frame_count++;
 	mlx_do_sync(all->mlx);
 	key_action(all);
+	mlx_mouse_get_pos(all->mlx, all->win, &all->cmx, &all->cmy);
+	double pos = 1.0 * (all->pmx - all->cmx) / all->map->w;
+	all->pmx = all->cmx;
+	rotate_m(all, pos);
 	draw_walls(all);
 	if (all->map->sprites > 0)
 		draw_sprites(all);
 
 	#ifdef BONUS
 		if (all->keys.p)
+		{
 			draw_rain(all);
+			draw_weapon(all);
+		}
 	#endif
 	
 	mlx_put_image_to_window(all->mlx, all->win, all->img.img, 0, 0);
 	return (0);
 }
 
+int		mouse_action(int button, int x, int y, t_all *all)
+{
+	printf("%d button\n", button);
+	printf("%d x\n", x);
+	printf("%d y\n", y);
+	printf("%d w\n", all->map->w);
+	return (0);
+}
+
 void	start_main_loop(t_all *all)
 {
 	all->frame_count = 0;
+	all->offset = 0.0;
+	all->pmx = all->map->w / 2;
 	init_all(all);
 	all->ZBuffer = malloc(sizeof(double) * all->map->w);
 	all->s_order = malloc(sizeof(int) * all->map->sprites);
 	init_sprites(all);
+	
+	#ifdef BONUS
+		music_start(&all->music, "cyber.mp3");
+	#endif
+
+	//mlx_mouse_hook(all->win, mouse_action, &all);
 	mlx_hook(all->win, KEY_PRESS_EVENT, KEY_PRESS_MASK, key_press, all);
 	mlx_hook(all->win, KEY_CLOSE_EVENT, KEY_CLOSE_MASK, stop_engine, all);
 	mlx_hook(all->win, KEY_RELEASE_EVENT, KEY_RELEASE_MASK, key_release, all);
@@ -421,11 +434,21 @@ void	map_iterator(t_all *all, void (*f)(t_all *))
 
 
 
+int		calculate_floor_ceil_text_coord(t_all *all)
+{
+	vector_int_init(&all->tex_f, (int)(all->floor.x * all->flr.w) % all->flr.w, 
+						  (int)(all->floor.y * all->flr.h) % all->flr.h);
+	
+
+	vector_int_init(&all->tex_c, (int)(all->floor.x * all->sky.w) % all->sky.w, 
+						  (int)(all->floor.y * all->sky.h) % all->sky.h);
+	return (0);
+}
 
 int		calculate_floor_color(t_all *all, int y)
 {
+	double w;
 	t_vector k;
-	t_v_int tex;
 	t_vector f_w;
 	
 	vector_init(&k, (all->ray.x < 0), (all->ray.y < 0));
@@ -435,15 +458,17 @@ int		calculate_floor_color(t_all *all, int y)
     else
 		vector_init(&f_w, all->grid.x + all->ratio, all->grid.y + k.y);
 
-	double w = all->map->h / (2.0 * y - all->map->h) / (all->dist_to_wall);
+	w = all->map->h / (2.0 * y - all->map->h) / (all->dist_to_wall);
 
-	t_vector floor;
-	vector_init(&floor, w * f_w.x + (1.0 - w) * all->pos.x,
+	vector_init(&all->floor, w * f_w.x + (1.0 - w) * all->pos.x,
 						w * f_w.y + (1.0 - w) * all->pos.y);
 
-	vector_int_init(&tex, (int)(floor.x * all->flr.w) % all->flr.w, 
-						  (int)(floor.y * all->flr.h) % all->flr.h);
-	return (color_from_img(&all->flr.img, tex.x, tex.y));
+	calculate_floor_ceil_text_coord(all);
+	//t_v_int tex;
+	//vector_int_init(&tex, (int)(all->floor.x * t->w) % t->w, 
+	//					  (int)(all->floor.y * t->h) % t->h);
+	
+	return (0);
 }
 
 int		calculate_skybox_color(t_all *all, int y)
@@ -488,7 +513,6 @@ void	draw_floor(t_all *all)
 					all->color = color_make_darker(1.0 - (double)y / (d_k * all->map->h), all->color);
 			}
 			write_pixel_to_img(&all->img, x, y, all->color);
-			//mlx_string_put()
 			y++;
 		}
 		x++;
@@ -500,11 +524,11 @@ void	write_column_to_img(t_all *all, int x)
 	double step = 1.0 * all->cur->w / all->wall_h;
 	double texPos = (all->wall_beg - all->map->h / 2 + all->wall_h / 2) * step;
 
-	#ifdef BONUS
-		//all->brightness = (all->n / 360.0);
-		//if (all->brightness < 0.2)
-		//	all->brightness = 0.2;
-	#endif
+	//#ifdef BONUS
+	//	all->brightness = (all->n / 360.0);
+	//	if (all->brightness < 0.2)
+	//		all->brightness = 0.2;
+	//#endif
 
 	t_vector k;
 	t_vector floor_wall;
@@ -517,33 +541,52 @@ void	write_column_to_img(t_all *all, int x)
 
 	for (int y = 0; y < all->map->h; y++)
 	{
-		if (y < all->wall_beg)
-		{
-			#ifdef BONUS
-				all->color = calculate_skybox_color(all, y);
-			#else
-				all->color = color_from_prm(&all->map->c);
-			#endif
-			if (all->keys.p)
-				all->color = color_make_lighter(((double)y / (all->map->h / 1.5)), all->color);
-		}
-		else if (y > all->wall_end)
+		//if (y < all->wall_beg)
+		//{
+		//	//all->color = color_from_prm(&all->map->c);
+		//	#ifdef BONUS
+		//		all->color = calculate_skybox_color(all, y);
+		//	#else
+		//		all->color = color_from_prm(&all->map->c);
+		//	#endif
+			
+		//	//#ifdef CEIL
+		//	//	all->color = calculate_floor_color(all, &all->sky, y);
+		//	//#endif
+
+		//	if (all->keys.p)
+		//		all->color = color_make_lighter(((double)y / (all->map->h / 1.5)), all->color);
+		//}
+		if (y > all->wall_end)
 		{		
 			double d_k;
-			
+				
 			#ifdef BONUS
-				all->color = calculate_floor_color(all, y);
+				calculate_floor_color(all, y);
+				all->color = color_from_img(&all->flr.img, all->tex_f.x, all->tex_f.y);
+				write_pixel_to_img(&all->img, x, y, all->color);
+				#ifdef CEIL
+					all->color = color_from_img(&all->sky.img, all->tex_c.x, all->tex_c.y);
+				#else
+					all->color = calculate_skybox_color(all, all->map->h - y);
+				#endif
+				write_pixel_to_img(&all->img, x, all->map->h - y - 1, all->color);
 			#else
-				all->color = color_from_prm(&all->map->f);				
+				all->color = color_from_prm(&all->map->f);
+				write_pixel_to_img(&all->img, x, y, all->color);
+				all->color = color_from_prm(&all->map->c);
+				write_pixel_to_img(&all->img, x, all->map->h - y - 1, all->color);
 			#endif
-			
-			if (y < all->a * x * x + all->b * x + all->c)
-				d_k = 5.0;
-			else
-				d_k = 4.3;
 
 			if (all->keys.p)
+			{
+				if (y < all->a * x * x + all->b * x + all->c)
+					d_k = 1.15;
+				else
+					d_k = 1.1;
+
 				all->color = color_make_darker(1 - (double)y / (d_k * all->map->h), all->color);
+			}
 		}
 		else if (y >= all->wall_beg)
 		{
@@ -553,16 +596,17 @@ void	write_column_to_img(t_all *all, int x)
 			all->color = color_from_img(&all->cur->img, all->tex.x, all->tex.y);
 			#ifdef BONUS
 				if (all->keys.p)
-					all->color = color_make_darker(all->dist_to_wall / 4, all->color);				
+					all->color = color_make_darker(all->dist_to_wall / 10, all->color);				
 			#endif
+			write_pixel_to_img(&all->img, x, y, all->color);
 		}
 		all->color = color_make_darker(all->brightness, all->color);
 		
 		if (all->keys.p && all->frame_count % 100 < 5)
 			all->color = color_negative(all->color);
 		
-		if ((all->color & 0x00FFFFFF) != 0)
-			write_pixel_to_img(&all->img, x, y, all->color);
+		//if ((all->color & 0x00FFFFFF) != 0)
+			//write_pixel_to_img(&all->img, x, y, all->color);
 	}	
 }
 

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/19 23:04:03 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/21 09:23:20 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct	s_all
 	t_texture ea;
 	t_texture sky;
 	t_texture flr;
+	t_texture wpn;
 	t_texture *cur;
 	int		color;
 
@@ -120,12 +121,17 @@ typedef struct	s_all
 	t_vector step;
 	t_vector cam;
 	
+	t_vector floor;
+
 	t_vector *sprites;
 	
 	t_v_int grid;
-
 	t_v_int tex;
 	
+	t_v_int tex_f;
+	t_v_int tex_c;
+	
+
 	double n;
 
 	int		wall_beg;
@@ -148,8 +154,19 @@ typedef struct	s_all
 	double brightness;
 	int opposite;
 	unsigned int frame_count;
-	double *ZBuffer; //
-	int *s_order; //not needed
+	double *ZBuffer;
+	int *s_order;
+
+	pid_t music;
+	pid_t sound;
+
+	double offset;
+
+	int		cmx;
+	int		cmy;
+	int		pmx;
+	int		pmy;
+	double	rotate;
 }				t_all;
 
 #endif

@@ -54,11 +54,12 @@ SOURCES =	main.c \
 			init2.c \
 			colors.c\
 			angle_radian.c\
+			music.c \
 			save.c
 
 B_SOURCES = 
 
-GNL_SRC = 	gnl.c
+GNL_SRC = 	get_next_line.c
 
 ######################## OBJECT FILES ########################
 
@@ -84,9 +85,12 @@ br: bonus
 bs: bonus
 	./${NAME} maps/1.cub --save
 
+bdebug:
+	$(MAKE) DEBUG="-g" br
+
 debug:
-	$(MAKE) DEBUG="-g" bonus
-	
+	$(MAKE) DEBUG="-g"
+
 all: libft mlx create_dir $(NAME)
 
 create_dir:

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/18 23:53:05 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/21 09:25:04 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,11 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <stdio.h>
+# include <signal.h>
 # include <string.h>
 # include <math.h>
 # define _USE_MATH_DEFINES
 
-////HERE
-//# define BONUS
-
-//#ifdef BONUS
-//# include <time.h>
-//#endif
 
 # include "mlx.h"
 # include "libft.h"
@@ -121,11 +116,6 @@ void	rotate(t_all *all, int sign);
 void	move(t_all *all, t_vector *base, int sign);
 
 /* colors.c */
-//int		color_trgb(int t, int r, int g, int b);
-//int		color_get_t(int trgb);
-//int		color_get_r(int trgb);
-//int		color_get_g(int trgb);
-//int		color_get_b(int trgb);
 int		color_make_lighter(double perc, int color);
 int		color_make_darker(double perc, int color);
 int		color_from_img(t_img *img, int x, int y);
@@ -139,5 +129,12 @@ double	get_angle(double radian);
 
 
 void make_screenshot(t_all *all);
+
+
+int music_start(pid_t *x, char *filename);
+
+int music_stop(pid_t x);
+
+void	rotate_m(t_all *all, double angle);
 
 #endif

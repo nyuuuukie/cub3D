@@ -23,3 +23,11 @@
 [x] 20. sprite on the wall (need to skip black color)
 [x] 21. fix brightness (switch no and so, find better dependency)
 [x] 22. add more textures (for testing and high dpi)
+[x] 23. add screamer
+[x] 24. texture with different width and height displays incorrectly
+[x] 25. ceil texture (need to paint floor and ceil at the same time)
+[x] 26. shadows on sprite
+[x] 27. black dots on textures and sprites
+[x] 28. path to the music file in scene file
+[x] 29. dependency in the makefile
+[x] 30. weapon sprite movements

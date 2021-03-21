@@ -6,12 +6,14 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/18 22:31:59 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/20 14:43:13 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_SETTINGS
 # define FT_SETTINGS
+
+//#define CEIL
 
 # define START_CUB3D 1
 # define MAKE_SCREENSHOT 2
@@ -29,9 +31,9 @@
 # define COLOR_MIN_VALUE 0
 # define COLOR_MAX_VALUE 255
 
-# define MIN_R 30
-# define MIN_G 30
-# define MIN_B 30
+# define MIN_R 15
+# define MIN_G 15
+# define MIN_B 15
 # define MAX_R 240
 # define MAX_G 240
 # define MAX_B 240
