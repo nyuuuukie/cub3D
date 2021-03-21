@@ -1,10 +1,15 @@
 R 800 600
 
-S sprites/man.xpm
-NO textures/cement1.xpm
+S sprites/kitty.xpm
+NO textures/bigdoor.xpm
 SO textures/cement2.xpm
 WE textures/cement3.xpm
 EA textures/cement4.xpm
+
+SK textures/cyber.xpm
+WP textures/weapon.xpm
+
+MC music/cyber.mp3
 
 F 255, 154, 141
 C 60, 74, 81                           

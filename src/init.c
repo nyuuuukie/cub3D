@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 21:48:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/21 02:33:20 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/21 19:02:46 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,26 +56,34 @@ void	init_textures(t_all *all)
 	init_texture(all->mlx, all->map->WE_path, &all->we);
 	init_texture(all->mlx, all->map->EA_path, &all->ea);
 	init_texture(all->mlx, all->map->sprite, &all->s);
-	#ifdef BONUS
-		init_texture(all->mlx, "./textures/cyber.xpm", &all->sky);
-		init_texture(all->mlx, "./textures/floor.xpm", &all->flr);
+	#ifdef WEAPON
+		// init_texture(all->mlx, all->map->WP_path, &all->wpn);
 		init_texture(all->mlx, "./textures/weapon.xpm", &all->wpn);
+	#endif
+	#ifdef FLOOR
+		// init_texture(all->mlx, all->map->F_path, &all->flr);
+		init_texture(all->mlx, "./textures/floor.xpm", &all->flr);
+	#endif
+	#ifdef CEIL
+		// init_texture(all->mlx, all->map->C_path, &all->flr);
+		init_texture(all->mlx, "./textures/cement1.xpm", &all->sky);
+	#endif
+	#ifdef SKY
+		// init_texture(all->mlx, all->map->SK_path, &all->sky);
+		init_texture(all->mlx, "./textures/cyber.xpm", &all->sky);
 	#endif
 }
 
 void	init_screen_size(t_all *all)
 {
-	int current_width;
-	int current_height;
-
 	#ifdef LINUX
-		mlx_get_screen_size(all->mlx, &current_width, &current_height);
+		mlx_get_screen_size(all->mlx, &all->screen_w, &all->screen_h);
 	#else
-		mlx_get_screen_size(&current_width, &current_height);
+		mlx_get_screen_size(&all->screen_w, &all->screen_h);
 	#endif
 
-	if (all->map->h > current_height)
-		all->map->h = current_height;
-	if (all->map->w > current_width)
-		all->map->w = current_width;
+	if (all->map->h > all->screen_h)
+		all->map->h = all->screen_h;
+	if (all->map->w > all->screen_w)
+		all->map->w = all->screen_w;
 }

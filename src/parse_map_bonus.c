@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_map.c                                        :+:      :+:    :+:   */
+/*   parse_map_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/21 13:04:29 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/21 17:33:55 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,19 @@ void	check_duplicate(char *texture, char *ptr)
 		throw_error(ERR_DUPLICATE_SPEC, ptr);
 }
 
+void	parse_music(t_map *map, char **path, char *name)
+{
+	map->tr.i = 0;
+	check_duplicate(*path, map->line);
+	while (map->tr.i < ft_strlen(name))
+		check_and_skip(map, name[map->tr.i]);
+	check_symbol(map, ' ');
+	skip_symbol(map, ' ');
+	check_file_path(map, ".mp3");
+	*path = ft_strdup(&map->line[map->tr.i]);
+	print_status("Texture", name, "OK");
+}
+
 void	parse_path(t_map *map, char **texture, char *name)
 {
 	map->tr.i = 0;
@@ -131,8 +144,21 @@ void	parse_color(t_map *map, t_clr *clr, char *name)
 	print_status("Color", name, "OK");
 }
 
+void	parse_identify_line_bonus(t_map *map)
+{
+	if (!ft_strncmp(map->line, "SK", 2))
+		parse_path(map, &map->SK_path, "SK");
+	else if (!ft_strncmp(map->line, "WP", 2))
+		parse_path(map, &map->WP_path, "WP");
+	else if (!ft_strncmp(map->line, "MC", 2))
+		parse_music(map, &map->music, "MC");
+}
+
 void	parse_identify_line(t_map *map)
 {
+	#ifdef BONUS
+		parse_identify_line_bonus(map);
+	#endif
 	if (!ft_strncmp(map->line, "R", 1))
 		parse_resolution(map);
 	else if (!ft_strncmp(map->line, "NO", 2))
@@ -162,6 +188,24 @@ int		map_getline(t_map *map)
 	return (res);
 }
 
+
+int		is_prm_complete_bonus(t_map *map)
+{
+	int res;
+
+	res = 1;
+ 
+	if (!map->SK_path && !map->C_path)
+		res = 0;
+	if (!map->c.set && !map->C_path)
+		res = 0;
+	if (!map->f.set && !map->F_path)
+		res = 0;
+	if (!map->WP_path)
+		res = 0;
+	return (res);
+}
+
 int		is_prm_complete(t_map *map)
 {
 	int res;
@@ -177,6 +221,10 @@ int		is_prm_complete(t_map *map)
 		res = 0;
 	if (map->sprite == 0)
 		res = 0;
+	#ifdef BONUS
+		if (check_bonus_complete(t_map *map))
+			res = 0;
+	#endif
 	return (res);
 }
 

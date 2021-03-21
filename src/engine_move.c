@@ -6,24 +6,23 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:37:15 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/21 09:24:56 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/21 19:04:41 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	rotate(t_all *all, int sign)
+void	rotate(t_all *all, int sign, double angle)
 {
-	vector_rotate(&all->dir, sign * all->r_angle);
-	vector_rotate(&all->plane, sign * all->r_angle);                                                                            
+	vector_rotate(&all->dir, sign * angle);
+	vector_rotate(&all->plane, sign * angle);                                                                            
 }
 
-
-void	rotate_m(t_all *all, double angle)
-{
-	vector_rotate(&all->dir, angle);
-	vector_rotate(&all->plane, angle);                                                                            
-}
+// void	rotate_m(t_all *all, double angle)
+// {
+// 	vector_rotate(&all->dir, angle);
+// 	vector_rotate(&all->plane, angle);                                                                            
+// }
 
 void	move(t_all *all, t_vector *base, int sign)
 {

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/21 09:25:04 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/21 19:05:20 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int		key_release(int keycode, t_all *all);
 int		key_press(int keycode, t_all *all);
 
 /* engine_move.c */
-void	rotate(t_all *all, int sign);
+void	rotate(t_all *all, int sign, double angle);
 void	move(t_all *all, t_vector *base, int sign);
 
 /* colors.c */
@@ -136,5 +136,10 @@ int music_start(pid_t *x, char *filename);
 int music_stop(pid_t x);
 
 void	rotate_m(t_all *all, double angle);
+
+void	init_sprites(t_all *all);
+
+
+int		draw_all(t_all *all);
 
 #endif

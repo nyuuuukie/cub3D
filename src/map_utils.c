@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:47:11 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/18 06:49:25 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/21 17:16:52 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ void	free_map(t_map *map)
 		free(map->WE_path);
 	if (map->EA_path)
 		free(map->EA_path);
+	if (map->SK_path)
+		free(map->SK_path);
+	if (map->WP_path)
+		free(map->WP_path);
+	if (map->F_path)
+		free(map->F_path);
+	if (map->C_path)
+		free(map->C_path);
 	if (map->arr)
 		arr_delete(map->arr);
 	if (map->lst)
@@ -48,6 +56,10 @@ void	set_defaults(t_map *map)
 	map->SO_path = 0;
 	map->WE_path = 0;
 	map->EA_path = 0;
+	map->SK_path = 0;
+	map->WP_path = 0;
+	map->F_path = 0;
+	map->C_path = 0;
 	map->sprite = 0;
 	map->f.val[0] = 0;
 	map->f.val[1] = 0;
@@ -58,7 +70,7 @@ void	set_defaults(t_map *map)
 	map->f.set = 0;
 	map->c.set = 0;
 	map->lst = 0;
-	map->arr = 0;
+	// map->arr = 0;
 	map->tr.i = 0;
 	map->tr.line = 0;
 	map->sprites = 0;

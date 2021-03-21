@@ -30,10 +30,17 @@ INCLUDE_FLAGS 	= -I $(INC_DIR) -I $(LFT_DIR) -I $(GNL_DIR) -I $(MLX_DIR)
 ######################### DIRECTORIES ########################
 
 SRC_DIR = src
+BNS_DIR = bonus
 OBJ_DIR = obj
 LFT_DIR = libft
 INC_DIR = include
 GNL_DIR = get_next_line
+
+# ifeq ($(BSRC), "TRUE")
+# 	ACT_DIR = ${BNS_DIR}
+# else
+# 	ACT_DIR = ${SRC_DIR}
+# endif
 
 ######################### SOURCES ############################
 
@@ -51,7 +58,7 @@ SOURCES =	main.c \
 			engine_move.c \
 			engine.c \
 			init.c \
-			init2.c \
+			init_ext.c \
 			colors.c\
 			angle_radian.c\
 			music.c \
@@ -91,7 +98,7 @@ bdebug:
 debug:
 	$(MAKE) DEBUG="-g"
 
-all: libft mlx create_dir $(NAME)
+all: libft mlx create_dir $(ACT_DIR) $(NAME)
 
 create_dir:
 	@mkdir -p $(OBJ_DIR)
@@ -126,6 +133,6 @@ fclean: clean
 	@echo "${NAME} has been deleted"
 
 bonus:
-	@$(MAKE) BONUS="-D BONUS" all --no-print-directory
+	@$(MAKE) BONUS="-D BONUS" BSRC="TRUE" all --no-print-directory
 
 re: fclean all

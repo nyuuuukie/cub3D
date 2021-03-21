@@ -9,7 +9,7 @@
 [x] 6.	fix bmp screenshot on MacOS (get_screen_size failure maybe?)
 [x] 7.	add bonus dependencies
 [x] 8.	add shadow functions
-[x] 9.	add get_texture_color function
+[o] 9.	add color_from_img function
 [x] 10. fix parser (the part with map and \n and spaces)
 [x] 11. split draw_column function
 [x] 12. parser norm

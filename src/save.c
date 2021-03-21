@@ -6,55 +6,12 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 17:05:13 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/19 23:08:12 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/21 15:01:15 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-static void	header(t_all *all, int fd)
-{
-	int		gg;
-
-	write(fd, "BM", 2);
-	gg = all->map->w * all->map->h * 4;
-	write(fd, &gg, 4);
-	gg = 0;
-	write(fd, &gg, 2);
-	write(fd, &gg, 2);
-	gg = 54;
-	write(fd, &gg, 4);
-	gg = 40;
-	write(fd, &gg, 4);
-	gg = all->map->w;
-	write(fd, &gg, 4);
-	gg = all->map->h;
-	write(fd, &gg, 4);
-	gg = 1;
-	write(fd, &gg, 2);
-	gg = 32;
-	write(fd, &gg, 2);
-	gg = 0;
-	write(fd, &gg, 24);
-}
-// int		scr_sh(t_all *cub)
-// {
-// 	int		fd;
-// 	int		i;
-
-// 	if ((fd = open("screenshot.bmp", O_RDWR | O_CREAT | O_TRUNC, 00600 | 00060 | 00006)) < 0)
-// 	{
-// 		return (0);
-// 	}
-// 	search_wall(cub);
-// 	header(cub, fd);
-// 	i = cub->height;
-// 	while (--i >= 0)
-// 		write(fd, cub->data + i * cub->width * 4, 4 * cub->width);
-// 	close(fd);
-// 	exita(cub);
-// 	return (0);
-// }
 void	bitmap_header(t_all *all, int fd)
 {
 	int		lint;
@@ -119,7 +76,7 @@ char	*bitmap_check_exist()
 	return (NULL);
 }
 
-void	bitmap_write_to_file(t_all *all)
+void	bitmap_to_file(t_all *all)
 {
 	int		fd;
 	int		index;
@@ -129,26 +86,20 @@ void	bitmap_write_to_file(t_all *all)
 	fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0666);
 	if (fd < 0)
 		throw_error(ERR_NO_FILE, 0);
-	
-	header(all, fd);
+	bitmap_header(all, fd);
+	bitmap_info_header(all, fd);
 	index = all->map->h;
-
 	while (--index >= 0)
-		write(fd, all->img.addr + index * all->map->w * 4, 4 * all->map->w);
-	// bitmap_header(all, fd);
-	// bitmap_info_header(all, fd);
-	// index = all->map->h;
-	// while (--index >= 0)
-	// {
-	// 	write(fd, all->img.addr + index * all->map->w * 4, all->map->w * 4);
-	// }
+	{
+		write(fd, all->img.addr + index * all->map->w * 4, all->map->w * 4);
+	}
 	close(fd);
 }
 
 void make_screenshot(t_all *all)
 {
-	//DO
 	init_all(all);
-	draw_walls(all);
-	bitmap_write_to_file(all);
+	draw_all(all);
+	bitmap_to_file(all);
+	//clean_all_data
 }

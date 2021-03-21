@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/21 09:23:20 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/21 17:55:46 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@ typedef struct		s_map
 	char			*SO_path;
 	char			*WE_path;
 	char			*EA_path;
+	char			*WP_path;
+	char			*F_path;
+	char			*C_path;
+	char			*SK_path;
+	char			*music;
+	char			*sound;
 	char			*sprite;
 	t_clr			f;
 	t_clr			c;
@@ -107,6 +113,7 @@ typedef struct	s_all
 	t_texture flr;
 	t_texture wpn;
 	t_texture *cur;
+
 	int		color;
 
 	/*raycast*/
@@ -152,10 +159,9 @@ typedef struct	s_all
 	double c;
 
 	double brightness;
-	int opposite;
+	int opposite; //do i need this ?
 	unsigned int frame_count;
 	double *ZBuffer;
-	int *s_order;
 
 	pid_t music;
 	pid_t sound;
@@ -167,6 +173,9 @@ typedef struct	s_all
 	int		pmx;
 	int		pmy;
 	double	rotate;
+
+	int screen_w;
+	int screen_h;
 }				t_all;
 
 #endif

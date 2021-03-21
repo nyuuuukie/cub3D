@@ -1,10 +1,15 @@
-R 500 400
+R 800 600
 
-S sprites/kkk.xpm
-NO textures/textureNO.xpm
-SO textures/textureSO.xpm
-WE textures/textureWE.xpm
-EA textures/textureEA.xpm
+S sprites/kitty.xpm
+NO textures/bigdoor.xpm
+SO textures/cement2.xpm
+WE textures/cement3.xpm
+EA textures/cement4.xpm
+
+SK textures/cyber.xpm
+WP textures/weapon.xpm
+
+MC music/oblivion.mp3
 
 F 255, 154, 141
 C 60, 74, 81                           
@@ -13,7 +18,7 @@ C 60, 74, 81
 1000000000000000000000001      1111
 1000000010000000000000001      1001
 1000000112000000000000001      1111
-1111100202020020000000001 
+1111100202020020000000001
 1111111111000001111111111
         1100000111111111111111111
         1000000000111000000000001

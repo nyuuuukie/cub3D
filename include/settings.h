@@ -6,12 +6,21 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/20 14:43:13 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/21 18:54:00 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_SETTINGS
 # define FT_SETTINGS
+
+#ifdef BONUS
+    #define RAIN
+    // #define CEIL
+    #define SKY
+    #define MUSIC
+    #define FLOOR
+    #define WEAPON
+#endif
 
 //#define CEIL
 

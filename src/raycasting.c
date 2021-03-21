@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/21 09:26:11 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/21 19:11:16 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,13 @@ void	draw_rain(t_all *all)
 		while (y < all->map->h)
 		{
 			drop_len = random_number(5, 40);
-			start = y + random_number(0, drop_len + 1);
+			start = y + random_number(y, y + drop_len + 1);
 			while (y < start + drop_len && y < all->map->h)
 			{
-				if (rand() % 100 < 20)
-					write_pixel_to_img(&all->img, x, y, 0x005F5F5F);
-				else if (x % 5 == 0)
-					write_pixel_to_img(&all->img, x, y, 0x005F5F5F);
+				if (rand() % 100 < 10 && y < all->a * x * x + all->b*x+ all->c)
+					write_pixel_to_img(&all->img, x, y, 0x003F3F3F);
+				else if (x % 10 == 0)
+					write_pixel_to_img(&all->img, x, y, 0x003F3F3F);
 				y++;
 			}
 			y += random_number(30, 70);
@@ -136,12 +136,11 @@ void	draw_weapon(t_all *all)
 
 void	draw_sprites(t_all *all)
 {
-	
 	calculate_dist_to_sprite(all);
 	if (all->map->sprites > 1)
 		sort_sprites(all);
-	else
-		all->s_order[0] = 0;
+	// else
+	// 	all->s_order[0] = 0;
 
     //after sorting the sprites, do the projection and draw them
 	for (int i = 0; i < all->map->sprites; i++)
@@ -260,16 +259,28 @@ void	recognize_texture(t_all *all)
 	all->n = ang;
 }
 
-int		render(t_all *all)
+int		mouse_action(t_all *all)
 {
-	all->frame_count++;
-	mlx_do_sync(all->mlx);
-	key_action(all);
-	mlx_mouse_get_pos(all->mlx, all->win, &all->cmx, &all->cmy);
-	double pos = 1.0 * (all->pmx - all->cmx) / all->map->w;
+	mlx_mouse_hide();
+	#ifdef LINUX
+		mlx_mouse_get_pos(all->mlx, all->win, &all->cmx, &all->cmy);
+	#else
+		mlx_mouse_get_pos(all->win, &all->cmx, &all->cmy);
+	#endif
+	
+	double angle = 5.0 * abs(all->pmx - all->cmx) / all->map->w;
+	int sign = 1;
+	if (all->pmx - all->cmx < 0)
+		sign = -1;
 	all->pmx = all->cmx;
-	rotate_m(all, pos);
+	rotate(all, sign, angle);
+	return (0);
+}
+
+int		draw_all(t_all *all)
+{
 	draw_walls(all);
+	
 	if (all->map->sprites > 0)
 		draw_sprites(all);
 
@@ -280,35 +291,38 @@ int		render(t_all *all)
 			draw_weapon(all);
 		}
 	#endif
-	
+	return (0);
+}
+
+int		render(t_all *all)
+{
+	mlx_do_sync(all->mlx);
+	all->frame_count++;
+	key_action(all);
+	mouse_action(all);
+	draw_all(all);
+	// printf("%d\n", all->no.h);
 	mlx_put_image_to_window(all->mlx, all->win, all->img.img, 0, 0);
 	return (0);
 }
 
-int		mouse_action(int button, int x, int y, t_all *all)
-{
-	printf("%d button\n", button);
-	printf("%d x\n", x);
-	printf("%d y\n", y);
-	printf("%d w\n", all->map->w);
-	return (0);
-}
+// int		mouse_action(int button, int x, int y, t_all *all)
+// {
+// 	printf("%d button\n", button);
+// 	printf("%d x\n", x);
+// 	printf("%d y\n", y);
+// 	printf("%d w\n", all->map->w);
+// 	return (0);
+// }
 
 void	start_main_loop(t_all *all)
 {
-	all->frame_count = 0;
-	all->offset = 0.0;
-	all->pmx = all->map->w / 2;
 	init_all(all);
-	all->ZBuffer = malloc(sizeof(double) * all->map->w);
-	all->s_order = malloc(sizeof(int) * all->map->sprites);
-	init_sprites(all);
-	
-	#ifdef BONUS
-		music_start(&all->music, "cyber.mp3");
+
+	#ifdef MUSIC
+		music_start(&all->music, "music/oblivion.mp3");
 	#endif
 
-	//mlx_mouse_hook(all->win, mouse_action, &all);
 	mlx_hook(all->win, KEY_PRESS_EVENT, KEY_PRESS_MASK, key_press, all);
 	mlx_hook(all->win, KEY_CLOSE_EVENT, KEY_CLOSE_MASK, stop_engine, all);
 	mlx_hook(all->win, KEY_RELEASE_EVENT, KEY_RELEASE_MASK, key_release, all);
@@ -519,6 +533,44 @@ void	draw_floor(t_all *all)
 	}
 }
 
+void	draw_floor_ceil(t_all *all, int x, int y)
+{
+	int f;
+	int c;
+	double d_k;
+
+	// #ifdef BONUS
+	// 	calculate_floor_color(all, y);
+	// #endif
+
+	#ifdef FLOOR
+		calculate_floor_color(all, y);
+		f = color_from_img(&all->flr.img, all->tex_f.x, all->tex_f.y);
+	#else
+		f = color_from_prm(&all->map->f);
+	#endif
+
+	#ifdef CEIL
+		c = color_from_img(&all->sky.img, all->tex_c.x, all->tex_c.y);
+	#elif defined SKY
+		c = calculate_skybox_color(all, all->map->h - y);
+	#else
+		c = color_from_prm(&all->map->c);
+	#endif
+
+	if (all->keys.p)
+	{
+		if (y < all->a * x * x + all->b * x + all->c)
+			d_k = 1.15;
+		else
+			d_k = 1.1;
+		f = color_make_darker(1 - (double)y / (d_k * all->map->h), f);
+		c = color_make_darker(1 - (double)y / (d_k * all->map->h), c);
+	}
+	write_pixel_to_img(&all->img, x, y, f);
+	write_pixel_to_img(&all->img, x, all->map->h - y - 1, c);
+}
+
 void	write_column_to_img(t_all *all, int x)
 {
 	double step = 1.0 * all->cur->w / all->wall_h;
@@ -548,8 +600,7 @@ void	write_column_to_img(t_all *all, int x)
 		//		all->color = calculate_skybox_color(all, y);
 		//	#else
 		//		all->color = color_from_prm(&all->map->c);
-		//	#endif
-			
+		//	#endif	
 		//	//#ifdef CEIL
 		//	//	all->color = calculate_floor_color(all, &all->sky, y);
 		//	//#endif
@@ -559,51 +610,52 @@ void	write_column_to_img(t_all *all, int x)
 		//}
 		if (y > all->wall_end)
 		{		
-			double d_k;
-				
-			#ifdef BONUS
-				calculate_floor_color(all, y);
-				all->color = color_from_img(&all->flr.img, all->tex_f.x, all->tex_f.y);
-				write_pixel_to_img(&all->img, x, y, all->color);
-				#ifdef CEIL
-					all->color = color_from_img(&all->sky.img, all->tex_c.x, all->tex_c.y);
-				#else
-					all->color = calculate_skybox_color(all, all->map->h - y);
-				#endif
-				write_pixel_to_img(&all->img, x, all->map->h - y - 1, all->color);
-			#else
-				all->color = color_from_prm(&all->map->f);
-				write_pixel_to_img(&all->img, x, y, all->color);
-				all->color = color_from_prm(&all->map->c);
-				write_pixel_to_img(&all->img, x, all->map->h - y - 1, all->color);
-			#endif
+			// double d_k;
 
-			if (all->keys.p)
-			{
-				if (y < all->a * x * x + all->b * x + all->c)
-					d_k = 1.15;
-				else
-					d_k = 1.1;
+			// #ifdef BONUS
+			// 	calculate_floor_color(all, y);
+			// 	all->color = color_from_img(&all->flr.img, all->tex_f.x, all->tex_f.y);
+			// 	write_pixel_to_img(&all->img, x, y, all->color);
+			// 	#ifdef CEIL
+			// 		all->color = color_from_img(&all->sky.img, all->tex_c.x, all->tex_c.y);
+			// 	#else
+			// 		all->color = calculate_skybox_color(all, all->map->h - y);
+			// 	#endif
+			// 	write_pixel_to_img(&all->img, x, all->map->h - y - 1, all->color);
+			// #else
+			// 	all->color = color_from_prm(&all->map->f);
+			// 	write_pixel_to_img(&all->img, x, y, all->color);
+			// 	all->color = color_from_prm(&all->map->c);
+			// 	write_pixel_to_img(&all->img, x, all->map->h - y - 1, all->color);
+			// #endif
 
-				all->color = color_make_darker(1 - (double)y / (d_k * all->map->h), all->color);
-			}
+			// if (all->keys.p)
+			// {
+			// 	if (y < all->a * x * x + all->b * x + all->c)
+			// 		d_k = 1.15;
+			// 	else
+			// 		d_k = 1.1;
+
+			// 	all->color = color_make_darker(1 - (double)y / (d_k * all->map->h), all->color);
+			// }
+			draw_floor_ceil(all, x, y);
 		}
 		else if (y >= all->wall_beg)
 		{
-			all->tex.y = (int)texPos & (all->cur->h - 1); 
+			all->tex.y = (int)texPos; 
 			texPos += step;
 		 	
 			all->color = color_from_img(&all->cur->img, all->tex.x, all->tex.y);
-			#ifdef BONUS
-				if (all->keys.p)
-					all->color = color_make_darker(all->dist_to_wall / 10, all->color);				
-			#endif
+			// #ifdef BONUS
+			// 	if (all->keys.p)
+			// 		all->color = color_make_darker(all->dist_to_wall / 10, all->color);				
+			// #endif
 			write_pixel_to_img(&all->img, x, y, all->color);
 		}
-		all->color = color_make_darker(all->brightness, all->color);
+		// all->color = color_make_darker(all->brightness, all->color);
 		
-		if (all->keys.p && all->frame_count % 100 < 5)
-			all->color = color_negative(all->color);
+		// if (all->keys.p && all->frame_count % 100 < 5)
+		// 	all->color = color_negative(all->color);
 		
 		//if ((all->color & 0x00FFFFFF) != 0)
 			//write_pixel_to_img(&all->img, x, y, all->color);

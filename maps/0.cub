@@ -1,10 +1,10 @@
 R 800 600
 
-S sprites/man.xpm
-NO textures/cement1.xpm
-SO textures/cement2.xpm
-WE textures/cement3.xpm
-EA textures/cement4.xpm
+S sprites/barrel.xpm
+NO textures/no.xpm
+SO textures/so.xpm
+WE textures/we.xpm
+EA textures/ea.xpm
 
 F 255, 154, 141
 C 60, 74, 81                           
