@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/21 18:54:00 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/22 15:15:00 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,7 @@
 /* Map */
 # define ALLOWED_MAP_SPEC "012NSWE "
 
+#define S_VOLUME "-f 15000"
+#define M_VOLUME "-f 5000"
 
 #endif

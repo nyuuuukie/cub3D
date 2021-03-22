@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 21:40:51 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/18 23:52:38 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/22 11:57:54 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char*	create_line(int cols, char def)
 
 	i = 0;
 	if (!(line = ft_calloc(cols + 1, sizeof(char))))
-		throw_error(ERR_CANNOT_ALLOC, 0);
+		throw_parse_error(ERR_CANNOT_ALLOC, 0);
 	while (i < cols)
 		line[i++] = def;
 	return (line);
@@ -43,7 +43,7 @@ void	arr_create(char ***arr, int rows, int cols)
 
 	i = 0;
 	if (!(*arr = ft_calloc(rows + 1, sizeof(char *))))
-		throw_error(ERR_CANNOT_ALLOC, 0);
+		throw_parse_error(ERR_CANNOT_ALLOC, 0);
 	while (i < rows)
 	{
 		(*arr)[i] = create_line(cols + 2, ' ');

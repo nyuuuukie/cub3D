@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:34:29 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/14 10:22:08 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/22 12:02:48 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*get_error_msg(t_error code)
 	return (errors[code]);
 }
 
-void	throw_error(t_error msg, char *add)
+void	throw_parse_error(t_error msg, char *add)
 {
 	t_map	*map;
 
@@ -49,10 +49,18 @@ void	throw_error(t_error msg, char *add)
 	exit(1);
 }
 
+void	throw_engine_error(t_all *all, t_error msg, char *add)
+{
+	print_error(get_error_msg(msg), 0, add);
+	//free_all
+	free_map(all->map);
+	exit(1);
+}
+
 void	print_error(char *msg, t_track *track, char *add)
 {
 	ft_putstr_fd("Error\n", 2);
-	if (track->line != 0)
+	if (track && track->line != 0)
 	{
 		ft_putstr_fd("Line [", 2);
 		ft_putnbr_fd(track->line, 2);

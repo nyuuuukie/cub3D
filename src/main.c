@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:46:26 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/09 21:29:56 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/22 11:57:54 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,6 +263,6 @@ int		main(int argc, char **argv)
 		start_engine(&map, argc);
 	}
 	else
-		throw_error(ERR_ARG_NUM, 0);
+		throw_parse_error(ERR_ARG_NUM, 0);
 	return (0);
 }

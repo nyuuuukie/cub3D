@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:10:32 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/18 23:42:35 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/22 11:57:54 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	flood_fill_iter(char **arr, int row, int col)
 				map = get_map(0);
 				map->tr.i = col;
 				map->tr.line += i - 2;
-				throw_error(ERR_MAP_NOT_CLOSED, 0);
+				throw_parse_error(ERR_MAP_NOT_CLOSED, 0);
 			}
 			j--;
 		}
@@ -90,8 +90,8 @@ void	player_check(int count, int row, int col)
 		map->tr.i = col - 1;
 		map->tr.line += row - 1;
 		if (count == 0)
-			throw_error(ERR_PLAYER_NOT_FOUND, 0);
+			throw_parse_error(ERR_PLAYER_NOT_FOUND, 0);
 		else 
-			throw_error(ERR_TOO_MANY_PLAYERS, 0);
+			throw_parse_error(ERR_TOO_MANY_PLAYERS, 0);
 	}
 }

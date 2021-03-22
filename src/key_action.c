@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 19:39:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/21 19:05:22 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/22 12:10:53 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,7 @@ int key_action(t_all *all)
 		rotate(all, 1, all->r_angle);
 	if (all->keys.r && !all->keys.l)
 		rotate(all, -1, all->r_angle);
-	
 	all->k_speed = all->keys.sh + 1.0;
-	// all->k_speed = all->keys.sh * 0.5 + 1.0;
 	return (0);
 }
 

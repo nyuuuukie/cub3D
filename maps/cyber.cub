@@ -1,15 +1,19 @@
 R 800 600
 
-S sprites/man.xpm
+S sprites/kianu.xpm
 NO textures/bigdoor.xpm
 SO textures/techwall3.xpm
 WE textures/cement3.xpm
 EA textures/cement4.xpm
+
+SK textures/cyber.xpm
+FT textures/floor.xpm
 WP textures/weapon.xpm
 MC music/cyber.mp3
+SD music/wtfu.mp3
 
 F 255, 154, 141
-C 60, 74, 81                           
+C 60, 74, 81 
 
 1111111111111111111111111
 1000000000000000000000001      1111

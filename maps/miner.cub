@@ -7,9 +7,10 @@ WE textures/cement3.xpm
 EA textures/cement4.xpm
 
 SK textures/cyber.xpm
+FT textures/floor.xpm
 WP textures/weapon.xpm
-
-MC music/cyber.mp3
+MC music/oblivion.mp3
+SD music/idk.mp3
 
 F 255, 154, 141
 C 60, 74, 81                           

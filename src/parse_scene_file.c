@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 21:46:58 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/18 23:51:30 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/22 11:57:54 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		parse_prm(t_map *map)
 		map->tr.i = 0;
 		map->tr.line++;
 		if (!map_getline(map))
-			throw_error(ERR_ID_NOT_FOUND, 0);
+			throw_parse_error(ERR_ID_NOT_FOUND, 0);
 		if (ft_strcmp(map->line, "") != 0)
 			parse_identify_line(map);
 		free(map->line);

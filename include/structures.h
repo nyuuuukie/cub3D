@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/21 17:55:46 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/22 18:36:43 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ typedef struct		s_map
 	char			*WE_path;
 	char			*EA_path;
 	char			*WP_path;
-	char			*F_path;
-	char			*C_path;
+	char			*FT_path;
 	char			*SK_path;
 	char			*music;
 	char			*sound;
@@ -50,6 +49,7 @@ typedef struct		s_map
 	char			**arr;
 	t_list			*lst;
 	t_track			tr;
+	char			bonus;
 }					t_map;
 
 typedef struct  s_img
@@ -159,12 +159,11 @@ typedef struct	s_all
 	double c;
 
 	double brightness;
-	int opposite; //do i need this ?
+	// int opposite; //do i need this ?
 	unsigned int frame_count;
 	double *ZBuffer;
 
-	pid_t music;
-	pid_t sound;
+	
 
 	double offset;
 
@@ -176,6 +175,14 @@ typedef struct	s_all
 
 	int screen_w;
 	int screen_h;
+	
+
+	/* music */
+	int started;
+	pid_t music;
+	pid_t sound;
+	pthread_t pmusic;
+	pthread_mutex_t sound_lock;
 }				t_all;
 
 #endif

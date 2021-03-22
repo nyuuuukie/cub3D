@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:47:11 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/21 17:16:52 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/22 13:20:35 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,12 @@ void	free_map(t_map *map)
 		free(map->SK_path);
 	if (map->WP_path)
 		free(map->WP_path);
-	if (map->F_path)
-		free(map->F_path);
-	if (map->C_path)
-		free(map->C_path);
+	if (map->FT_path)
+		free(map->FT_path);
+	if (map->sound)
+		free(map->sound);
+	if (map->music)
+		free(map->music);
 	if (map->arr)
 		arr_delete(map->arr);
 	if (map->lst)
@@ -50,6 +52,7 @@ t_map	*get_map(t_map *map)
 
 void	set_defaults(t_map *map)
 {
+	map->bonus = 0;
 	map->w = 0;
 	map->h = 0;
 	map->NO_path = 0;  
@@ -58,8 +61,9 @@ void	set_defaults(t_map *map)
 	map->EA_path = 0;
 	map->SK_path = 0;
 	map->WP_path = 0;
-	map->F_path = 0;
-	map->C_path = 0;
+	map->FT_path = 0;
+	map->music = 0;
+	map->sound = 0;
 	map->sprite = 0;
 	map->f.val[0] = 0;
 	map->f.val[1] = 0;
@@ -74,5 +78,8 @@ void	set_defaults(t_map *map)
 	map->tr.i = 0;
 	map->tr.line = 0;
 	map->sprites = 0;
+	#ifdef BONUS
+		map->bonus = 1;
+	#endif
 	get_map(map);
 }

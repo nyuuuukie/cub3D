@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:37:15 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/21 19:04:41 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/22 18:57:36 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,18 @@ void	rotate(t_all *all, int sign, double angle)
 	vector_rotate(&all->plane, sign * angle);                                                                            
 }
 
-// void	rotate_m(t_all *all, double angle)
-// {
-// 	vector_rotate(&all->dir, angle);
-// 	vector_rotate(&all->plane, angle);                                                                            
-// }
+void *init_fork(void * prm)
+{
+	t_all *all = (t_all*)prm;
+	if (!all->started)
+	{
+		all->started = 1;
+		sound_start(all, &all->sound, all->map->sound);
+		waitpid(all->sound, 0, 0);
+		all->started = 0;
+	}
+	return (NULL);
+}
 
 void	move(t_all *all, t_vector *base, int sign)
 {
@@ -35,4 +42,14 @@ void	move(t_all *all, t_vector *base, int sign)
 		all->pos.x = new.x;
 	if (!ft_strchr("21", all->map->arr[(int)all->pos.x][(int)new.y]))
 		all->pos.y = new.y;
+	
+	if (all->map->arr[(int)new.x][(int)all->pos.y] == '2' || 
+		all->map->arr[(int)all->pos.x][(int)new.y] == '2')
+	{
+		if (!all->started)
+		{
+			pthread_create(&all->pmusic, NULL, init_fork, all);
+			pthread_detach(all->pmusic);
+		}
+	}
 }

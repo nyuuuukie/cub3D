@@ -36,12 +36,6 @@ LFT_DIR = libft
 INC_DIR = include
 GNL_DIR = get_next_line
 
-# ifeq ($(BSRC), "TRUE")
-# 	ACT_DIR = ${BNS_DIR}
-# else
-# 	ACT_DIR = ${SRC_DIR}
-# endif
-
 ######################### SOURCES ############################
 
 SOURCES =	main.c \
@@ -81,22 +75,22 @@ HEADERS = $(INC_DIR)/*.h
 
 
 r: all
-	./${NAME} maps/1.cub
+	./${NAME} ${MAP}
 
 s: all
-	./${NAME} maps/1.cub --save
+	./${NAME} ${MAP} --save
 
 br: bonus
-	./${NAME} maps/1.cub
+	./${NAME} ${MAP}
 
 bs: bonus
-	./${NAME} maps/1.cub --save
+	./${NAME} ${MAP} --save
 
 bdebug:
-	$(MAKE) DEBUG="-g" br
+	$(MAKE) DEBUG="-g" br MAP=${MAP}
 
 debug:
-	$(MAKE) DEBUG="-g"
+	$(MAKE) DEBUG="-g" r MAP=${MAP}
 
 all: libft mlx create_dir $(ACT_DIR) $(NAME)
 

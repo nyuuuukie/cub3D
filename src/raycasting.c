@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/21 19:11:16 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/22 18:21:00 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,6 @@ void	draw_sprites(t_all *all)
 		vector_init(&s, all->sprites[i].x - all->pos.x, all->sprites[i].y - all->pos.y);
 		//translate sprite position to relative to camera
 
-
 		double invDet = 1.0 / (all->plane.x * all->dir.y - all->dir.x * all->plane.y); //required for correct matrix multiplication
 
 		double transformX = invDet * (all->dir.y * s.x - all->dir.x * s.y);
@@ -172,19 +171,21 @@ void	draw_sprites(t_all *all)
 			drawStartY = 0;
 		int drawEndY = spriteHeight / 2 + all->map->h / 2 + vMoveScreen;
 		if (drawEndY >= all->map->h)
-			drawEndY = all->map->h - 1;
+			drawEndY = all->map->h;// - 1;
 
 		//calculate width of the sprite
 		int spriteWidth = abs( (int) (all->map->w / (transformY))) / uDiv;
 		int drawStartX = -spriteWidth / 2 + spriteScreenX;
-		if(drawStartX < 0) drawStartX = 0;
+		if(drawStartX < -1) drawStartX = -1;
 		int drawEndX = spriteWidth / 2 + spriteScreenX;
-		if(drawEndX >= all->map->w) drawEndX = all->map->w - 1;
+		if(drawEndX >= all->map->w) drawEndX = all->map->w;// - 1;
 
 		//loop through every vertical stripe of the sprite on screen
 		for (int stripe = drawStartX; stripe < drawEndX; stripe++)
 		{
-			int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * all->s.w / spriteWidth) / 256;
+			// if (stripe == 0)
+			// 	printf("")
+			int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * all->s.w / spriteWidth) / 256 + 1;
 			//the conditions in the if are:
 			//1) it's in front of camera plane so you don't see things behind you
 			//2) it's on the screen (left)
@@ -219,7 +220,7 @@ void	init_sprites(t_all *all)
 	n = 0;
 	all->sprites = malloc(sizeof(t_vector) * all->map->sprites);
 	if (!all->sprites)
-		throw_error(ERR_CANNOT_ALLOC, "Sprites");
+		throw_parse_error(ERR_CANNOT_ALLOC, "Sprites");
 	while (i < all->map->rows && n < all->map->sprites)
 	{
 		j = 0;
@@ -320,7 +321,7 @@ void	start_main_loop(t_all *all)
 	init_all(all);
 
 	#ifdef MUSIC
-		music_start(&all->music, "music/oblivion.mp3");
+		music_start(all, &all->music, all->map->music);
 	#endif
 
 	mlx_hook(all->win, KEY_PRESS_EVENT, KEY_PRESS_MASK, key_press, all);

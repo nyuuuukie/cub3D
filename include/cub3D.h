@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/21 19:05:20 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/22 18:45:02 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # include <string.h>
 # include <math.h>
 # define _USE_MATH_DEFINES
+
+#include <pthread.h>
+#include <semaphore.h> 
 
 
 # include "mlx.h"
@@ -51,7 +54,7 @@ void	print_status(char *title, char *name, char *status);
 
 /* Errors.c */
 char*	get_error_msg(t_error code);
-void	throw_error(t_error msg, char *add);
+void	throw_parse_error(t_error msg, char *add);
 void	print_error(char *msg, t_track *track, char *add);
 
 /* get_next_line */
@@ -131,7 +134,7 @@ double	get_angle(double radian);
 void make_screenshot(t_all *all);
 
 
-int music_start(pid_t *x, char *filename);
+int music_start(t_all *all, pid_t *x, char *filename);
 
 int music_stop(pid_t x);
 
@@ -141,5 +144,6 @@ void	init_sprites(t_all *all);
 
 
 int		draw_all(t_all *all);
-
+int		check_music_path(t_map *map, char *ext);
+int     sound_start(t_all *all, pid_t *id, char *filename);
 #endif

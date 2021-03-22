@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 18:15:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/21 19:01:05 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/22 18:38:09 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,15 @@ void	init_all(t_all *all)
 	all->offset = 0.0;
 	all->pmx = all->screen_w / 2;
 	all->ZBuffer = malloc(sizeof(double) * all->map->w);
+	all->started =0;
+
+	// sem_unlink("sound");
+	// all->sound_started = sem_open("sound", O_CREAT, S_IRWXU, 1);
+	// sem_init(&all->sound_started, 1, 1); //BONUS
 	init_window(all);
 	printf("%d %d\n", all->screen_w, all->screen_h);
-	mlx_mouse_move(all->win, all->screen_w / 2, all->screen_h / 2);
+	if (all->screen == 0)
+		mlx_mouse_move(all->win, all->screen_w / 2, all->screen_h / 2);
 	init_img(all, &all->img);
 	init_keys(all);
 	init_coord(all);

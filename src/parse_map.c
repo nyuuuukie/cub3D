@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/21 13:04:29 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/22 13:17:05 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		ft_atoi_u(char *s, int *number)
 void	check_symbol(t_map *map, const char c)
 {
 	if (map->line[map->tr.i] != c)
-		throw_error(ERR_MISSING_SYMBOL, &map->line[map->tr.i]);
+		throw_parse_error(ERR_MISSING_SYMBOL, &map->line[map->tr.i]);
 }
 
 void	check_and_skip(t_map *map, const char c)
@@ -48,19 +48,19 @@ void	get_number(t_map *map, char *separators, int *number)
 	int res;
 
 	if (map->line[map->tr.i] == '0' && ft_isdigit(map->line[map->tr.i + 1]))
-		throw_error(ERR_ZERO_BEFORE_NUM, &map->line[map->tr.i]);
+		throw_parse_error(ERR_ZERO_BEFORE_NUM, &map->line[map->tr.i]);
 	res = ft_atoi_u(&map->line[map->tr.i], number);
 	map->tr.i += res;
 	while (ft_isdigit(map->line[map->tr.i]))
 		map->tr.i++;
 	if (res == 0 || !ft_strchr(separators, map->line[map->tr.i]))
-		throw_error(ERR_MISSING_SYMBOL, &map->line[map->tr.i]);
+		throw_parse_error(ERR_MISSING_SYMBOL, &map->line[map->tr.i]);
 }
 
 void	check_number(unsigned int num, long long min, long long max)
 {
 	if (num < min || num > max)
-		throw_error(ERR_OUT_OF_BOUND, 0);
+		throw_parse_error(ERR_OUT_OF_BOUND, 0);
 }
 
 void	parse_resolution(t_map *map)
@@ -80,8 +80,23 @@ void	parse_resolution(t_map *map)
 
 void	check_duplicate(char *texture, char *ptr)
 {
+	ft_putstr_fd(texture, 1);
 	if (texture != NULL)
-		throw_error(ERR_DUPLICATE_SPEC, ptr);
+		throw_parse_error(ERR_DUPLICATE_SPEC, ptr);
+}
+
+void	parse_music(t_map *map, char **path, char *name)
+{
+	map->tr.i = 0;
+
+	check_duplicate(*path, map->line);
+	while (map->tr.i < ft_strlen(name))
+		check_and_skip(map, name[map->tr.i]);
+	check_symbol(map, ' ');
+	skip_symbol(map, ' ');
+	check_music_path(map, ".mp3");
+	*path = ft_strdup(&map->line[map->tr.i]);
+	print_status("Texture", name, "OK");
 }
 
 void	parse_path(t_map *map, char **texture, char *name)
@@ -131,6 +146,23 @@ void	parse_color(t_map *map, t_clr *clr, char *name)
 	print_status("Color", name, "OK");
 }
 
+void	parse_identify_line_bonus(t_map *map)
+{
+	printf("%s\n", map->sound);
+	if (!ft_strncmp(map->line, "SK", 2))
+		parse_path(map, &map->SK_path, "SK");
+	else if (!ft_strncmp(map->line, "WP", 2))
+		parse_path(map, &map->WP_path, "WP");
+	else if (!ft_strncmp(map->line, "FT", 2))
+		parse_path(map, &map->FT_path, "FT");
+	else if (!ft_strncmp(map->line, "MC", 2))
+		parse_music(map, &map->music, "MC");
+	else if (!ft_strncmp(map->line, "SD", 2))
+		parse_music(map, &map->sound, "SD");
+	else
+		throw_parse_error(ERR_ID_NOT_FOUND, 0);
+}
+
 void	parse_identify_line(t_map *map)
 {
 	if (!ft_strncmp(map->line, "R", 1))
@@ -143,14 +175,16 @@ void	parse_identify_line(t_map *map)
 		parse_path(map, &map->WE_path, "WE");
 	else if (!ft_strncmp(map->line, "EA", 2))
 		parse_path(map, &map->EA_path, "EA");
-	else if (!ft_strncmp(map->line, "S", 1))
+	else if (!ft_strncmp(map->line, "S ", 2))
 		parse_path(map, &map->sprite, "S");
-	else if (!ft_strncmp(map->line, "F", 1))
+	else if (!ft_strncmp(map->line, "F ", 2))
 		parse_color(map, &map->f, "F");
-	else if (!ft_strncmp(map->line, "C", 1))
+	else if (!ft_strncmp(map->line, "C ", 2))
 		parse_color(map, &map->c, "C");
+	else if (map->bonus == 1)
+		parse_identify_line_bonus(map);
 	else
-		throw_error(ERR_ID_NOT_FOUND, 0);
+		throw_parse_error(ERR_ID_NOT_FOUND, 0);
 }
 
 int		map_getline(t_map *map)
@@ -158,7 +192,7 @@ int		map_getline(t_map *map)
 	int res;
 
 	if ((res = get_next_line(map->fd, &map->line)) < 0)
-		throw_error(ERR_GET_NEXT_LINE, 0);
+		throw_parse_error(ERR_GET_NEXT_LINE, 0);
 	return (res);
 }
 
@@ -177,6 +211,17 @@ int		is_prm_complete(t_map *map)
 		res = 0;
 	if (map->sprite == 0)
 		res = 0;
+	if (map->bonus)
+	{
+		if (map->SK_path == 0)
+			res = 0;
+		if (map->FT_path == 0)
+			res = 0;
+		if (map->WP_path == 0)
+			res = 0;
+		if (map->sound == 0 || map->music == 0)
+			res = 0;
+	}
 	return (res);
 }
 
@@ -192,16 +237,11 @@ void	map_add_node(t_list **head, char *line)
 		if (ft_strchr(ALLOWED_MAP_SPEC, line[i++]) == NULL)
 		{
 			ft_lstclear(head, free);
-			throw_error(ERR_MISSING_SYMBOL, line);
+			throw_parse_error(ERR_MISSING_SYMBOL, line);
 		}
 	}
 	ft_lstadd_back(head, ft_lstnew(ft_strdup(line)));
 }
-
-// int		is_empty(char *str)
-// {
-// 	return (!str || *str == '\0');
-// }
 
 void	skip_empty_lines(t_map *map)
 {
@@ -217,7 +257,7 @@ void	skip_empty_lines(t_map *map)
 	if (res == 0)
 	{
 		free(map->line);
-		throw_error(ERR_MAP_MISSING, 0);
+		throw_parse_error(ERR_MAP_MISSING, 0);
 	}
 }
 
@@ -233,7 +273,7 @@ int		map_to_list(t_map *map)
 		free(map->line);
 		res = map_getline(map);
 		if (map->line[0] == '\0')
-			throw_error(ERR_MISSING_SYMBOL, "Empty line in map");
+			throw_parse_error(ERR_MISSING_SYMBOL, "Empty line in map");
 	}
 	map_add_node(&map->lst, map->line);
 	free(map->line);

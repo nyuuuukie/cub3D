@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 17:05:13 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/21 15:01:15 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/22 11:57:54 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	bitmap_to_file(t_all *all)
 	filename = bitmap_check_exist();
 	fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0666);
 	if (fd < 0)
-		throw_error(ERR_NO_FILE, 0);
+		throw_parse_error(ERR_NO_FILE, 0);
 	bitmap_header(all, fd);
 	bitmap_info_header(all, fd);
 	index = all->map->h;
