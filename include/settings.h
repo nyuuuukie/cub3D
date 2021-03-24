@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/22 15:15:00 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/24 21:02:20 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,11 @@
 # define FT_SETTINGS
 
 #ifdef BONUS
-    #define RAIN
     // #define CEIL
     #define SKY
     #define MUSIC
     #define FLOOR
-    #define WEAPON
 #endif
-
-//#define CEIL
 
 # define START_CUB3D 1
 # define MAKE_SCREENSHOT 2
@@ -51,9 +47,22 @@
 # define EXTENSION_LEN 5
 
 /* Map */
-# define ALLOWED_MAP_SPEC "012NSWE "
+#ifndef BONUS
+	# define ALLOWED_MAP_SPEC "012NSWE "
+	# define FLOOD_FILL_SPEC "02NSWE"
+	# define SPRITES "2"
+#else
+	# define ALLOWED_MAP_SPEC "0123NSWE "
+	# define FLOOD_FILL_SPEC "023NSWE"
+	# define SPRITES "23"
+#endif
 
-#define S_VOLUME "-f 15000"
-#define M_VOLUME "-f 5000"
+#ifndef LINUX
+	# define S_VOLUME "-f 10000"
+	# define M_VOLUME "-f 5000"
+#else
+	# define S_VOLUME "-g 80"
+	# define M_VOLUME "-g 40"
+#endif
 
 #endif

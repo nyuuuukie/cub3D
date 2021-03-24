@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/22 18:36:43 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/24 21:23:39 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct		s_map
 	char			*WP_path;
 	char			*FT_path;
 	char			*SK_path;
+	char			*AS_path;
 	char			*music;
 	char			*sound;
 	char			*sprite;
@@ -90,8 +91,11 @@ typedef struct 	s_keys
 	char d;
 	char r;
 	char l;
+	char k0;
+	char k1;
 	char p;
 	char sh;
+	char sp;
 }				t_keys;
 
 typedef struct	s_all
@@ -138,8 +142,9 @@ typedef struct	s_all
 	t_v_int tex_f;
 	t_v_int tex_c;
 	
-
+	double r;
 	double n;
+	double inc;
 
 	int		wall_beg;
 	int		wall_end;
@@ -159,19 +164,20 @@ typedef struct	s_all
 	double c;
 
 	double brightness;
-	// int opposite; //do i need this ?
 	unsigned int frame_count;
 	double *ZBuffer;
 
 	
 
-	double offset;
+	int offset;
 
 	int		cmx;
 	int		cmy;
 	int		pmx;
 	int		pmy;
 	double	rotate;
+
+
 
 	int screen_w;
 	int screen_h;
@@ -182,7 +188,19 @@ typedef struct	s_all
 	pid_t music;
 	pid_t sound;
 	pthread_t pmusic;
-	pthread_mutex_t sound_lock;
+
+	/* sprites */
+	t_v_int scale;
+	double vmove;
+	// t_vector s;
+	t_vector t;
+	t_vector d;
+	t_v_int s_size;
+	t_v_int s_beg;
+	t_v_int s_end;
+
+	int sp_scr_x;
+	int vm_scr;	
 }				t_all;
 
 #endif

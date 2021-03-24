@@ -6,12 +6,11 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:10:32 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/22 11:57:54 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/23 18:40:35 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
 
 void	map_validate(t_map *map)
 {
@@ -26,7 +25,7 @@ void	map_validate(t_map *map)
 		j = 0;
 		while (map->arr[i][j] != '\0')
 		{
-			if (ft_strchr("02NSWE", map->arr[i][j]))
+			if (ft_strchr(FLOOD_FILL_SPEC, map->arr[i][j]))
 				flood_fill(map->arr, i, j);
 			if (ft_strchr("NSEW", map->arr[i][j]) != NULL)
 				player_check(++count, i, j);
@@ -68,12 +67,14 @@ int		flood_fill(char **arr, int row, int col)
 	{
 		if (arr[row][col] == ' ' || arr[row][col] == '\0')
 			return (row);
-		else if (ft_strchr("02NSEW", arr[row][col]))
+		else if (ft_strchr(FLOOD_FILL_SPEC, arr[row][col]))
 		{
 			if (arr[row][col] == '2')
 				arr[row][col] = 'x';
 			if (arr[row][col] == '0')
 				arr[row][col] = '#';
+			if (arr[row][col] == '3')
+				arr[row][col] = '.';
 			flood_fill_iter(arr, row, col);
 		}
 	}

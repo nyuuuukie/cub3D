@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/22 13:17:05 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/23 19:16:32 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ void	parse_resolution(t_map *map)
 
 void	check_duplicate(char *texture, char *ptr)
 {
-	ft_putstr_fd(texture, 1);
 	if (texture != NULL)
 		throw_parse_error(ERR_DUPLICATE_SPEC, ptr);
 }
@@ -148,13 +147,14 @@ void	parse_color(t_map *map, t_clr *clr, char *name)
 
 void	parse_identify_line_bonus(t_map *map)
 {
-	printf("%s\n", map->sound);
 	if (!ft_strncmp(map->line, "SK", 2))
 		parse_path(map, &map->SK_path, "SK");
 	else if (!ft_strncmp(map->line, "WP", 2))
 		parse_path(map, &map->WP_path, "WP");
 	else if (!ft_strncmp(map->line, "FT", 2))
 		parse_path(map, &map->FT_path, "FT");
+	else if (!ft_strncmp(map->line, "AS", 2))
+		parse_path(map, &map->AS_path, "AS");
 	else if (!ft_strncmp(map->line, "MC", 2))
 		parse_music(map, &map->music, "MC");
 	else if (!ft_strncmp(map->line, "SD", 2))
@@ -213,11 +213,9 @@ int		is_prm_complete(t_map *map)
 		res = 0;
 	if (map->bonus)
 	{
-		if (map->SK_path == 0)
+		if (map->WP_path == 0 || map->SK_path == 0)
 			res = 0;
-		if (map->FT_path == 0)
-			res = 0;
-		if (map->WP_path == 0)
+		if (map->FT_path == 0 || map->AS_path == 0)
 			res = 0;
 		if (map->sound == 0 || map->music == 0)
 			res = 0;

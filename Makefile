@@ -73,6 +73,7 @@ HEADERS = $(INC_DIR)/*.h
 
 ######################## INSTRUCTIONS ########################
 
+all: libft mlx create_dir $(ACT_DIR) $(NAME)
 
 r: all
 	./${NAME} ${MAP}
@@ -92,8 +93,6 @@ bdebug:
 debug:
 	$(MAKE) DEBUG="-g" r MAP=${MAP}
 
-all: libft mlx create_dir $(ACT_DIR) $(NAME)
-
 create_dir:
 	@mkdir -p $(OBJ_DIR)
 
@@ -111,7 +110,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(LFT_DIR)/$(LIBFT_NAME) $(MLX_DIR)/$(MLX_NAME) $
 	@$(CC) $(DEBUG) $(BONUS) $(OS_FLAG) $(CFLAGS) -c $< $(INCLUDE_FLAGS) -o $@
 
 $(NAME): $(OBJECTS) $(GNL_OBJ) $(HEADERS) 
-	@$(CC) $(DEBUG) $(BONUS) $(CFLAGS) $(GNL_OBJ) $(OBJECTS) $(LIBFT_FLAGS) $(MLX_FLAGS) -o $@
+	@$(CC) $(DEBUG) $(BONUS) $(CFLAGS) $(GNL_OBJ) $(OBJECTS) $(LIBFT_FLAGS) $(MLX_FLAGS) -o $@ -lpthread
 	@echo "$(NAME) created"
 
 clean:

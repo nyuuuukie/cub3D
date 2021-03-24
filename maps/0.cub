@@ -1,12 +1,12 @@
-R 800 600
+R 1000 800
 
-S sprites/barrel.xpm
-NO textures/no.xpm
-SO textures/so.xpm
-WE textures/we.xpm
-EA textures/ea.xpm
+S sprites/kitty.xpm
+NO textures/base/no.xpm
+SO textures/base/so.xpm
+WE textures/base/we.xpm
+EA textures/base/ea.xpm
 
-F 60, 140, 80
+F 20, 20, 20
 C 60, 74, 81                           
 
 1111111111111111111111111

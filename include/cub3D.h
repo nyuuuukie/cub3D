@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/22 18:45:02 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/23 19:34:53 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 
 #include <pthread.h>
 #include <semaphore.h> 
+#include <sys/wait.h>
 
 
 # include "mlx.h"
@@ -34,6 +35,12 @@
 # include "keycodes.h"
 # include "settings.h"
 # include "structures.h"
+
+void	draw_background(t_all *all, int x);
+
+int		calculate_floor_color(t_all *all, int y);
+int		calculate_skybox_color(t_all *all, int y);
+
 
 /* Check input arguments */
 int		check_save_arg(int argc, char **argv);
@@ -121,7 +128,7 @@ void	move(t_all *all, t_vector *base, int sign);
 /* colors.c */
 int		color_make_lighter(double perc, int color);
 int		color_make_darker(double perc, int color);
-int		color_from_img(t_img *img, int x, int y);
+int		color_from_txt(t_texture *txt, int x, int y);
 int		color_negative(int color);
 int		color_from_prm(t_clr *clr);
 
@@ -146,4 +153,7 @@ void	init_sprites(t_all *all);
 int		draw_all(t_all *all);
 int		check_music_path(t_map *map, char *ext);
 int     sound_start(t_all *all, pid_t *id, char *filename);
+
+void init_music(t_all *all);
+void *init_fork(void * prm);
 #endif

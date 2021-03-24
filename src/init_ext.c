@@ -6,29 +6,49 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 18:15:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/22 18:38:09 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/24 21:12:14 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	init_all(t_all *all)
+void init_mouse(t_all *all)
+{
+	int h;
+	int w;
+	
+	if (all->map->bonus && all->screen == 0)
+	{
+		h = all->screen_h / 2;
+		w = all->screen_w / 2;
+		#ifdef LINUX
+			mlx_mouse_move(all->mlx, all->win, w, h);
+		#else
+			mlx_mouse_move(all->win, w, h);
+		#endif
+	}
+}
+
+void 	init_params(t_all *all)
 {
 	all->m_speed = 0.066f;
 	all->r_angle = 0.066f;
 	all->frame_count = 0;
-	all->offset = 0.0;
+	all->r = -60;
+	all->inc = 3;
+	all->offset = 0;
 	all->pmx = all->screen_w / 2;
 	all->ZBuffer = malloc(sizeof(double) * all->map->w);
-	all->started =0;
+	all->started = 0;
+	vector_int_init(&all->scale, 1, 1);
+	all->vmove = 0.0;
+}
 
-	// sem_unlink("sound");
-	// all->sound_started = sem_open("sound", O_CREAT, S_IRWXU, 1);
-	// sem_init(&all->sound_started, 1, 1); //BONUS
-	init_window(all);
-	printf("%d %d\n", all->screen_w, all->screen_h);
-	if (all->screen == 0)
-		mlx_mouse_move(all->win, all->screen_w / 2, all->screen_h / 2);
+void	init_all(t_all *all)
+{
+	init_params(all);
+	init_window(all);	
+	init_mouse(all);
 	init_img(all, &all->img);
 	init_keys(all);
 	init_coord(all);

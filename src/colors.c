@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 01:16:02 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/19 18:01:48 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/24 14:43:02 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,15 @@ int		color_from_prm(t_clr *clr)
 	return (0L | clr->val[0] << 16 | clr->val[1] << 8 | clr->val[2]);	
 }
 
-int		color_from_img(t_img *img, int x, int y)
+int		color_from_txt(t_texture *txt, int x, int y)
 {
-	return (*(int *)(img->addr + y * img->len + x * (img->bpp / 8))); 
+	t_img *img;
+
+	img = &txt->img;
+	if (x >= 0 && y >= 0 && x <= txt->w && y <= txt->h)
+		return (*(int *)(img->addr + y * img->len + x * (img->bpp / 8))); 
+	else
+		return (0x00000000);
 }
 
 int		color_make_darker(double perc, int color)

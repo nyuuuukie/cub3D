@@ -1,14 +1,15 @@
-R 800 600
+R 1000 800
 
 S sprites/kianu.xpm
-NO textures/bigdoor.xpm
-SO textures/techwall3.xpm
-WE textures/cement3.xpm
-EA textures/cement4.xpm
+NO textures/cyber/bigdoor.xpm
+SO textures/cyber/cement2.xpm
+WE textures/cyber/cement3.xpm
+EA textures/cyber/cement4.xpm
 
-SK textures/cyber.xpm
-FT textures/floor.xpm
-WP textures/weapon.xpm
+AS sprites/woman.xpm
+SK textures/cyber/cyber.xpm
+FT textures/cyber/floor.xpm
+WP textures/cyber/weapon.xpm
 MC music/cyber.mp3
 SD music/wtfu.mp3
 
