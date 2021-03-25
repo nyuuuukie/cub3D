@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 01:16:02 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/24 14:43:02 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/25 17:41:33 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,5 @@ int	color_negative(int color)
 	r = (255 - ((color & 0x00FF0000) >> 16));
 	g = (255 - ((color & 0x0000FF00) >> 8));
 	b = (255 - ((color & 0x000000FF) >> 0));	
-
 	return ((color & 0xFF000000) | (r << 16) | (g << 8) | b);
-	// return (~color - 1);
 }

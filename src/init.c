@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 21:48:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/23 08:20:13 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/25 14:39:17 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,10 @@ void	init_textures(t_all *all)
 	init_texture(all->mlx, all->map->SO_path, &all->so);
 	init_texture(all->mlx, all->map->WE_path, &all->we);
 	init_texture(all->mlx, all->map->EA_path, &all->ea);
-	init_texture(all->mlx, all->map->sprite, &all->s);
+	init_texture(all->mlx, all->map->sprite, &all->s1);
 	if (all->map->bonus)
 	{
+		init_texture(all->mlx, all->map->AS_path, &all->s2);
 		init_texture(all->mlx, all->map->WP_path, &all->wpn);
 		init_texture(all->mlx, all->map->FT_path, &all->flr);
 		init_texture(all->mlx, all->map->SK_path, &all->sky);

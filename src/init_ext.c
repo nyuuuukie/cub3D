@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 18:15:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/24 21:12:14 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/25 21:24:21 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@ void 	init_params(t_all *all)
 	all->offset = 0;
 	all->pmx = all->screen_w / 2;
 	all->ZBuffer = malloc(sizeof(double) * all->map->w);
+
+	all->floor_exist = 0;
+	all->sky_exist = 0;
+	all->ceil_exist = 0;
+
+	if (!all->ZBuffer)
+		throw_parse_error(ERR_CANNOT_ALLOC, 0);
+
 	all->started = 0;
 	vector_int_init(&all->scale, 1, 1);
 	all->vmove = 0.0;
@@ -47,7 +55,8 @@ void 	init_params(t_all *all)
 void	init_all(t_all *all)
 {
 	init_params(all);
-	init_window(all);	
+	init_bonus_flags(all);
+	init_window(all);
 	init_mouse(all);
 	init_img(all, &all->img);
 	init_keys(all);

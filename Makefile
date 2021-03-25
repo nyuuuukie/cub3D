@@ -54,9 +54,10 @@ SOURCES =	main.c \
 			init.c \
 			init_ext.c \
 			colors.c\
-			angle_radian.c\
+			math_utils.c\
 			music.c \
-			save.c
+			save.c \
+			clean.c
 
 B_SOURCES = 
 

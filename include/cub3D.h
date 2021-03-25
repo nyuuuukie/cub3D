@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/23 19:34:53 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/25 21:19:56 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,9 @@ int		draw_all(t_all *all);
 int		check_music_path(t_map *map, char *ext);
 int     sound_start(t_all *all, pid_t *id, char *filename);
 
-void init_music(t_all *all);
-void *init_fork(void * prm);
+void    init_music(t_all *all);
+void    *init_fork(void * prm);
+
+void    free_all(t_all *all);
+void	init_bonus_flags(t_all *all);
 #endif

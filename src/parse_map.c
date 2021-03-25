@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/23 19:16:32 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/25 21:48:36 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,8 @@ void	parse_color(t_map *map, t_clr *clr, char *name)
 	int j;
 
 	j = 0;
+	if (clr->set == 1)
+		throw_parse_error(ERR_DUPLICATE_SPEC, "Color");
 	check_and_skip(map, name[0]);
 	check_and_skip(map, ' ');
 	while (j < 3)

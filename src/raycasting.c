@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/24 21:26:38 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/25 21:19:16 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	show_sprites_dist(t_all *all)
 	i = 0;
 	while (i < all->map->sprites)
 	{
-		printf("%d %.3f %.3f %.3f\n", i, all->sprites[i].x, all->sprites[i].y, all->sprites[i].dist);		
+		printf("%d %.3f %.3f %.3f\n", i, all->sprites[i].p.x, all->sprites[i].p.y, all->sprites[i].p.dist);		
 		i++;
 	}
 }
@@ -36,15 +36,24 @@ void	calculate_dist_to_sprite(t_all *all)
 	i = 0;
 	while (i < all->map->sprites)
 	{
-		vector_init(&a, all->pos.x - all->sprites[i].x, all->pos.y - all->sprites[i].y);
-		all->sprites[i].dist = a.x * a.x + a.y * a.y;
+		vector_init(&a, all->pos.x - all->sprites[i].p.x, all->pos.y - all->sprites[i].p.y);
+		all->sprites[i].p.dist = a.x * a.x + a.y * a.y;
 		i++;
 	}
 }
 
-void	swap_values(double *a, double *b)
+void	swap_d_values(double *a, double *b)
 {
 	double temp;
+
+	temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+void	swap_c_values(char *a, char *b)
+{
+	char temp;
 
 	temp = *a;
 	*a = *b;
@@ -58,11 +67,12 @@ void	sort_sprites(t_all *all)
 	i = 0;
 	while (i < all->map->sprites - 1)
 	{
-		if (all->sprites[i].dist < all->sprites[i + 1].dist)
+		if (all->sprites[i].p.dist < all->sprites[i + 1].p.dist)
 		{
-			swap_values(&all->sprites[i].x, &all->sprites[i + 1].x);
-			swap_values(&all->sprites[i].y, &all->sprites[i + 1].y);
-			swap_values(&all->sprites[i].dist, &all->sprites[i + 1].dist);
+			swap_d_values(&all->sprites[i].p.x, &all->sprites[i + 1].p.x);
+			swap_d_values(&all->sprites[i].p.y, &all->sprites[i + 1].p.y);
+			swap_c_values(&all->sprites[i].id, &all->sprites[i + 1].id);
+			swap_d_values(&all->sprites[i].p.dist, &all->sprites[i + 1].p.dist);
 			i = -1;
 		}	
 		i++;
@@ -171,8 +181,8 @@ void	draw_sprites(t_all *all)
 
 	for (int i = 0; i < all->map->sprites; i++)
     {
-		vector_init(&all->d, all->sprites[i].x - all->pos.x, 
-						all->sprites[i].y - all->pos.y);
+		vector_init(&all->d, all->sprites[i].p.x - all->pos.x, 
+						all->sprites[i].p.y - all->pos.y);
 
 		det = 1.0 / (all->plane.x * all->dir.y - all->dir.x * all->plane.y);
 
@@ -199,26 +209,33 @@ void	draw_sprites(t_all *all)
 		if (all->s_end.x >= all->map->w) 
 			all->s_end.x = all->map->w;// - 1;
 		
+		t_texture *s;
+
+		if (all->sprites[i].id == '2')
+			s = &(all->s1);
+		else
+			s = &(all->s2);
+
 		for (int sx = all->s_beg.x; sx < all->s_end.x; sx++)
 		{
-			all->tex.x = (int)(256 * (sx - (-all->s_size.x / 2 + all->sp_scr_x)) * all->s.w / all->s_size.x) / 256 + 1;
+			all->tex.x = (int)(256 * (sx - (-all->s_size.x / 2 + all->sp_scr_x)) * s->w / all->s_size.x) / 256 + 1;
 			
 			if (all->t.y > 0 && sx > 0 && sx < all->map->w && all->t.y < all->ZBuffer[sx])
 			{
 				for (int sy = all->s_beg.y; sy < all->s_end.y; sy++) 
 				{
 					int d = (sy - all->vm_scr) * 256 - all->map->h * 128 + all->s_size.y * 128;
-					all->tex.y = ((d * all->s.h) / all->s_size.y) / 256;
+					all->tex.y = ((d * s->h) / all->s_size.y) / 256;
 					
-					if (all->tex.x >= 0 && all->tex.x <= all->s.w && all->tex.y >= 0 && all->tex.y <= all->s.h)
-						all->color = color_from_txt(&all->s, all->tex.x, all->tex.y);
+					if (all->tex.x >= 0 && all->tex.x <= s->w && all->tex.y >= 0 && all->tex.y <= s->h)
+						all->color = color_from_txt(s, all->tex.x, all->tex.y);
 					else
 						all->color = 0x00000000;
 					
 					if ((all->color & 0x00FFFFFF) != 0)
 					{
 						if (all->map->bonus && all->keys.k0)
-							all->color = color_make_darker(all->sprites[i].dist / 40, all->color);
+							all->color = color_make_darker(all->sprites[i].p.dist / 40, all->color);
 						write_pixel_to_img(&all->img, sx, sy, all->color);
 					}
 				}	
@@ -235,7 +252,8 @@ void	init_sprites(t_all *all)
 
 	i = 0;
 	n = 0;
-	all->sprites = malloc(sizeof(t_vector) * all->map->sprites);
+	all->sprites = malloc(sizeof(t_sprite) * all->map->sprites);
+	// all->sprites = malloc(sizeof(t_vector) * all->map->sprites);
 	if (!all->sprites)
 		throw_parse_error(ERR_CANNOT_ALLOC, "Sprites");
 	while (i < all->map->rows && n < all->map->sprites)
@@ -244,7 +262,10 @@ void	init_sprites(t_all *all)
 		while (j < all->map->cols && n < all->map->sprites)
 		{
 			if (ft_strchr(SPRITES, all->map->arr[i][j]))
-				vector_init(&(all->sprites[n++]), i + 0.5, j + 0.5);
+			{
+				all->sprites[n].id = all->map->arr[i][j];
+				vector_init(&(all->sprites[n++].p), i + 0.5, j + 0.5);
+			}
 			j++;
 		}
 		i++;
@@ -279,17 +300,18 @@ void	recognize_texture(t_all *all)
 
 int		mouse_action(t_all *all)
 {
-	
+	int sign;
+	double angle;
+
+	sign = 1;
 	#ifdef LINUX
 		mlx_mouse_hide(all->mlx, all->win);
 		mlx_mouse_get_pos(all->mlx, all->win, &all->cmx, &all->cmy);
 	#else
-		mlx_mouse_hide();	
+		mlx_mouse_hide();
 		mlx_mouse_get_pos(all->win, &all->cmx, &all->cmy);
 	#endif
-	
-	double angle = 5.0 * abs(all->pmx - all->cmx) / all->map->w;
-	int sign = 1;
+	angle = 5.0 * abs(all->pmx - all->cmx) / all->map->w;
 	if (all->pmx - all->cmx < 0)
 		sign = -1;
 	all->pmx = all->cmx;
@@ -305,7 +327,7 @@ int		draw_all(t_all *all)
 		draw_sprites(all);
 
 	#ifdef BONUS
-		if (all->keys.p)
+		if (!all->ceil_exist && all->keys.p)
 			draw_rain(all);
 		if (all->keys.k1)
 			draw_weapon(all);
@@ -324,15 +346,6 @@ int		render(t_all *all)
 	mlx_put_image_to_window(all->mlx, all->win, all->img.img, 0, 0);
 	return (0);
 }
-
-// int		mouse_action(int button, int x, int y, t_all *all)
-// {
-// 	printf("%d button\n", button);
-// 	printf("%d x\n", x);
-// 	printf("%d y\n", y);
-// 	printf("%d w\n", all->map->w);
-// 	return (0);
-// }
 
 void	start_main_loop(t_all *all)
 {
@@ -411,7 +424,6 @@ void	calculate_wall_height(t_all *all)
 	// if (all->keys.p)
 	// {
 	// 	all->keys.p = 0;
-
 	// 	printf("%d\n", all->wall_h);
 	// 	printf("%.5f\n", all->dist_to_wall);
 	// }
@@ -462,27 +474,57 @@ void	map_iterator(t_all *all, void (*f)(t_all *))
 	}
 }
 
+void	init_bonus_flags(t_all *all)
+{
+	if (all->map->bonus)
+	{
+		#ifdef FLOOR
+			all->floor_exist = 1;
+		#endif
+		#ifdef SKY
+			all->sky_exist = 1;
+		#elif defined CEIL
+			all->ceil_exist = 1;
+		#endif
+	}
+}
+
 void	draw_floor_ceil(t_all *all, int x, int y)
 {
 	int f;
 	int c;
 	double d_k;
 
-	#ifdef FLOOR
+	if (all->floor_exist || all->ceil_exist)
 		calculate_floor_color(all, y);
-		f = color_from_txt(&all->flr, all->tex_f.x, all->tex_f.y);
-	#else
-		f = color_from_prm(&all->map->f);
-	#endif
 
-	#ifdef CEIL //if floor is not defined but ceil is ==> error
-		//calculate_floor_color(all, y);
+	if (all->floor_exist)
+		f = color_from_txt(&all->flr, all->tex_f.x, all->tex_f.y);
+	else
+		f = color_from_prm(&all->map->f);
+
+	if (all->ceil_exist)
 		c = color_from_txt(&all->sky, all->tex_c.x, all->tex_c.y);
-	#elif defined SKY
+	else if (all->sky_exist)
 		c = calculate_skybox_color(all, all->map->h - y);
-	#else
+	else
 		c = color_from_prm(&all->map->c);
-	#endif
+
+	// #ifdef FLOOR
+	// 	calculate_floor_color(all, y);
+	// 	f = color_from_txt(&all->flr, all->tex_f.x, all->tex_f.y);
+	// #else
+	// 	f = color_from_prm(&all->map->f);
+	// #endif
+
+	// #ifdef CEIL //if floor is not defined but ceil is ==> error
+	// 	//calculate_floor_color(all, y);
+	// 	c = color_from_txt(&all->sky, all->tex_c.x, all->tex_c.y);
+	// #elif defined SKY
+	// 	c = calculate_skybox_color(all, all->map->h - y);
+	// #else
+	// 	c = color_from_prm(&all->map->c);
+	// #endif
 
 	if (all->keys.k0)
 	{
@@ -491,7 +533,7 @@ void	draw_floor_ceil(t_all *all, int x, int y)
 		else
 			d_k = 1.5;
 		f = color_make_darker(1 - (double)y / (d_k * all->map->h), f);
-		//c = color_make_darker(1 - (double)y / (d_k * all->map->h), c);
+		c = color_make_darker(1 - (double)y / (d_k * all->map->h), c);
 	}
 	if (all->map->bonus && all->keys.p && (all->frame_count % 100 < 5 || (all->frame_count % 100 > 20 && all->frame_count % 100 < 25)))
 		f = color_negative(f);
@@ -567,7 +609,6 @@ int		calculate_skybox_color(t_all *all, int y)
 //{
 //	int y;
 //	int x;
-
 //	x = 0;
 //	while (x < all->map->w)
 //	{
@@ -583,18 +624,15 @@ int		calculate_skybox_color(t_all *all, int y)
 //			else if (y > all->wall_end)
 //			{		
 //				double d_k;
-
 //				if (y < all->a * x * x + all->b * x + all->c)
 //					d_k = 5.0;
 //				else
 //					d_k = 4.3;
-
 //				#ifdef BONUS
 //					all->color = calculate_floor_color(all, y);
 //				#else
 //					all->color = color_from_prm(&all->map->f);				
 //				#endif
-				
 //				if (all->keys.p)
 //					all->color = color_make_darker(1.0 - (double)y / (d_k * all->map->h), all->color);
 //			}
@@ -604,8 +642,6 @@ int		calculate_skybox_color(t_all *all, int y)
 //		x++;
 //	}
 //}
-
-
 
 void	write_column_to_img(t_all *all, int x)
 {
@@ -640,14 +676,12 @@ void	write_column_to_img(t_all *all, int x)
 		//	//#ifdef CEIL
 		//	//	all->color = calculate_floor_color(all, &all->sky, y);
 		//	//#endif
-
 		//	if (all->keys.p)
 		//		all->color = color_make_lighter(((double)y / (all->map->h / 1.5)), all->color);
 		//}
 		if (y + all->offset > all->wall_end + all->offset)
 		{		
 			// double d_k;
-
 			// #ifdef BONUS
 			// 	calculate_floor_color(all, y);
 			// 	all->color = color_from_img(&all->flr.img, all->tex_f.x, all->tex_f.y);
@@ -664,14 +698,12 @@ void	write_column_to_img(t_all *all, int x)
 			// 	all->color = color_from_prm(&all->map->c);
 			// 	write_pixel_to_img(&all->img, x, all->map->h - y - 1, all->color);
 			// #endif
-
 			// if (all->keys.p)
 			// {
 			// 	if (y < all->a * x * x + all->b * x + all->c)
 			// 		d_k = 1.15;
 			// 	else
 			// 		d_k = 1.1;
-
 			// 	all->color = color_make_darker(1 - (double)y / (d_k * all->map->h), all->color);
 			// }
 			//draw_floor_ceil(all, x, y + all->offset);
@@ -688,14 +720,13 @@ void	write_column_to_img(t_all *all, int x)
 				if (all->keys.p && (all->frame_count % 100 < 5 || (all->frame_count % 100 > 20 && all->frame_count % 100 < 25)))
 					all->color = color_negative(all->color);
 			#endif
+			
 			//if ((all->color & 0x00FFFFFF) != 0)
 				write_pixel_to_img(&all->img, x, y + all->offset, all->color);
 		}
 		// all->color = color_make_darker(all->brightness, all->color);
-		
 		// if (all->keys.p && all->frame_count % 100 < 5)
 		// 	all->color = color_negative(all->color);
-		
 		//if ((all->color & 0x00FFFFFF) != 0)
 			//write_pixel_to_img(&all->img, x, y, all->color);
 	}	

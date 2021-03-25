@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:35:59 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/21 02:23:43 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/25 12:17:27 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ int	stop_engine(void *ptr)
 	all = (t_all *)ptr;
 	music_stop(all->music);
 	printf("Stopped! %d\n", all->map->w);
-	//clean_all((t_all *)ptr);
+	free_all(all);
 	exit(0);
 }

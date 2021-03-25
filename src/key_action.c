@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 19:39:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/24 19:51:07 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/25 21:52:04 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,11 @@ int		key_release(int keycode, t_all *all)
 		all->keys.r = 0;
 	else if (keycode == KEY_SHIFT)
 		all->keys.sh = 0;
-	else if (keycode == KEY_SPACE)
-		all->keys.sp = 0;
 	return (0);
 }
 
 int		key_press(int keycode, t_all *all)
 {
-	//printf("%d\n", keycode);
 	if (keycode == KEY_W)
 		all->keys.w = 1;
 	else if (keycode == KEY_S)
@@ -88,8 +85,6 @@ int		key_press(int keycode, t_all *all)
 		all->keys.sh = 1;
 	else if (keycode == KEY_ESC)
 		stop_engine(all);
-	else if (keycode == KEY_SPACE)
-		all->keys.sp = 1;
 	else if (keycode == KEY_K0)
 		all->keys.k0 = !all->keys.k0;
 	else if (keycode == KEY_K1)

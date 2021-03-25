@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/24 21:23:39 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/25 19:24:06 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,12 @@ typedef struct s_texture
 	char    *path;
 }				t_texture;
 
+typedef struct s_sprite
+{
+	char id;
+	t_vector p;
+}				t_sprite;
+
 typedef struct 	s_keys
 {
 	char w;
@@ -108,7 +114,8 @@ typedef struct	s_all
 	t_map	*map;
 	t_img	img;
 	
-	t_texture s;
+	t_texture s1;
+	t_texture s2;
 	t_texture no;
 	t_texture so;
 	t_texture we;
@@ -134,7 +141,8 @@ typedef struct	s_all
 	
 	t_vector floor;
 
-	t_vector *sprites;
+	t_sprite *sprites;
+	// t_vector *sprites;
 	
 	t_v_int grid;
 	t_v_int tex;
@@ -189,10 +197,10 @@ typedef struct	s_all
 	pid_t sound;
 	pthread_t pmusic;
 
+
 	/* sprites */
 	t_v_int scale;
 	double vmove;
-	// t_vector s;
 	t_vector t;
 	t_vector d;
 	t_v_int s_size;
@@ -201,6 +209,11 @@ typedef struct	s_all
 
 	int sp_scr_x;
 	int vm_scr;	
+
+	int	sky_exist;
+	int	ceil_exist;
+	int	floor_exist;
+	
 }				t_all;
 
 #endif
