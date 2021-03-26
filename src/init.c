@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 21:48:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/26 23:30:44 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/26 23:33:02 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	init_texture(void *mlx, char *path, t_texture *t)
 		throw_parse_error(ERR_MLX_TXT_FAIL, path);
 }
 
-void	init_anim_texture(t_all *all)
+void	init_anim_texture(t_all *all, t_texture *txt)
 {
 	int i;
 	char *file;
@@ -64,7 +64,7 @@ void	init_anim_texture(t_all *all)
 		num = ft_itoa(i);
 		file = ft_strjoin(num, ".xpm");
 		path = ft_strjoin(all->map->WP_path, file);
-		init_texture(all->mlx, path, &(all->wpn[i]));
+		init_texture(all->mlx, path, &txt[i]);
 		free(num);
 		free(file);
 		free(path);
@@ -85,7 +85,7 @@ void	init_textures(t_all *all)
 		init_texture(all->mlx, all->map->FT_path, &all->flr);
 		init_texture(all->mlx, all->map->SK_path, &all->sky);
 
-		init_anim_texture()
+		init_anim_texture(all, all->wpn);
 		// init_texture(all->mlx, "textures/oblivion/bow0.xpm", &(all->wpn[0]));
 		// init_texture(all->mlx, "textures/oblivion/bow1.xpm", &(all->wpn[1]));
 		// init_texture(all->mlx, "textures/oblivion/bow2.xpm", &(all->wpn[2]));
