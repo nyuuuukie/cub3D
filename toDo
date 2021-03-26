@@ -1,43 +1,44 @@
 [x] 0.	change sort sprite algorythm maybe
 [o] 1.	change keycodes on MacOS
 [o] 2.	add skybox
-[x] 3.	makefile fix relink
-[x] 4.	clean all function
+[?] 3.	makefile fix relink
+[o] 4.	clean all function
 [x] 5.	create both functions to work properly:
 [x]     engine_error  function
-[x]     parse_error function
-[x] 6.	fix bmp screenshot on MacOS (get_screen_size failure maybe?)
+[o]     parse_error function
+[o] 6.	fix bmp screenshot on MacOS (get_screen_size failure maybe?)
 [x] 7.	add bonus dependencies
-[x] 8.	add shadow functions
+[o] 8.	add shadow functions
 [o] 9.	add color_from_img function
 [x] 10. fix parser (the part with map and \n and spaces)
-[x] 11. split draw_column function
+[o] 11. split draw_column function
 [x] 12. parser norm
 [x] 13. files ierarchy?
 [x] 14. change write_pixel_to_img function
-[x] 15. check leaks (valgrind & leaks)
-[x] 16. try textures of different sizes
+[?] 15. check leaks (valgrind & leaks)
+[o] 16. try textures of different sizes
 [x] 17. rename all files!
-[x] 18. split calculations and writing to image
+[o] 18. split calculations and writing to image
 [x] 19. fix screenshot (left border printed with wrong color)
-[x] 20. sprite on the wall (need to skip black color)
+[?] 20. sprite on the wall (need to skip black color)
 [x] 21. fix brightness (switch no and so, find better dependency)
 [o] 22. add more textures (for testing and high dpi)
 [x] 23. add screamer
 [x] 24. texture with different width and height displays incorrectly
-[x] 25. ceil texture (need to paint floor and ceil at the same time)
+[o] 25. ceil texture (need to paint floor and ceil at the same time)
 [o] 26. shadows on sprite
 [o] 27. black dots on textures and sprites
 [o] 28. path to the music file in scene file
 [x] 29. dependency in the makefile
 [o] 30. weapon sprite movements
 
+[o] 31. split draw background and draw walls into different cycles
+[x] 32. make draw ceil and draw floor independent
+[?] 33. space key
+[o] 34 .shadows on one key and weapon in the another
 
-[x] split draw background and draw walls into different cycles
-[x] make draw ceil and draw floor independent
-[х] space key?
-[o] shadows on one key and weapon in the another
-
-
-[o] draw second sprite
-[x]
+[o] 35. draw second sprite
+[x] 36. add lightning sound
+[x] 37. add:
+	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+	#pragma GCC diagnostic warning "-Wdeprecated-declarations"

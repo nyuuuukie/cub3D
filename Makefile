@@ -1,4 +1,5 @@
 .PHONY: all clean fclean re bonus libft mlx create_dir
+.SILENT: mlx
 
 NAME = cub3D
 LIBFT_NAME = libft.a
@@ -104,7 +105,7 @@ libft:
 	@$(MAKE) bonus -C $(LFT_DIR) --no-print-directory
 
 mlx:
-	@$(MAKE) -C $(MLX_DIR) --no-print-directory
+	@$(MAKE) -C $(MLX_DIR) -s --no-print-directory 
 	@cp $(MLX_DIR)/$(MLX_NAME) ./
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(LFT_DIR)/$(LIBFT_NAME) $(MLX_DIR)/$(MLX_NAME) $(GNL_OBJ)

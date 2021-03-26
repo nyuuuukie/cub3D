@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 21:48:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/25 14:39:17 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/25 23:17:44 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,12 @@ void	init_screen_size(t_all *all)
 			all->map->h = all->screen_h;
 		if (all->map->w > all->screen_w)
 			all->map->w = all->screen_w;
+	}
+	else
+	{
+		if (all->map->h > 20000)
+			all->map->h = 20000;
+		if (all->map->w > 20000)
+			all->map->w = 20000;
 	}
 }

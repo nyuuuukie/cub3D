@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 if [ -n "$1" -a "$1" = "--help" ] ; then
 	echo "Usage : $0\n Auto-configure and make MinilibX"
 	exit

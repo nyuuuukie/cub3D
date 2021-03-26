@@ -10,6 +10,7 @@
 
 ## Please use configure script
 
+.SILENT: all do_cp clean
 
 INC	=%%%%
 HT	=%%%%
@@ -37,12 +38,12 @@ CFLAGS	= -O3 -I$(INC)
 all	: $(NAME) $(DOCP)
 
 $(NAME)	: $(OBJ)
-	ar -r $(NAME) $(OBJ)
-	ranlib $(NAME)
+	@ar -r $(NAME) $(OBJ)
+	@ranlib $(NAME)
 
 do_cp	:
 	cp $(NAME) libmlx_$(HT).a
 
 
 clean	:
-	rm -f $(OBJ) $(NAME) libmlx_$(HT).a *~ core *.core
+	@rm -f $(OBJ) $(NAME) libmlx_$(HT).a *~ core *.core
