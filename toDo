@@ -38,7 +38,18 @@
 [o] 34 .shadows on one key and weapon in the another
 
 [o] 35. draw second sprite
-[x] 36. add lightning sound
-[x] 37. add:
-	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-	#pragma GCC diagnostic warning "-Wdeprecated-declarations"
+[x] 36. add sound
+
+
+• An HUD.
+• Crouch.
+• Secret doors.
+• Doors which can open and close.
+
+
+• Life bar.
+• More items in the maze. 
+• Earning points and/or losing life by picking up objects/traps. add coin
+• Animations of a gun shot or animated sprite. need to finish
+• Several levels. add 2-3 levels on oblivion
+• Weapons and bad guys to fight! cyber

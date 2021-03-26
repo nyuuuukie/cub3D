@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 21:42:43 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/24 09:54:08 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/26 14:19:41 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define KEY_SPACE 32
 # define KEY_K0 48
 # define KEY_K1 49
-
+# define KEY_F 102
 # else
 
 # define KEY_W 13
@@ -42,7 +42,7 @@
 # define KEY_SPACE 49
 # define KEY_K0 29
 # define KEY_K1 18
-
+# define KEY_F 3
 #endif
 
 #endif

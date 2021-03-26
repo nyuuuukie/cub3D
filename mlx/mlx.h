@@ -34,7 +34,7 @@
 **
 */
 
-
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #ifndef MLX_H
 
 #define	MLX_H

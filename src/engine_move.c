@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:37:15 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/25 14:51:37 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/26 15:18:30 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,11 @@ void	calculate_weapon_offset(t_all *all)
 void	move_bonus_check(t_all *all, t_vector new)
 {
 	calculate_weapon_offset(all);
-	//collision with '3' sprite ?
 	if (all->map->arr[(int)new.x][(int)all->pos.y] == '2' || 
 		all->map->arr[(int)all->pos.x][(int)new.y] == '2')
 	{
 		#ifdef BONUS
-			init_music(all);
+			init_music(all, init_fork);
 		#endif
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/25 14:02:28 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/26 21:19:25 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@
 	# define S_VOLUME "-f 10000"
 	# define M_VOLUME "-f 5000"
 #else
-	# define S_VOLUME "-g 70"
+	# define S_VOLUME "-g 80"
 	# define M_VOLUME "-g 40"
 #endif
 

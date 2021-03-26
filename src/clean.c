@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 15:01:24 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/25 14:41:37 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/26 18:17:00 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ void    free_all_bonus(t_all *all)
     if (all->map->FT_path)
         mlx_destroy_image(all->mlx, all->flr.img.img);
     if (all->map->WP_path)
-        mlx_destroy_image(all->mlx, all->wpn.img.img);
-    if (all->map->SK_path || all->map->FT_path)
-        mlx_destroy_image(all->mlx, all->wpn.img.img);
+        mlx_destroy_image(all->mlx, all->wpn[all->wp_i].img.img);
     if (all->map->AS_path)
         mlx_destroy_image(all->mlx, all->s2.img.img);
 }

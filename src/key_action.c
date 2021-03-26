@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 19:39:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/25 21:52:04 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/26 14:27:00 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void init_keys(t_all* all)
 	all->keys.k0 = 0;
 	all->keys.k1 = 0;
 	all->keys.sh = 0;
-	all->keys.sp = 0; //need ?
+	// all->keys.sp = 0; //need ?
 }
 
 int key_action(t_all *all)
@@ -41,8 +41,14 @@ int key_action(t_all *all)
 		rotate(all, 1, all->r_angle);
 	if (all->keys.r && !all->keys.l)
 		rotate(all, -1, all->r_angle);
+	if (all->keys.f)
+	{
+		all->keys.f = 0;
+		fire(all);
+	}
 	all->k_speed = all->keys.sh + 1.0;
-	all->offset = all->keys.sp * all->screen_h / 10;
+	
+	// all->offset = all->keys.sp * all->screen_h / 10;
 	return (0);
 }
 
@@ -68,7 +74,7 @@ int		key_release(int keycode, t_all *all)
 int		key_press(int keycode, t_all *all)
 {
 	if (keycode == KEY_W)
-		all->keys.w = 1;
+		all->keys.w = 1;	
 	else if (keycode == KEY_S)
 		all->keys.s = 1;
 	else if (keycode == KEY_A)
@@ -89,5 +95,7 @@ int		key_press(int keycode, t_all *all)
 		all->keys.k0 = !all->keys.k0;
 	else if (keycode == KEY_K1)
 		all->keys.k1 = !all->keys.k1;
+	else if (keycode == KEY_F)
+		all->keys.f = 1;
 	return (0);
 }

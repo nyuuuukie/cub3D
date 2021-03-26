@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/25 19:24:06 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/26 18:13:22 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,10 @@ typedef struct		s_map
 	char			*FT_path;
 	char			*SK_path;
 	char			*AS_path;
+	char			*WF_path;
 	char			*music;
 	char			*sound;
+	char			*wsound;
 	char			*sprite;
 	t_clr			f;
 	t_clr			c;
@@ -51,6 +53,7 @@ typedef struct		s_map
 	t_list			*lst;
 	t_track			tr;
 	char			bonus;
+	
 }					t_map;
 
 typedef struct  s_img
@@ -101,7 +104,7 @@ typedef struct 	s_keys
 	char k1;
 	char p;
 	char sh;
-	char sp;
+	char f;
 }				t_keys;
 
 typedef struct	s_all
@@ -114,6 +117,7 @@ typedef struct	s_all
 	t_map	*map;
 	t_img	img;
 	
+	int wp_i;
 	t_texture s1;
 	t_texture s2;
 	t_texture no;
@@ -122,9 +126,9 @@ typedef struct	s_all
 	t_texture ea;
 	t_texture sky;
 	t_texture flr;
-	t_texture wpn;
+	t_texture wpn[5];
 	t_texture *cur;
-
+	t_texture fire;
 	int		color;
 
 	/*raycast*/
@@ -185,14 +189,19 @@ typedef struct	s_all
 	int		pmy;
 	double	rotate;
 
-
-
 	int screen_w;
 	int screen_h;
-	
 
 	/* music */
-	int started;
+	int music_started;
+	int sound_started;
+	int wsound_started;
+	
+	char *active_sound;
+	int *active_hndl;
+	pid_t *active_pid;
+
+	pid_t wsound;
 	pid_t music;
 	pid_t sound;
 	pthread_t pmusic;
@@ -214,6 +223,8 @@ typedef struct	s_all
 	int	ceil_exist;
 	int	floor_exist;
 	
+
+	int is_shooting;
 }				t_all;
 
 #endif

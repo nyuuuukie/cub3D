@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/25 21:19:16 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/26 18:33:38 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,9 +137,9 @@ void	draw_weapon(t_all *all)
 		y = 0;
 		while (y < all->map->h)
 		{
-			tex.x = 1.0 * x / all->map->w * all->wpn.w;
-			tex.y = 1.0 * y / all->map->h * all->wpn.h + all->r;
-			all->color = color_from_txt(&all->wpn, tex.x, tex.y);
+			tex.x = 1.0 * x / all->map->w * all->wpn[all->wp_i].w;
+			tex.y = 1.0 * y / all->map->h * all->wpn[all->wp_i].h + all->r;
+			all->color = color_from_txt(&all->wpn[all->wp_i], tex.x, tex.y);
 			if ((all->color & 0x00FFFFFF) != 0)
 				write_pixel_to_img(&all->img, x, y, all->color);
 			y++;
@@ -253,7 +253,6 @@ void	init_sprites(t_all *all)
 	i = 0;
 	n = 0;
 	all->sprites = malloc(sizeof(t_sprite) * all->map->sprites);
-	// all->sprites = malloc(sizeof(t_vector) * all->map->sprites);
 	if (!all->sprites)
 		throw_parse_error(ERR_CANNOT_ALLOC, "Sprites");
 	while (i < all->map->rows && n < all->map->sprites)
@@ -319,19 +318,75 @@ int		mouse_action(t_all *all)
 	return (0);
 }
 
+int draw_fire(t_all *all)
+{
+	t_v_int tex;
+	int y;
+	int x;
+
+	x = 0;
+	while (x < all->map->w)
+	{
+		y = 0;
+		while (y < all->map->h)
+		{
+			tex.x = 1.0 * x / all->map->w * all->fire.w;
+			tex.y = 1.0 * y / all->map->h * all->fire.h + 0.5 * all->r;
+			all->color = color_from_txt(&all->fire, tex.x, tex.y);
+			if ((all->color & 0x00FFFFFF) != 0)
+				write_pixel_to_img(&all->img, x, y, all->color);
+			y++;
+		}
+		x++;
+	}
+	return (0);
+}
+
 int		draw_all(t_all *all)
 {
 	draw_walls(all);
 	
 	if (all->map->sprites > 0)
 		draw_sprites(all);
-
+	if (all->wsound_started && all->wp_i < 5) // all->frame_count % 2 == 0
+		all->wp_i++;
+	if (!all->wsound_started)
+		all->wp_i = 0;
 	#ifdef BONUS
 		if (!all->ceil_exist && all->keys.p)
 			draw_rain(all);
 		if (all->keys.k1)
+		{
+			// if (all->wsound_started)
+			// 	draw_fire(all);
 			draw_weapon(all);
+		}
 	#endif
+	return (0);
+}
+
+void fire(t_all *all)
+{
+	#ifdef BONUS
+		if (all->keys.k1)
+			init_music(all, init_sound_fork);
+	#endif
+}
+
+int 	mouse_press(int button, int x, int y, void *param)
+{
+	t_all *all;
+
+	(void)x;
+	(void)y;
+
+	all = (t_all *)param;
+	if (button == 1)
+	{
+		all->is_shooting = 1; 
+		init_music(all, init_sound_fork);
+		all->is_shooting = 0; //maybe not here!
+	}
 	return (0);
 }
 
@@ -352,9 +407,10 @@ void	start_main_loop(t_all *all)
 	init_all(all);
 
 	#ifdef MUSIC
-		music_start(all, &all->music, all->map->music);
+		music_start(all, &all->music, all->map->music, M_VOLUME);
 	#endif
 
+	// mlx_mouse_hook(all->win, mouse_press, all);
 	mlx_hook(all->win, KEY_PRESS_EVENT, KEY_PRESS_MASK, key_press, all);
 	mlx_hook(all->win, KEY_CLOSE_EVENT, KEY_CLOSE_MASK, stop_engine, all);
 	mlx_hook(all->win, KEY_RELEASE_EVENT, KEY_RELEASE_MASK, key_release, all);
@@ -419,7 +475,6 @@ void	calculate_distance_to_wall(t_all *all)
 
 void	calculate_wall_height(t_all *all)
 {
-	
 	all->wall_h = (int)(all->map->h / all->dist_to_wall);
 	// if (all->keys.p)
 	// {
@@ -580,22 +635,14 @@ int		calculate_floor_color(t_all *all, int y)
 	t_vector f_w;
 	
 	vector_init(&k, (all->ray.x < 0), (all->ray.y < 0));
-	
 	if (all->side_wall == 0)
 		vector_init(&f_w, all->grid.x + k.x, all->grid.y + all->ratio);
     else
 		vector_init(&f_w, all->grid.x + all->ratio, all->grid.y + k.y);
-
 	w = all->map->h / (2.0 * y - all->map->h) / (all->dist_to_wall);
-
 	vector_init(&all->floor, w * f_w.x + (1.0 - w) * all->pos.x,
-						w * f_w.y + (1.0 - w) * all->pos.y);
-
+							 w * f_w.y + (1.0 - w) * all->pos.y);
 	calculate_floor_ceil_text_coord(all);
-	//t_v_int tex;
-	//vector_int_init(&tex, (int)(all->floor.x * t->w) % t->w, 
-	//					  (int)(all->floor.y * t->h) % t->h);
-	
 	return (0);
 }
 
@@ -720,9 +767,8 @@ void	write_column_to_img(t_all *all, int x)
 				if (all->keys.p && (all->frame_count % 100 < 5 || (all->frame_count % 100 > 20 && all->frame_count % 100 < 25)))
 					all->color = color_negative(all->color);
 			#endif
-			
 			//if ((all->color & 0x00FFFFFF) != 0)
-				write_pixel_to_img(&all->img, x, y + all->offset, all->color);
+			write_pixel_to_img(&all->img, x, y + all->offset, all->color);
 		}
 		// all->color = color_make_darker(all->brightness, all->color);
 		// if (all->keys.p && all->frame_count % 100 < 5)
@@ -751,8 +797,7 @@ void	draw_walls(t_all *all)
 		calculate_wall_height(all);
 		calculate_wall_borders(all);
 		calculate_texture_coordinates(all);
-
-		draw_background(all, x);	
+		draw_background(all, x);
 		if (all->screen == 0)
 			all->ZBuffer[x] = all->dist_to_wall;
 		write_column_to_img(all, x);

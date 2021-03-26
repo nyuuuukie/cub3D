@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/25 21:48:36 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/26 22:20:26 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,20 @@ void	parse_music(t_map *map, char **path, char *name)
 	print_status("Texture", name, "OK");
 }
 
+
+void	parse_wpath(t_map *map, char **texture, char *name)
+{
+	map->tr.i = 0;
+	check_duplicate(*texture, map->line);
+	while (map->tr.i < ft_strlen(name))
+		check_and_skip(map, name[map->tr.i]);
+	check_symbol(map, ' ');
+	skip_symbol(map, ' ');
+	check_file_path(map, ".anim");
+	*texture = ft_strdup(&map->line[map->tr.i]);
+	print_status("Texture", name, "OK");
+}
+
 void	parse_path(t_map *map, char **texture, char *name)
 {
 	map->tr.i = 0;
@@ -152,7 +166,7 @@ void	parse_identify_line_bonus(t_map *map)
 	if (!ft_strncmp(map->line, "SK", 2))
 		parse_path(map, &map->SK_path, "SK");
 	else if (!ft_strncmp(map->line, "WP", 2))
-		parse_path(map, &map->WP_path, "WP");
+		parse_wpath(map, &map->WP_path, "WP");
 	else if (!ft_strncmp(map->line, "FT", 2))
 		parse_path(map, &map->FT_path, "FT");
 	else if (!ft_strncmp(map->line, "AS", 2))
@@ -161,6 +175,8 @@ void	parse_identify_line_bonus(t_map *map)
 		parse_music(map, &map->music, "MC");
 	else if (!ft_strncmp(map->line, "SD", 2))
 		parse_music(map, &map->sound, "SD");
+	else if (!ft_strncmp(map->line, "WS", 2))
+		parse_music(map, &map->wsound, "WS");
 	else
 		throw_parse_error(ERR_ID_NOT_FOUND, 0);
 }
@@ -219,7 +235,7 @@ int		is_prm_complete(t_map *map)
 			res = 0;
 		if (map->FT_path == 0 || map->AS_path == 0)
 			res = 0;
-		if (map->sound == 0 || map->music == 0)
+		if (map->sound == 0 || map->music == 0 || map->wsound == 0)
 			res = 0;
 	}
 	return (res);

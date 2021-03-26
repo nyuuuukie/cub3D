@@ -1,4 +1,4 @@
-R 450 350
+R 800 600
 
 S  sprites/idk.xpm
 NO textures/oblivion/obl15.xpm
@@ -9,7 +9,8 @@ EA textures/oblivion/obl12.xpm
 AS textures/oblivion/light.xpm
 SK textures/oblivion/back_shining.xpm
 FT textures/oblivion/obl7.xpm
-WP textures/oblivion/bow.xpm
+WP textures/oblivion/weapon.anim/
+WS music/arrow.mp3
 MC music/oblivion.mp3
 SD music/idk.mp3
 

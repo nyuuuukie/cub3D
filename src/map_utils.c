@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:47:11 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/23 19:08:15 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/26 16:36:28 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,10 @@ void	set_defaults(t_map *map)
 	map->WP_path = 0;
 	map->FT_path = 0;
 	map->AS_path = 0;
+	map->WF_path = 0;
 	map->music = 0;
 	map->sound = 0;
+	map->wsound = 0;
 	map->sprite = 0;
 	map->f.val[0] = 0;
 	map->f.val[1] = 0;
@@ -79,6 +81,8 @@ void	set_defaults(t_map *map)
 	map->tr.i = 0;
 	map->tr.line = 0;
 	map->sprites = 0;
+
+
 	#ifdef BONUS
 		map->bonus = 1;
 	#endif
