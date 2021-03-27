@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 18:15:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/26 18:13:36 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/27 18:59:59 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void init_mouse(t_all *all)
 		h = all->screen_h / 2;
 		w = all->screen_w / 2;
 		#ifdef LINUX
-			mlx_mouse_move(all->mlx, all->win, w, h);
+			mlx_mouse_move(all->m.mlx, all->m.win, w, h);
 		#else
-			mlx_mouse_move(all->win, w, h);
+			mlx_mouse_move(all->m.win, w, h);
 		#endif
 	}
 }
@@ -45,7 +45,7 @@ void 	init_params(t_all *all)
 	all->ceil_exist = 0;
 	all->wp_i = 0;
 	if (!all->ZBuffer)
-		throw_parse_error(ERR_CANNOT_ALLOC, 0);
+		throw_engine_error(all, ERR_CANNOT_ALLOC, 0);
 
 	all->sound_started = 0;
 	all->wsound_started = 0;

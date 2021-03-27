@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/26 22:20:26 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/27 19:44:43 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,26 @@ void	parse_music(t_map *map, char **path, char *name)
 	print_status("Texture", name, "OK");
 }
 
+void check_anim_dir(t_map *map)
+{
+	int i;
+	int fd;
+	int len;
+	char *path;
+
+	i = 0;
+	path = ft_strjoin(&map->line[map->tr.i], "/0.xpm");
+	len  = ft_strlen(path);
+	while (i < ANIM_FRAMES)
+	{
+		path[len - 5] = '0' + i;
+		if ((fd = open(path, O_RDONLY)) < 0)
+			throw_parse_error(ERR_NO_FILE, path);
+		else
+			close(fd);
+		i++;
+	}
+}
 
 void	parse_wpath(t_map *map, char **texture, char *name)
 {
@@ -108,6 +128,7 @@ void	parse_wpath(t_map *map, char **texture, char *name)
 	check_symbol(map, ' ');
 	skip_symbol(map, ' ');
 	check_file_path(map, ".anim");
+	check_anim_dir(map);
 	*texture = ft_strdup(&map->line[map->tr.i]);
 	print_status("Texture", name, "OK");
 }

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/26 18:33:38 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/27 19:47:59 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@ void    write_pixel_to_img(t_img *img, int x, int y, int color)
 		*(int*)(img->addr + y * img->len + x * (img->bpp / 8)) = color;
 }
 
-void	show_sprites_dist(t_all *all)
-{
-	int i;
-	i = 0;
-	while (i < all->map->sprites)
-	{
-		printf("%d %.3f %.3f %.3f\n", i, all->sprites[i].p.x, all->sprites[i].p.y, all->sprites[i].p.dist);		
-		i++;
-	}
-}
+// void	show_sprites_dist(t_all *all)
+// {
+// 	int i;
+// 	i = 0;
+// 	while (i < all->map->sprites)
+// 	{
+// 		printf("%d %.3f %.3f %.3f\n", i, all->sprites[i].p.x, all->sprites[i].p.y, all->sprites[i].p.dist);		
+// 		i++;
+// 	}
+// }
 
 void	calculate_dist_to_sprite(t_all *all)
 {
@@ -254,7 +254,7 @@ void	init_sprites(t_all *all)
 	n = 0;
 	all->sprites = malloc(sizeof(t_sprite) * all->map->sprites);
 	if (!all->sprites)
-		throw_parse_error(ERR_CANNOT_ALLOC, "Sprites");
+		throw_engine_error(all, ERR_CANNOT_ALLOC, "Sprites");
 	while (i < all->map->rows && n < all->map->sprites)
 	{
 		j = 0;
@@ -304,13 +304,13 @@ int		mouse_action(t_all *all)
 
 	sign = 1;
 	#ifdef LINUX
-		mlx_mouse_hide(all->mlx, all->win);
-		mlx_mouse_get_pos(all->mlx, all->win, &all->cmx, &all->cmy);
+		mlx_mouse_hide(all->m.mlx, all->m.win);
+		mlx_mouse_get_pos(all->m.mlx, all->m.win, &all->cmx, &all->cmy);
 	#else
 		mlx_mouse_hide();
-		mlx_mouse_get_pos(all->win, &all->cmx, &all->cmy);
+		mlx_mouse_get_pos(all->m.win, &all->cmx, &all->cmy);
 	#endif
-	angle = 5.0 * abs(all->pmx - all->cmx) / all->map->w;
+	angle = 10.0 * abs(all->pmx - all->cmx) / all->map->w;
 	if (all->pmx - all->cmx < 0)
 		sign = -1;
 	all->pmx = all->cmx;
@@ -318,7 +318,7 @@ int		mouse_action(t_all *all)
 	return (0);
 }
 
-int draw_fire(t_all *all)
+int		draw_fire(t_all *all)
 {
 	t_v_int tex;
 	int y;
@@ -348,7 +348,7 @@ int		draw_all(t_all *all)
 	
 	if (all->map->sprites > 0)
 		draw_sprites(all);
-	if (all->wsound_started && all->wp_i < 5) // all->frame_count % 2 == 0
+	if (all->wsound_started && all->wp_i < ANIM_FRAMES - 1) //&& all->frame_count % 2 == 0)
 		all->wp_i++;
 	if (!all->wsound_started)
 		all->wp_i = 0;
@@ -356,21 +356,17 @@ int		draw_all(t_all *all)
 		if (!all->ceil_exist && all->keys.p)
 			draw_rain(all);
 		if (all->keys.k1)
-		{
-			// if (all->wsound_started)
-			// 	draw_fire(all);
 			draw_weapon(all);
-		}
 	#endif
 	return (0);
 }
 
 void fire(t_all *all)
 {
-	#ifdef BONUS
-		if (all->keys.k1)
+	// #ifdef BONUS
+		if (all->map->bonus && all->keys.k1)
 			init_music(all, init_sound_fork);
-	#endif
+	// #endif
 }
 
 int 	mouse_press(int button, int x, int y, void *param)
@@ -392,30 +388,31 @@ int 	mouse_press(int button, int x, int y, void *param)
 
 int		render(t_all *all)
 {
-	mlx_do_sync(all->mlx);
+	mlx_do_sync(all->m.mlx);
 	all->frame_count++;
 	key_action(all);
 	if (all->map->bonus)
 		mouse_action(all);
 	draw_all(all);
-	mlx_put_image_to_window(all->mlx, all->win, all->img.img, 0, 0);
+	mlx_put_image_to_window(all->m.mlx, all->m.win, all->img.img, 0, 0);
 	return (0);
 }
 
 void	start_main_loop(t_all *all)
 {
+
 	init_all(all);
 
 	#ifdef MUSIC
 		music_start(all, &all->music, all->map->music, M_VOLUME);
 	#endif
-
-	// mlx_mouse_hook(all->win, mouse_press, all);
-	mlx_hook(all->win, KEY_PRESS_EVENT, KEY_PRESS_MASK, key_press, all);
-	mlx_hook(all->win, KEY_CLOSE_EVENT, KEY_CLOSE_MASK, stop_engine, all);
-	mlx_hook(all->win, KEY_RELEASE_EVENT, KEY_RELEASE_MASK, key_release, all);
-	mlx_loop_hook(all->mlx, render, all);
-	mlx_loop(all->mlx);
+	
+	// mlx_mouse_hook(all->m.win, mouse_press, all);
+	mlx_hook(all->m.win, KEY_PRESS_EVENT, KEY_PRESS_MASK, key_press, all);
+	mlx_hook(all->m.win, KEY_CLOSE_EVENT, KEY_CLOSE_MASK, stop_engine, all);
+	mlx_hook(all->m.win, KEY_RELEASE_EVENT, KEY_RELEASE_MASK, key_release, all);
+	mlx_loop_hook(all->m.mlx, render, all);
+	mlx_loop(all->m.mlx);
 }
 
 

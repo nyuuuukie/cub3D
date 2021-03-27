@@ -6,38 +6,49 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:47:11 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/26 16:36:28 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/27 19:32:09 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	free_map(t_map *map)
+
+void 	free_map_add(t_map *map)
 {
-	if (map->sprite) 
-		free(map->sprite);
-	if (map->NO_path)
-		free(map->NO_path);
-	if (map->SO_path)
-		free(map->SO_path);
-	if (map->WE_path)
-		free(map->WE_path);
-	if (map->EA_path)
-		free(map->EA_path);
-	if (map->SK_path)
-		free(map->SK_path);
-	if (map->WP_path)
+	if (map->WP_path) 
 		free(map->WP_path);
-	if (map->FT_path)
-		free(map->FT_path);
+	if (map->AS_path)
+		free(map->AS_path);
 	if (map->sound)
 		free(map->sound);
 	if (map->music)
 		free(map->music);
-	if (map->arr)
+	if (map->SK_path)
+		free(map->SK_path);
+	if (map->FT_path)
+		free(map->FT_path);
+	if (map->wsound)
+		free(map->wsound);
+}
+
+void	free_map(t_map *map)
+{
+	if (map && map->NO_path)
+		free(map->NO_path);
+	if (map && map->sprite) 
+		free(map->sprite);
+	if (map && map->SO_path)
+		free(map->SO_path);
+	if (map && map->WE_path)
+		free(map->WE_path);
+	if (map && map->EA_path)
+		free(map->EA_path);
+	if (map && map->arr)
 		arr_delete(map->arr);
-	if (map->lst)
+	if (map && map->lst)
 		ft_lstclear(&map->lst, free);
+	if (map && map->bonus)
+		free_map_add(map);
 	set_defaults(map);
 }
 
@@ -63,7 +74,7 @@ void	set_defaults(t_map *map)
 	map->WP_path = 0;
 	map->FT_path = 0;
 	map->AS_path = 0;
-	map->WF_path = 0;
+	// map->WF_path = 0;
 	map->music = 0;
 	map->sound = 0;
 	map->wsound = 0;

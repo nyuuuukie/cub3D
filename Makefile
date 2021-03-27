@@ -90,10 +90,10 @@ bs: bonus
 	./${NAME} ${MAP} --save
 
 bdebug:
-	$(MAKE) DEBUG="-g" br MAP=${MAP}
+	$(MAKE) DEBUG="-g" bonus MAP=${MAP}
 
 debug:
-	$(MAKE) DEBUG="-g" r MAP=${MAP}
+	$(MAKE) DEBUG="-g" MAP=${MAP}
 
 create_dir:
 	@mkdir -p $(OBJ_DIR)

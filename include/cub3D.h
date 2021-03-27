@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/26 14:38:09 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/27 18:34:00 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	print_status(char *title, char *name, char *status);
 /* Errors.c */
 char*	get_error_msg(t_error code);
 void	throw_parse_error(t_error msg, char *add);
+void	throw_engine_error(t_all *all, t_error msg, char *add);
 void	print_error(char *msg, t_track *track, char *add);
 
 /* get_next_line */
@@ -101,7 +102,7 @@ void	init_textures(t_all *all);
 void	init_screen_size(t_all *all);
 void	init_img(t_all *all, t_img *img);
 void	init_vectors(t_all *all, int i, int j);
-void	init_texture(void *mlx, char *path, t_texture *t);
+void	init_texture(t_all *all, char *path, t_texture *t);
 
 void	init_shadow_params(t_all *all);
 
@@ -162,4 +163,7 @@ void *init_sound_fork(void * prm);
 void    free_all(t_all *all);
 void	init_bonus_flags(t_all *all);
 void fire(t_all *all);
+
+
+
 #endif

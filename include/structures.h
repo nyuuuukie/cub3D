@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/26 18:13:22 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/27 18:56:29 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct		s_map
 	char			*FT_path;
 	char			*SK_path;
 	char			*AS_path;
-	char			*WF_path;
+	// char			*WF_path;
 	char			*music;
 	char			*sound;
 	char			*wsound;
@@ -107,11 +107,18 @@ typedef struct 	s_keys
 	char f;
 }				t_keys;
 
+typedef struct s_mlx
+{
+	void    *mlx;
+	void    *win;
+}				t_mlx;
+
 typedef struct	s_all
 {
 	int		screen;
-	void    *mlx;
-	void    *win;
+	// void    *mlx;
+	// void    *win;
+	t_mlx 	m;
 
 	t_keys	keys;
 	t_map	*map;
@@ -126,7 +133,7 @@ typedef struct	s_all
 	t_texture ea;
 	t_texture sky;
 	t_texture flr;
-	t_texture wpn[5];
+	t_texture wpn[ANIM_FRAMES];
 	t_texture *cur;
 	t_texture fire;
 	int		color;
