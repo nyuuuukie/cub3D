@@ -164,6 +164,6 @@ void    free_all(t_all *all);
 void	init_bonus_flags(t_all *all);
 void fire(t_all *all);
 
-
+void *init_music_fork(void * prm);
 
 #endif

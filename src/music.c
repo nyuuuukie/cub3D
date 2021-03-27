@@ -33,6 +33,19 @@ void init_music(t_all *all, void *f(void *))
 // 	}
 // }
 
+void *init_music_fork(void * prm)
+{
+	t_all *all = (t_all*)prm;
+	if (all->music_started == 0)
+	{
+		all->music_started = 1;
+		music_start(all, &all->music, all->map->music, M_VOLUME);
+		waitpid(all->sound, 0, 0);
+		all->music_started = 0;
+	}
+	return (NULL);
+}
+
 void *init_fork(void * prm)
 {
 	t_all *all = (t_all*)prm;

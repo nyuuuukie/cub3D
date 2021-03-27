@@ -22,9 +22,9 @@ void init_mouse(t_all *all)
 		h = all->screen_h / 2;
 		w = all->screen_w / 2;
 		#ifdef LINUX
-			mlx_mouse_move(all->m.mlx, all->m.win, w, h);
+			mlx_mouse_move(all->mlx, all->win, w, h);
 		#else
-			mlx_mouse_move(all->m.win, w, h);
+			mlx_mouse_move(all->win, w, h);
 		#endif
 	}
 }
@@ -49,6 +49,7 @@ void 	init_params(t_all *all)
 
 	all->sound_started = 0;
 	all->wsound_started = 0;
+	all->music_started = 0;
 	vector_int_init(&all->scale, 1, 1);
 	all->vmove = 0.0;
 }

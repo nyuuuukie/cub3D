@@ -304,11 +304,11 @@ int		mouse_action(t_all *all)
 
 	sign = 1;
 	#ifdef LINUX
-		mlx_mouse_hide(all->m.mlx, all->m.win);
-		mlx_mouse_get_pos(all->m.mlx, all->m.win, &all->cmx, &all->cmy);
+		mlx_mouse_hide(all->mlx, all->win);
+		mlx_mouse_get_pos(all->mlx, all->win, &all->cmx, &all->cmy);
 	#else
 		mlx_mouse_hide();
-		mlx_mouse_get_pos(all->m.win, &all->cmx, &all->cmy);
+		mlx_mouse_get_pos(all->win, &all->cmx, &all->cmy);
 	#endif
 	angle = 10.0 * abs(all->pmx - all->cmx) / all->map->w;
 	if (all->pmx - all->cmx < 0)
@@ -388,31 +388,32 @@ int 	mouse_press(int button, int x, int y, void *param)
 
 int		render(t_all *all)
 {
-	mlx_do_sync(all->m.mlx);
+	mlx_do_sync(all->mlx);
 	all->frame_count++;
 	key_action(all);
 	if (all->map->bonus)
 		mouse_action(all);
 	draw_all(all);
-	mlx_put_image_to_window(all->m.mlx, all->m.win, all->img.img, 0, 0);
+	mlx_put_image_to_window(all->mlx, all->win, all->img.img, 0, 0);
 	return (0);
 }
 
 void	start_main_loop(t_all *all)
 {
-
 	init_all(all);
 
+	
 	#ifdef MUSIC
-		music_start(all, &all->music, all->map->music, M_VOLUME);
+		init_music(all, init_music_fork);
+		// music_start(all, &all->music, all->map->music, M_VOLUME);
 	#endif
 	
-	// mlx_mouse_hook(all->m.win, mouse_press, all);
-	mlx_hook(all->m.win, KEY_PRESS_EVENT, KEY_PRESS_MASK, key_press, all);
-	mlx_hook(all->m.win, KEY_CLOSE_EVENT, KEY_CLOSE_MASK, stop_engine, all);
-	mlx_hook(all->m.win, KEY_RELEASE_EVENT, KEY_RELEASE_MASK, key_release, all);
-	mlx_loop_hook(all->m.mlx, render, all);
-	mlx_loop(all->m.mlx);
+	// mlx_mouse_hook(all->win, mouse_press, all);
+	mlx_hook(all->win, KEY_PRESS_EVENT, KEY_PRESS_MASK, key_press, all);
+	mlx_hook(all->win, KEY_RELEASE_EVENT, KEY_RELEASE_MASK, key_release, all);
+	mlx_hook(all->win, 17, 1L << 17, stop_engine, all);
+	mlx_loop_hook(all->mlx, render, all);
+	mlx_loop(all->mlx);
 }
 
 

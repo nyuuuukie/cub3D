@@ -53,6 +53,7 @@ void	throw_engine_error(t_all *all, t_error msg, char *add)
 {
 	print_error(get_error_msg(msg), 0, add);
 	free_all(all);
+	// (void)all;
 	exit(1);
 }
 

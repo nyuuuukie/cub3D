@@ -14,19 +14,18 @@
 
 int 	start_engine(t_map *map, int mode)
 {
-	t_all *all;
+	t_all all;
 
-	all = malloc(sizeof(t_all));
-	all->map = map;
+	all.map = map;
 	if (mode == 2)
 	{
-		all->screen = 0;
-		start_main_loop(all);
+		all.screen = 0;
+		start_main_loop(&all);
 	}
 	else if (mode == 3)
 	{
-		all->screen = 1;
-		make_screenshot(all);
+		all.screen = 1;
+		make_screenshot(&all);
 	}
 	return (0);
 }
@@ -37,7 +36,9 @@ int	stop_engine(void *ptr)
 
 	all = (t_all *)ptr;
 	music_stop(all->music);
+	// usleep(20000000);
 	printf("Stopped! %d\n", all->map->w);
 	free_all(all);
+	printf("Stopped! %d\n", all->map->w);
 	exit(0);
 }

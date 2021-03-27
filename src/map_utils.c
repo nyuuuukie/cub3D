@@ -12,7 +12,6 @@
 
 #include "cub3D.h"
 
-
 void 	free_map_add(t_map *map)
 {
 	if (map->WP_path) 
@@ -33,21 +32,21 @@ void 	free_map_add(t_map *map)
 
 void	free_map(t_map *map)
 {
-	if (map && map->NO_path)
+	if (map->NO_path)
 		free(map->NO_path);
-	if (map && map->sprite) 
+	if (map->sprite) 
 		free(map->sprite);
-	if (map && map->SO_path)
+	if (map->SO_path)
 		free(map->SO_path);
-	if (map && map->WE_path)
+	if (map->WE_path)
 		free(map->WE_path);
-	if (map && map->EA_path)
+	if (map->EA_path)
 		free(map->EA_path);
-	if (map && map->arr)
+	if (map->arr)
 		arr_delete(map->arr);
-	if (map && map->lst)
+	if (map->lst)
 		ft_lstclear(&map->lst, free);
-	if (map && map->bonus)
+	if (map->bonus)
 		free_map_add(map);
 	set_defaults(map);
 }

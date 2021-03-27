@@ -107,18 +107,11 @@ typedef struct 	s_keys
 	char f;
 }				t_keys;
 
-typedef struct s_mlx
-{
-	void    *mlx;
-	void    *win;
-}				t_mlx;
-
 typedef struct	s_all
 {
 	int		screen;
-	// void    *mlx;
-	// void    *win;
-	t_mlx 	m;
+	void    *mlx;
+	void    *win;
 
 	t_keys	keys;
 	t_map	*map;
@@ -133,7 +126,7 @@ typedef struct	s_all
 	t_texture ea;
 	t_texture sky;
 	t_texture flr;
-	t_texture wpn[ANIM_FRAMES];
+	t_texture wpn[6]; //ANIM_FRAMES
 	t_texture *cur;
 	t_texture fire;
 	int		color;

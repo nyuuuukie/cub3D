@@ -14,21 +14,21 @@
 
 void	init_window(t_all *all)
 {
-	all->m.mlx = mlx_init();
-	if (!all->m.mlx)
+	all->mlx = mlx_init();
+	if (!all->mlx)
 		throw_engine_error(all, ERR_MLX_WIN_FAIL, 0);
 	init_screen_size(all);
 	if (all->screen == 0)
 	{
-		all->m.win = mlx_new_window(all->m.mlx, all->map->w, all->map->h, "cub3D");
-		if (!all->m.win)
+		all->win = mlx_new_window(all->mlx, all->map->w, all->map->h, "cub3D");
+		if (!all->win)
 			throw_engine_error(all, ERR_MLX_WIN_FAIL, 0);
 	}
 }
 
 void	init_img(t_all *all, t_img *img)
 {
-	img->img = mlx_new_image(all->m.mlx, all->map->w, all->map->h);
+	img->img = mlx_new_image(all->mlx, all->map->w, all->map->h);
 	if (!img->img)
 		throw_engine_error(all, ERR_MLX_IMG_FAIL, 0);
 	img->addr = mlx_get_data_addr(img->img, &img->bpp, &img->len, &img->end);
@@ -40,8 +40,8 @@ void	init_texture(t_all *all, char *path, t_texture *t)
 {
 	t_img *img;
 
-	img = &(t->img); 
-	img->img = mlx_xpm_file_to_image(all->m.mlx, path, &t->w, &t->h);
+	img = &(t->img);
+	img->img = mlx_xpm_file_to_image(all->mlx, path, &t->w, &t->h);
 	if (img->img == NULL)
 		throw_engine_error(all, ERR_MLX_TXT_FAIL, path);
 	img->addr = mlx_get_data_addr(img->img, &img->bpp, &img->len, &img->end);
@@ -49,28 +49,21 @@ void	init_texture(t_all *all, char *path, t_texture *t)
 		throw_engine_error(all, ERR_MLX_TXT_FAIL, path);
 }
 
-void	init_anim_texture(t_all *all, t_texture *txt)
+void	init_anim_texture(t_all *all, t_texture txt[])
 {
-	int fd;
 	int i;
 	int len;
 	char *path;
-	(void)txt;
+
 	i = 0;
 	path = ft_strjoin(all->map->WP_path, "/0.xpm");
 	len  = ft_strlen(path);
 	while (i < ANIM_FRAMES)
 	{
-		path[len - 5] = '0' + i;
-		if ((fd = open(path, O_RDONLY)) < 0)
-			throw_engine_error(all, ERR_NO_FILE, path);
-		else
-			close(fd);
-			
-		init_texture(all->m.mlx, path, &(all->wpn[i]));
+		init_texture(all, path, &(txt[i]));
+		path[len - 5] += 1;		
 		i++;
 	}
-
 }
 
 void	init_textures(t_all *all)
@@ -85,7 +78,6 @@ void	init_textures(t_all *all)
 		init_texture(all, all->map->AS_path, &all->s2);
 		init_texture(all, all->map->FT_path, &all->flr);
 		init_texture(all, all->map->SK_path, &all->sky);
-
 		init_anim_texture(all, all->wpn);
 	}
 }
@@ -93,7 +85,7 @@ void	init_textures(t_all *all)
 void	init_screen_size(t_all *all)
 {
 	#ifdef LINUX
-		mlx_get_screen_size(all->m.mlx, &all->screen_w, &all->screen_h);
+		mlx_get_screen_size(all->mlx, &all->screen_w, &all->screen_h);
 	#else
 		mlx_get_screen_size(&all->screen_w, &all->screen_h);
 	#endif

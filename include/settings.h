@@ -66,6 +66,6 @@
 #endif
 
 /* Engine */
-# define ANIM_FRAMES 6	
+# define ANIM_FRAMES 6
 
 #endif

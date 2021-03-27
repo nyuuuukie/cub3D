@@ -141,7 +141,7 @@
 // int 	render(t_all *all, t_data *img)
 // {
 //     put_minimap(all, all->padding, all->padding, 0x00242424);
-// 	mlx_put_image_to_window(all->m.mlx, all->m.mlx_win, img->img, 0, 0);
+// 	mlx_put_image_to_window(all->mlx, all->mlx_win, img->img, 0, 0);
 // 	return (0);
 // }
 
@@ -163,7 +163,7 @@
 
 // int		key_hook(int keycode, t_all *all)
 // {
-// 	mlx_do_sync(all->m.mlx);
+// 	mlx_do_sync(all->mlx);
 // 	if (keycode == KEY_W)
 // 		change_pos(all, 0, -1);
 // 	else if (keycode == KEY_S)
@@ -209,7 +209,7 @@
 // 	int current_width;
 // 	int current_height;
 
-// 	mlx_get_screen_size(all->m.mlx, &current_width, &current_height);
+// 	mlx_get_screen_size(all->mlx, &current_width, &current_height);
 // 	if (all->map->h > current_height)
 // 		all->map->h = current_height;
 // 	if (all->map->w > current_width)
@@ -251,17 +251,16 @@
 
 int		main(int argc, char **argv)
 {
-	t_map	*map;
+	t_map	map;
 
-	map = malloc(sizeof(t_map));
-	set_defaults(map);
+	set_defaults(&map);
 	if (argc == 2 || argc == 3)
 	{
-		map->line = argv[1];
-		check_file_path(map, ".cub");
+		map.line = argv[1];
+		check_file_path(&map, ".cub");
 		check_save_arg(argc, argv);
-		parse_scene_file(map, argv[1]);
-		start_engine(map, argc);
+		parse_scene_file(&map, argv[1]);
+		start_engine(&map, argc);
 	}
 	else
 		throw_parse_error(ERR_ARG_NUM, 0);
