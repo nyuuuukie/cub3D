@@ -33,6 +33,26 @@ void init_music(t_all *all, void *f(void *))
 // 	}
 // }
 
+
+void *start_music_loop(void * prm)
+{
+	t_all *all;
+	
+	all = (t_all*)prm;
+	while (1)
+	{
+		if (*(all->active_hndl) == 0)
+		{
+			*(all->active_hndl) = 1;
+			music_start(all, all->active_pid, all->active_sound, M_VOLUME);
+			waitpid(*(all->active_pid), 0, 0);
+			*(all->active_hndl) = 0;
+		}
+	}
+	return (NULL);
+}
+
+
 void *init_music_fork(void * prm)
 {
 	t_all *all = (t_all*)prm;
@@ -40,7 +60,7 @@ void *init_music_fork(void * prm)
 	{
 		all->music_started = 1;
 		music_start(all, &all->music, all->map->music, M_VOLUME);
-		waitpid(all->sound, 0, 0);
+		waitpid(all->music, 0, 0);
 		all->music_started = 0;
 	}
 	return (NULL);
@@ -116,8 +136,9 @@ int music_start(t_all *all, pid_t *x, char *filename, char *volume)
 // 	return (0);
 // }
 
-int music_stop(pid_t x)
+int music_stop(t_all *all, pid_t x)
 {
-	kill(x, SIGKILL);
+	if (all->map->bonus && x != 0)
+		kill(x, SIGKILL);
 	return (0);
 }

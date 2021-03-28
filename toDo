@@ -53,3 +53,5 @@
 [o] Animations of a gun shot or animated sprite. need to finish
 • Several levels. add 2-3 levels on oblivion
 • Weapons and bad guys to fight! cyber
+
+[x] Fix music and bash input close. Try to create a new thread each time music started.

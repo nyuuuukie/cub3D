@@ -398,11 +398,32 @@ int		render(t_all *all)
 	return (0);
 }
 
+void 	init_threads(t_all *all)
+{
+	(void)all;
+	#ifdef BONUS
+		// pthread_create(&all->draw, NULL, start_main_loop, all);
+		// pthread_create(&all->music, NULL, start_music_loop, all);
+		// pthread_create(&all->sound, NULL, start_sound_loop, all);
+		// pthread_create(&all->wsound, NULL, start_wsound_loop, all);
+		
+		//in another func
+		// pthread_join(&all->draw, NULL);
+		// pthread_join(&all->music, NULL);
+		// pthread_join(&all->sound, NULL);
+		// pthread_join(&all->wsound, NULL);
+	#else
+		start_main_loop(all);
+	#endif
+}
+
+
+
 void	start_main_loop(t_all *all)
 {
 	init_all(all);
 
-	
+	//in start_music_loop
 	#ifdef MUSIC
 		init_music(all, init_music_fork);
 		// music_start(all, &all->music, all->map->music, M_VOLUME);

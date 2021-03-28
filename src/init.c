@@ -64,6 +64,26 @@ void	init_anim_texture(t_all *all, t_texture txt[])
 		path[len - 5] += 1;		
 		i++;
 	}
+	free(path);
+}
+
+void	init_images(t_all *all)
+{
+	int i;
+
+	i = 0; 
+	all->img.img = NULL;
+	all->no.img.img = NULL;
+	all->so.img.img = NULL;
+	all->ea.img.img = NULL;
+	all->we.img.img = NULL;
+	all->s1.img.img = NULL;
+	all->s2.img.img = NULL;
+	all->flr.img.img = NULL;
+	all->sky.img.img = NULL;
+	
+	while (i < ANIM_FRAMES)
+		all->wpn[i++].img.img = NULL;
 }
 
 void	init_textures(t_all *all)

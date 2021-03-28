@@ -56,6 +56,7 @@ void 	init_params(t_all *all)
 
 void	init_all(t_all *all)
 {
+	init_images(all);
 	init_params(all);
 	init_bonus_flags(all);
 	init_window(all);

@@ -20,6 +20,7 @@ int 	start_engine(t_map *map, int mode)
 	if (mode == 2)
 	{
 		all.screen = 0;
+		// init_threads(&all);
 		start_main_loop(&all);
 	}
 	else if (mode == 3)
@@ -35,10 +36,10 @@ int	stop_engine(void *ptr)
 	t_all *all;
 
 	all = (t_all *)ptr;
-	music_stop(all->music);
-	// usleep(20000000);
-	printf("Stopped! %d\n", all->map->w);
+	music_stop(all, all->music);
+	music_stop(all, all->sound);
+	music_stop(all, all->wsound);
 	free_all(all);
-	printf("Stopped! %d\n", all->map->w);
+	ft_putstr_fd("cub3D stopped", 1);
 	exit(0);
 }

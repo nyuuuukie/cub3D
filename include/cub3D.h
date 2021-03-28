@@ -144,7 +144,7 @@ void make_screenshot(t_all *all);
 
 int music_start(t_all *all, pid_t *x, char *filename, char *volume);
 
-int music_stop(pid_t x);
+int music_stop(t_all *all, pid_t x);
 
 void	rotate_m(t_all *all, double angle);
 
@@ -165,5 +165,6 @@ void	init_bonus_flags(t_all *all);
 void fire(t_all *all);
 
 void *init_music_fork(void * prm);
+void	init_images(t_all *all);
 
 #endif

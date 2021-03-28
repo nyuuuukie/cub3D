@@ -27,24 +27,29 @@ void    free_all_bonus(t_all *all)
 
 void    free_all(t_all *all)
 {
-    // if (all && all->mlx)
-    // {
-        free_map(all->map);
+    free_map(all->map);
+    if (all->mlx && all->no.img.img)
         mlx_destroy_image(all->mlx, all->no.img.img);
+    if (all->mlx && all->so.img.img)
         mlx_destroy_image(all->mlx, all->so.img.img);
+    if (all->mlx && all->ea.img.img)
         mlx_destroy_image(all->mlx, all->ea.img.img);
+    if (all->mlx && all->we.img.img)
         mlx_destroy_image(all->mlx, all->we.img.img);
+    if (all->mlx && all->s1.img.img)
         mlx_destroy_image(all->mlx, all->s1.img.img);
-        if (all->map->bonus)
-            free_all_bonus(all);
+    if (all->map->bonus)
+        free_all_bonus(all);
+    if (all->mlx && all->img.img)
         mlx_destroy_image(all->mlx, all->img.img);
-        if (all->screen == 0)
-            mlx_destroy_window(all->mlx, all->win);
-        free(all->ZBuffer);
-        free(all->mlx);
-        if (all->music != 0)
-            kill(all->music, SIGKILL);
-        if (all->sound != 0)
-            kill(all->sound, SIGKILL);
-    // }
+    if (all->screen == 0)
+        mlx_destroy_window(all->mlx, all->win);
+    free(all->ZBuffer);
+    free(all->mlx);
+    // if (all->map->bonus && all->music != 0)
+    //     kill(all->music, SIGKILL);
+    // if (all->map->bonus && all->sound != 0)
+    //     kill(all->sound, SIGKILL);
+    // if (all->map->bonus && all->wsound != 0)
+    //     kill(all->wsound, SIGKILL);
 }
