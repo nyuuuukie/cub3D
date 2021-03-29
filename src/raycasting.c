@@ -6,27 +6,16 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/27 19:47:59 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/29 22:47:42 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void    write_pixel_to_img(t_img *img, int x, int y, int color)
+void    put_pixel(t_img *img, int x, int y, int color)
 {
 		*(int*)(img->addr + y * img->len + x * (img->bpp / 8)) = color;
 }
-
-// void	show_sprites_dist(t_all *all)
-// {
-// 	int i;
-// 	i = 0;
-// 	while (i < all->map->sprites)
-// 	{
-// 		printf("%d %.3f %.3f %.3f\n", i, all->sprites[i].p.x, all->sprites[i].p.y, all->sprites[i].p.dist);		
-// 		i++;
-// 	}
-// }
 
 void	calculate_dist_to_sprite(t_all *all)
 {
@@ -115,7 +104,7 @@ void	draw_rain(t_all *all)
 				while (drop_len-- && y < all->map->h)
 				{
 					if (y < all->a * x * x + all->b * x || x % 5 == 0)
-						write_pixel_to_img(&all->img, x, y, 0x006F6F6F);
+						put_pixel(&all->img, x, y, 0x006F6F6F);
 					y++;
 				}
 				y += random_number(50, 70);
@@ -141,7 +130,7 @@ void	draw_weapon(t_all *all)
 			tex.y = 1.0 * y / all->map->h * all->wpn[all->wp_i].h + all->r;
 			all->color = color_from_txt(&all->wpn[all->wp_i], tex.x, tex.y);
 			if ((all->color & 0x00FFFFFF) != 0)
-				write_pixel_to_img(&all->img, x, y, all->color);
+				put_pixel(&all->img, x, y, all->color);
 			y++;
 		}
 		x++;
@@ -236,7 +225,7 @@ void	draw_sprites(t_all *all)
 					{
 						if (all->map->bonus && all->keys.k0)
 							all->color = color_make_darker(all->sprites[i].p.dist / 40, all->color);
-						write_pixel_to_img(&all->img, sx, sy, all->color);
+						put_pixel(&all->img, sx, sy, all->color);
 					}
 				}	
 			}
@@ -318,29 +307,28 @@ int		mouse_action(t_all *all)
 	return (0);
 }
 
-int		draw_fire(t_all *all)
-{
-	t_v_int tex;
-	int y;
-	int x;
-
-	x = 0;
-	while (x < all->map->w)
-	{
-		y = 0;
-		while (y < all->map->h)
-		{
-			tex.x = 1.0 * x / all->map->w * all->fire.w;
-			tex.y = 1.0 * y / all->map->h * all->fire.h + 0.5 * all->r;
-			all->color = color_from_txt(&all->fire, tex.x, tex.y);
-			if ((all->color & 0x00FFFFFF) != 0)
-				write_pixel_to_img(&all->img, x, y, all->color);
-			y++;
-		}
-		x++;
-	}
-	return (0);
-}
+// int		draw_fire(t_all *all)
+// {
+// 	t_v_int tex;
+// 	int y;
+// 	int x;
+// 	x = 0;
+// 	while (x < all->map->w)
+// 	{
+// 		y = 0;
+// 		while (y < all->map->h)
+// 		{
+// 			tex.x = 1.0 * x / all->map->w * all->fire.w;
+// 			tex.y = 1.0 * y / all->map->h * all->fire.h + 0.5 * all->r;
+// 			all->color = color_from_txt(&all->fire, tex.x, tex.y);
+// 			if ((all->color & 0x00FFFFFF) != 0)
+// 				put_pixel(&all->img, x, y, all->color);
+// 			y++;
+// 		}
+// 		x++;
+// 	}
+// 	return (0);
+// }
 
 int		draw_all(t_all *all)
 {
@@ -363,10 +351,11 @@ int		draw_all(t_all *all)
 
 void fire(t_all *all)
 {
-	// #ifdef BONUS
+	(void)all;
+	#ifdef BONUS
 		if (all->map->bonus && all->keys.k1)
-			init_music(all, init_sound_fork);
-	// #endif
+			init_music(all, init_wsound_fork);
+	#endif
 }
 
 int 	mouse_press(int button, int x, int y, void *param)
@@ -375,14 +364,10 @@ int 	mouse_press(int button, int x, int y, void *param)
 
 	(void)x;
 	(void)y;
-
 	all = (t_all *)param;
 	if (button == 1)
-	{
-		all->is_shooting = 1; 
-		init_music(all, init_sound_fork);
-		all->is_shooting = 0; //maybe not here!
-	}
+		fire(all);
+
 	return (0);
 }
 
@@ -398,35 +383,12 @@ int		render(t_all *all)
 	return (0);
 }
 
-void 	init_threads(t_all *all)
-{
-	(void)all;
-	#ifdef BONUS
-		// pthread_create(&all->draw, NULL, start_main_loop, all);
-		// pthread_create(&all->music, NULL, start_music_loop, all);
-		// pthread_create(&all->sound, NULL, start_sound_loop, all);
-		// pthread_create(&all->wsound, NULL, start_wsound_loop, all);
-		
-		//in another func
-		// pthread_join(&all->draw, NULL);
-		// pthread_join(&all->music, NULL);
-		// pthread_join(&all->sound, NULL);
-		// pthread_join(&all->wsound, NULL);
-	#else
-		start_main_loop(all);
-	#endif
-}
-
-
-
 void	start_main_loop(t_all *all)
 {
 	init_all(all);
 
-	//in start_music_loop
 	#ifdef MUSIC
-		init_music(all, init_music_fork);
-		// music_start(all, &all->music, all->map->music, M_VOLUME);
+		init_music(all, init_music_fork);	
 	#endif
 	
 	// mlx_mouse_hook(all->win, mouse_press, all);
@@ -495,12 +457,6 @@ void	calculate_distance_to_wall(t_all *all)
 void	calculate_wall_height(t_all *all)
 {
 	all->wall_h = (int)(all->map->h / all->dist_to_wall);
-	// if (all->keys.p)
-	// {
-	// 	all->keys.p = 0;
-	// 	printf("%d\n", all->wall_h);
-	// 	printf("%.5f\n", all->dist_to_wall);
-	// }
 }
 
 void	calculate_wall_borders(t_all *all)
@@ -563,6 +519,13 @@ void	init_bonus_flags(t_all *all)
 	}
 }
 
+int is_lightning(t_all *all)
+{
+	return ((all->frame_count % 100 < 5 ) || \
+			(all->frame_count % 100 > 20 && all->frame_count % 100 < 25));
+}
+
+
 void	draw_floor_ceil(t_all *all, int x, int y)
 {
 	int f;
@@ -584,22 +547,6 @@ void	draw_floor_ceil(t_all *all, int x, int y)
 	else
 		c = color_from_prm(&all->map->c);
 
-	// #ifdef FLOOR
-	// 	calculate_floor_color(all, y);
-	// 	f = color_from_txt(&all->flr, all->tex_f.x, all->tex_f.y);
-	// #else
-	// 	f = color_from_prm(&all->map->f);
-	// #endif
-
-	// #ifdef CEIL //if floor is not defined but ceil is ==> error
-	// 	//calculate_floor_color(all, y);
-	// 	c = color_from_txt(&all->sky, all->tex_c.x, all->tex_c.y);
-	// #elif defined SKY
-	// 	c = calculate_skybox_color(all, all->map->h - y);
-	// #else
-	// 	c = color_from_prm(&all->map->c);
-	// #endif
-
 	if (all->keys.k0)
 	{
 		if (y < all->a * x * x + all->b * x + all->c)
@@ -609,10 +556,10 @@ void	draw_floor_ceil(t_all *all, int x, int y)
 		f = color_make_darker(1 - (double)y / (d_k * all->map->h), f);
 		c = color_make_darker(1 - (double)y / (d_k * all->map->h), c);
 	}
-	if (all->map->bonus && all->keys.p && (all->frame_count % 100 < 5 || (all->frame_count % 100 > 20 && all->frame_count % 100 < 25)))
+	if (all->map->bonus && all->keys.p && is_lightning(all))
 		f = color_negative(f);
-	write_pixel_to_img(&all->img, x, y, f);
-	write_pixel_to_img(&all->img, x, all->map->h - y - 1, c);
+	put_pixel(&all->img, x, y, f);
+	put_pixel(&all->img, x, all->map->h - y - 1, c);
 }
 
 void	draw_background(t_all *all, int x)
@@ -671,54 +618,10 @@ int		calculate_skybox_color(t_all *all, int y)
 								(1.0 * y / all->map->h * all->sky.h)));
 }
 
-//void	draw_floor(t_all *all)
-//{
-//	int y;
-//	int x;
-//	x = 0;
-//	while (x < all->map->w)
-//	{
-//		y = 0;
-//		while (y < all->map->h)
-//		{
-//			if (y < all->wall_beg)
-//			{
-//				all->color = color_from_prm(&all->map->c);
-//				if (all->keys.p)
-//					all->color = color_make_lighter((1.0 * y / (all->map->h / 1.5)), all->color);
-//			}
-//			else if (y > all->wall_end)
-//			{		
-//				double d_k;
-//				if (y < all->a * x * x + all->b * x + all->c)
-//					d_k = 5.0;
-//				else
-//					d_k = 4.3;
-//				#ifdef BONUS
-//					all->color = calculate_floor_color(all, y);
-//				#else
-//					all->color = color_from_prm(&all->map->f);				
-//				#endif
-//				if (all->keys.p)
-//					all->color = color_make_darker(1.0 - (double)y / (d_k * all->map->h), all->color);
-//			}
-//			write_pixel_to_img(&all->img, x, y, all->color);
-//			y++;
-//		}
-//		x++;
-//	}
-//}
-
-void	write_column_to_img(t_all *all, int x)
+void	put_column(t_all *all, int x)
 {
 	double step = 1.0 * all->cur->w / all->wall_h;
 	double texPos = (all->wall_beg - all->map->h / 2 + all->wall_h / 2) * step;
-
-	//#ifdef BONUS
-	//	all->brightness = (all->n / 360.0);
-	//	if (all->brightness < 0.2)
-	//		all->brightness = 0.2;
-	//#endif
 
 	t_vector k;
 	t_vector floor_wall;
@@ -731,50 +634,7 @@ void	write_column_to_img(t_all *all, int x)
 
 	for (int y = 0; y < all->map->h; y++)
 	{
-		//if (y < all->wall_beg)
-		//{
-		//	//all->color = color_from_prm(&all->map->c);
-		//	#ifdef BONUS
-		//		all->color = calculate_skybox_color(all, y);
-		//	#else
-		//		all->color = color_from_prm(&all->map->c);
-		//	#endif	
-		//	//#ifdef CEIL
-		//	//	all->color = calculate_floor_color(all, &all->sky, y);
-		//	//#endif
-		//	if (all->keys.p)
-		//		all->color = color_make_lighter(((double)y / (all->map->h / 1.5)), all->color);
-		//}
-		if (y + all->offset > all->wall_end + all->offset)
-		{		
-			// double d_k;
-			// #ifdef BONUS
-			// 	calculate_floor_color(all, y);
-			// 	all->color = color_from_img(&all->flr.img, all->tex_f.x, all->tex_f.y);
-			// 	write_pixel_to_img(&all->img, x, y, all->color);
-			// 	#ifdef CEIL
-			// 		all->color = color_from_img(&all->sky.img, all->tex_c.x, all->tex_c.y);
-			// 	#else
-			// 		all->color = calculate_skybox_color(all, all->map->h - y);
-			// 	#endif
-			// 	write_pixel_to_img(&all->img, x, all->map->h - y - 1, all->color);
-			// #else
-			// 	all->color = color_from_prm(&all->map->f);
-			// 	write_pixel_to_img(&all->img, x, y, all->color);
-			// 	all->color = color_from_prm(&all->map->c);
-			// 	write_pixel_to_img(&all->img, x, all->map->h - y - 1, all->color);
-			// #endif
-			// if (all->keys.p)
-			// {
-			// 	if (y < all->a * x * x + all->b * x + all->c)
-			// 		d_k = 1.15;
-			// 	else
-			// 		d_k = 1.1;
-			// 	all->color = color_make_darker(1 - (double)y / (d_k * all->map->h), all->color);
-			// }
-			//draw_floor_ceil(all, x, y + all->offset);
-		}
-		else if (y > all->wall_beg) 
+		if (y > all->wall_beg && y <= all->wall_end) 
 		{
 			all->tex.y = (int)texPos; 
 			texPos += step;
@@ -786,14 +646,9 @@ void	write_column_to_img(t_all *all, int x)
 				if (all->keys.p && (all->frame_count % 100 < 5 || (all->frame_count % 100 > 20 && all->frame_count % 100 < 25)))
 					all->color = color_negative(all->color);
 			#endif
-			//if ((all->color & 0x00FFFFFF) != 0)
-			write_pixel_to_img(&all->img, x, y + all->offset, all->color);
+			if ((all->color & 0x00FFFFFF) != 0)
+				put_pixel(&all->img, x, y + all->offset, all->color);
 		}
-		// all->color = color_make_darker(all->brightness, all->color);
-		// if (all->keys.p && all->frame_count % 100 < 5)
-		// 	all->color = color_negative(all->color);
-		//if ((all->color & 0x00FFFFFF) != 0)
-			//write_pixel_to_img(&all->img, x, y, all->color);
 	}	
 }
 
@@ -819,7 +674,7 @@ void	draw_walls(t_all *all)
 		draw_background(all, x);
 		if (all->screen == 0)
 			all->ZBuffer[x] = all->dist_to_wall;
-		write_column_to_img(all, x);
+		put_column(all, x);
 		x++;
 	}
 }

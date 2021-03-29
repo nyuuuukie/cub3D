@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:37:15 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/26 15:18:30 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 00:14:45 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,18 @@ void	move_bonus_check(t_all *all, t_vector new)
 		all->map->arr[(int)all->pos.x][(int)new.y] == '2')
 	{
 		#ifdef BONUS
-			init_music(all, init_fork);
+			init_music(all, init_sound_fork);
 		#endif
 	}
+	else if (all->map->arr[(int)new.x][(int)all->pos.y] == '3' || 
+		all->map->arr[(int)all->pos.x][(int)new.y] == '3')
+	{
+		// #ifdef BONUS
+		// 	init_music(all, init_sound_fork);
+		// #endif
+		all->coin_counter++;
+	}
 }
-
-
 
 void	move(t_all *all, t_vector *base, int sign)
 {

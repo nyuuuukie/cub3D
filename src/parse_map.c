@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/27 19:44:43 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/29 22:06:22 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,19 +84,19 @@ void	check_duplicate(char *texture, char *ptr)
 		throw_parse_error(ERR_DUPLICATE_SPEC, ptr);
 }
 
-void	parse_music(t_map *map, char **path, char *name)
-{
-	map->tr.i = 0;
+// void	parse_music(t_map *map, char **path, char *name, char *ext)
+// {
+// 	map->tr.i = 0;
 
-	check_duplicate(*path, map->line);
-	while (map->tr.i < ft_strlen(name))
-		check_and_skip(map, name[map->tr.i]);
-	check_symbol(map, ' ');
-	skip_symbol(map, ' ');
-	check_music_path(map, ".mp3");
-	*path = ft_strdup(&map->line[map->tr.i]);
-	print_status("Texture", name, "OK");
-}
+// 	check_duplicate(*path, map->line);
+// 	while (map->tr.i < ft_strlen(name))
+// 		check_and_skip(map, name[map->tr.i]);
+// 	check_symbol(map, ' ');
+// 	skip_symbol(map, ' ');
+// 	check_file_path(map, ext);
+// 	*path = ft_strdup(&map->line[map->tr.i]);
+// 	print_status("Texture", name, "OK");
+// }
 
 void check_anim_dir(t_map *map)
 {
@@ -119,7 +119,7 @@ void check_anim_dir(t_map *map)
 	}
 }
 
-void	parse_wpath(t_map *map, char **texture, char *name)
+void	parse_wpath(t_map *map, char **texture, char *name, char *ext)
 {
 	map->tr.i = 0;
 	check_duplicate(*texture, map->line);
@@ -127,13 +127,13 @@ void	parse_wpath(t_map *map, char **texture, char *name)
 		check_and_skip(map, name[map->tr.i]);
 	check_symbol(map, ' ');
 	skip_symbol(map, ' ');
-	check_file_path(map, ".anim");
+	check_file_path(map, ext);
 	check_anim_dir(map);
 	*texture = ft_strdup(&map->line[map->tr.i]);
 	print_status("Texture", name, "OK");
 }
 
-void	parse_path(t_map *map, char **texture, char *name)
+void	parse_path(t_map *map, char **texture, char *name, char *ext)
 {
 	map->tr.i = 0;
 	check_duplicate(*texture, map->line);
@@ -141,7 +141,7 @@ void	parse_path(t_map *map, char **texture, char *name)
 		check_and_skip(map, name[map->tr.i]);
 	check_symbol(map, ' ');
 	skip_symbol(map, ' ');
-	check_file_path(map, ".xpm");
+	check_file_path(map, ext);
 	*texture = ft_strdup(&map->line[map->tr.i]);
 	print_status("Texture", name, "OK");
 }
@@ -185,19 +185,19 @@ void	parse_color(t_map *map, t_clr *clr, char *name)
 void	parse_identify_line_bonus(t_map *map)
 {
 	if (!ft_strncmp(map->line, "SK", 2))
-		parse_path(map, &map->SK_path, "SK");
+		parse_path(map, &map->SK_path, "SK", ".xpm");
 	else if (!ft_strncmp(map->line, "WP", 2))
-		parse_wpath(map, &map->WP_path, "WP");
+		parse_wpath(map, &map->WP_path, "WP", ".anim");
 	else if (!ft_strncmp(map->line, "FT", 2))
-		parse_path(map, &map->FT_path, "FT");
+		parse_path(map, &map->FT_path, "FT", ".xpm");
 	else if (!ft_strncmp(map->line, "AS", 2))
-		parse_path(map, &map->AS_path, "AS");
+		parse_path(map, &map->AS_path, "AS", ".xpm");
 	else if (!ft_strncmp(map->line, "MC", 2))
-		parse_music(map, &map->music, "MC");
+		parse_path(map, &map->music, "MC", ".mp3");
 	else if (!ft_strncmp(map->line, "SD", 2))
-		parse_music(map, &map->sound, "SD");
+		parse_path(map, &map->sound, "SD", ".mp3");
 	else if (!ft_strncmp(map->line, "WS", 2))
-		parse_music(map, &map->wsound, "WS");
+		parse_path(map, &map->wsound, "WS", ".mp3");
 	else
 		throw_parse_error(ERR_ID_NOT_FOUND, 0);
 }
@@ -207,15 +207,15 @@ void	parse_identify_line(t_map *map)
 	if (!ft_strncmp(map->line, "R", 1))
 		parse_resolution(map);
 	else if (!ft_strncmp(map->line, "NO", 2))
-		parse_path(map, &map->NO_path, "NO");
+		parse_path(map, &map->NO_path, "NO", ".xpm");
 	else if (!ft_strncmp(map->line, "SO", 2))
-		parse_path(map, &map->SO_path, "SO");
+		parse_path(map, &map->SO_path, "SO", ".xpm");
 	else if (!ft_strncmp(map->line, "WE", 2))
-		parse_path(map, &map->WE_path, "WE");
+		parse_path(map, &map->WE_path, "WE", ".xpm");
 	else if (!ft_strncmp(map->line, "EA", 2))
-		parse_path(map, &map->EA_path, "EA");
+		parse_path(map, &map->EA_path, "EA", ".xpm");
 	else if (!ft_strncmp(map->line, "S ", 2))
-		parse_path(map, &map->sprite, "S");
+		parse_path(map, &map->sprite, "S", ".xpm");
 	else if (!ft_strncmp(map->line, "F ", 2))
 		parse_color(map, &map->f, "F");
 	else if (!ft_strncmp(map->line, "C ", 2))

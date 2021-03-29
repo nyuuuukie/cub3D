@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:35:59 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/27 18:31:07 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/29 21:57:49 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int 	start_engine(t_map *map, int mode)
 	if (mode == 2)
 	{
 		all.screen = 0;
-		// init_threads(&all);
 		start_main_loop(&all);
 	}
 	else if (mode == 3)
@@ -36,9 +35,15 @@ int	stop_engine(void *ptr)
 	t_all *all;
 
 	all = (t_all *)ptr;
-	music_stop(all, all->music);
-	music_stop(all, all->sound);
-	music_stop(all, all->wsound);
+
+	#ifdef BONUS
+		if (all->map->bonus && all->music != 0)
+        	kill(all->music, SIGKILL);
+    	if (all->map->bonus && all->sound != 0)
+        	kill(all->sound, SIGKILL);
+   		if (all->map->bonus && all->wsound != 0)
+        	kill(all->wsound, SIGKILL);
+	#endif
 	free_all(all);
 	ft_putstr_fd("cub3D stopped", 1);
 	exit(0);

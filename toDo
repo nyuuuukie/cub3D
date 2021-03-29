@@ -14,7 +14,7 @@
 [o] 11. split draw_column function
 [x] 12. parser norm
 [x] 13. files ierarchy?
-[x] 14. change write_pixel_to_img function
+[x] 14. change put_pixel function
 [?] 15. check leaks (valgrind & leaks)
 [o] 16. try textures of different sizes
 [x] 17. rename all files!

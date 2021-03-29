@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/27 18:56:29 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 00:15:06 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ typedef struct		s_map
 	char			*FT_path;
 	char			*SK_path;
 	char			*AS_path;
-	// char			*WF_path;
 	char			*music;
 	char			*sound;
 	char			*wsound;
@@ -126,9 +125,9 @@ typedef struct	s_all
 	t_texture ea;
 	t_texture sky;
 	t_texture flr;
-	t_texture wpn[6]; //ANIM_FRAMES
+	t_texture wpn[ANIM_FRAMES];
 	t_texture *cur;
-	t_texture fire;
+	// t_texture fire;
 	int		color;
 
 	/*raycast*/
@@ -146,7 +145,6 @@ typedef struct	s_all
 	t_vector floor;
 
 	t_sprite *sprites;
-	// t_vector *sprites;
 	
 	t_v_int grid;
 	t_v_int tex;
@@ -223,8 +221,8 @@ typedef struct	s_all
 	int	ceil_exist;
 	int	floor_exist;
 	
-
-	int is_shooting;
+	int coin_counter;
+	// int is_shooting;
 }				t_all;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/27 18:34:00 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/29 22:17:47 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,13 @@
 # include "settings.h"
 # include "structures.h"
 
-void	draw_background(t_all *all, int x);
+/* engine.c */
+int 	start_engine(t_map *map, int mode);
+int		stop_engine(void *ptr);
+
 
 int		calculate_floor_color(t_all *all, int y);
 int		calculate_skybox_color(t_all *all, int y);
-
 
 /* Check input arguments */
 int		check_save_arg(int argc, char **argv);
@@ -56,7 +58,6 @@ void	map_validate(t_map *map);
 int		map_getline(t_map *map);
 void	parse_identify_line(t_map *map);
 int		is_prm_complete(t_map *map);
-
 void	print_status(char *title, char *name, char *status);
 
 /* Errors.c */
@@ -84,19 +85,17 @@ int		flood_fill(char **arr, int x, int y);
 void	flood_fill_iter(char **arr, int x, int y);
 void	player_check(int count, int row, int col);
 
-/* engine.c */
-int 	start_engine(t_map *map, int mode);
-int		stop_engine(void *ptr);
 
 /* raycasting.c */
 void	start_main_loop(t_all *all);
 void    draw_walls(t_all *all);
 int		render(t_all *all);
 
-void	init_all(t_all *all);
-void	init_coord(t_all *all);
 
 /* init.c */
+void	init_all(t_all *all);
+void	init_coord(t_all *all);
+void	init_images(t_all *all);
 void	init_window(t_all *all);
 void	init_textures(t_all *all);
 void	init_screen_size(t_all *all);
@@ -104,8 +103,8 @@ void	init_img(t_all *all, t_img *img);
 void	init_vectors(t_all *all, int i, int j);
 void	init_texture(t_all *all, char *path, t_texture *t);
 
+void	init_bonus_flags(t_all *all);
 void	init_shadow_params(t_all *all);
-
 
 
 /* vector.c */
@@ -139,32 +138,31 @@ double	get_radian(double angle);
 double	get_angle(double radian);
 
 
-void make_screenshot(t_all *all);
-
-
-int music_start(t_all *all, pid_t *x, char *filename, char *volume);
-
-int music_stop(t_all *all, pid_t x);
-
-void	rotate_m(t_all *all, double angle);
+/* save */
+void    make_screenshot(t_all *all);
+void	bitmap_header(t_all *all, int fd);
+void	bitmap_info_header(t_all *all, int fd);
+char	*bitmap_check_exist(void);
 
 void	init_sprites(t_all *all);
-
-
 int		draw_all(t_all *all);
-int		check_music_path(t_map *map, char *ext);
-int     sound_start(t_all *all, pid_t *id, char *filename);
+void	draw_background(t_all *all, int x);
+void    fire(t_all *all);
 
-void init_music(t_all *all, void *f(void *));
-// void    init_music(t_all *all, pid_t *pid, char *filename, int *hndl);
-void    *init_fork(void * prm);
-void *init_sound_fork(void * prm);
 
+
+/* music */
+int     music_start(t_all *all, pid_t *x, char *filename, char *volume);
+void    init_music(t_all *all, void *f(void *));
+void*   init_music_fork(void * prm);
+void*   init_wsound_fork(void * prm);
+void*   init_sound_fork(void * prm);
+
+
+/* free */
 void    free_all(t_all *all);
-void	init_bonus_flags(t_all *all);
-void fire(t_all *all);
 
-void *init_music_fork(void * prm);
-void	init_images(t_all *all);
+
+
 
 #endif

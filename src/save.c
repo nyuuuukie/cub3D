@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 17:05:13 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/27 14:57:18 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/29 22:17:38 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	bitmap_info_header(t_all *all, int fd)
 	write(fd, &lint, sizeof(lint));
 }
 
-char	*bitmap_check_exist()
+char	*bitmap_check_exist(void)
 {
 	static int index;
 	char *filename;

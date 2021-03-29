@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 23:05:04 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/26 14:39:34 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/29 22:12:20 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,38 +21,6 @@ void init_music(t_all *all, void *f(void *))
 	}
 }
 
-// void init_music(t_all *all, pid_t *pid, char *filename, int *hndl)
-// {
-// 	if (all->map->bonus && *hndl == 0)
-// 	{
-// 		all->active_pid = pid;
-// 		all->active_hndl = hndl;
-// 		all->active_sound = filename;
-// 		pthread_create(&all->pmusic, NULL, init_fork, all);
-// 		pthread_detach(all->pmusic);
-// 	}
-// }
-
-
-void *start_music_loop(void * prm)
-{
-	t_all *all;
-	
-	all = (t_all*)prm;
-	while (1)
-	{
-		if (*(all->active_hndl) == 0)
-		{
-			*(all->active_hndl) = 1;
-			music_start(all, all->active_pid, all->active_sound, M_VOLUME);
-			waitpid(*(all->active_pid), 0, 0);
-			*(all->active_hndl) = 0;
-		}
-	}
-	return (NULL);
-}
-
-
 void *init_music_fork(void * prm)
 {
 	t_all *all = (t_all*)prm;
@@ -66,7 +34,7 @@ void *init_music_fork(void * prm)
 	return (NULL);
 }
 
-void *init_fork(void * prm)
+void *init_sound_fork(void * prm)
 {
 	t_all *all = (t_all*)prm;
 	if (all->sound_started == 0)
@@ -79,7 +47,7 @@ void *init_fork(void * prm)
 	return (NULL);
 }
 
-void *init_sound_fork(void * prm)
+void *init_wsound_fork(void * prm)
 {
 	t_all *all = (t_all*)prm;
 	if (all->wsound_started == 0)
@@ -111,34 +79,5 @@ int music_start(t_all *all, pid_t *x, char *filename, char *volume)
 		ft_putnbr_fd(*x, 1);
 		ft_putendl_fd(" <pid> mpg123", 1);
 	}
-	return (0);
-}
-
-// int	sound_start(t_all *all, pid_t *id, char *filename, char *volume)
-// {
-// 	(void)all;
-// 	*id = fork();
-// 	if (*id < 0) 
-// 	{
-// 		ft_putendl_fd("sound fork error", 2);
-// 		return (0);
-// 	}  
-// 	else if (*id == 0) 
-// 	{
-// 		execlp("mpg123", "mpg123", "-q", volume, filename, NULL);
-// 		exit(0);
-// 	}
-// 	else 
-// 	{
-// 		ft_putnbr_fd(*id, 1);
-// 		ft_putendl_fd(" <pid> mpg123", 1);
-// 	}
-// 	return (0);
-// }
-
-int music_stop(t_all *all, pid_t x)
-{
-	if (all->map->bonus && x != 0)
-		kill(x, SIGKILL);
 	return (0);
 }

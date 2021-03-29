@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 21:48:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/27 19:36:59 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 00:07:56 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	init_anim_texture(t_all *all, t_texture txt[])
 	while (i < ANIM_FRAMES)
 	{
 		init_texture(all, path, &(txt[i]));
-		path[len - 5] += 1;		
+		path[len - 5] += 1;
 		i++;
 	}
 	free(path);
