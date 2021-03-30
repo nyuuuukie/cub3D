@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/29 22:17:47 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 22:30:00 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		map_getline(t_map *map);
 void	parse_identify_line(t_map *map);
 int		is_prm_complete(t_map *map);
 void	print_status(char *title, char *name, char *status);
-
+void	check_portal(t_map *map);
 /* Errors.c */
 char*	get_error_msg(t_error code);
 void	throw_parse_error(t_error msg, char *add);
@@ -157,7 +157,7 @@ void    init_music(t_all *all, void *f(void *));
 void*   init_music_fork(void * prm);
 void*   init_wsound_fork(void * prm);
 void*   init_sound_fork(void * prm);
-
+void*   init_csound_fork(void * prm);
 
 /* free */
 void    free_all(t_all *all);

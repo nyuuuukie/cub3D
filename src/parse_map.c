@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 16:57:30 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 22:31:16 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,20 +83,6 @@ void	check_duplicate(char *texture, char *ptr)
 	if (texture != NULL)
 		throw_parse_error(ERR_DUPLICATE_SPEC, ptr);
 }
-
-// void	parse_music(t_map *map, char **path, char *name, char *ext)
-// {
-// 	map->tr.i = 0;
-
-// 	check_duplicate(*path, map->line);
-// 	while (map->tr.i < ft_strlen(name))
-// 		check_and_skip(map, name[map->tr.i]);
-// 	check_symbol(map, ' ');
-// 	skip_symbol(map, ' ');
-// 	check_file_path(map, ext);
-// 	*path = ft_strdup(&map->line[map->tr.i]);
-// 	print_status("Texture", name, "OK");
-// }
 
 void check_anim_dir(t_map *map)
 {

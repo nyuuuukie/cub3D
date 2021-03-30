@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 19:39:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/26 14:27:00 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 22:36:40 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void init_keys(t_all* all)
 	all->keys.k0 = 0;
 	all->keys.k1 = 0;
 	all->keys.sh = 0;
-	// all->keys.sp = 0; //need ?
+	all->keys.f = 0;
 }
 
 int key_action(t_all *all)
@@ -41,13 +41,11 @@ int key_action(t_all *all)
 		rotate(all, 1, all->r_angle);
 	if (all->keys.r && !all->keys.l)
 		rotate(all, -1, all->r_angle);
-	if (all->keys.f)
-	{
-		all->keys.f = 0;
-		fire(all);
-	}
+	#ifdef BONUS
+		if (all->keys.f)
+			fire(all);
+	#endif
 	all->k_speed = all->keys.sh + 1.0;
-	
 	// all->offset = all->keys.sp * all->screen_h / 10;
 	return (0);
 }

@@ -6,11 +6,34 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:10:32 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/23 18:40:35 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 23:14:33 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
+
+void	check_portal(t_map *map)
+{
+	int 	i;
+	int 	j;
+	int 	count;
+	
+	i = 1;
+	count = 0;
+	while (i < map->rows - 1)
+	{
+		j = 0;
+		while (map->arr[i][j] != '\0')
+		{
+			if (map->arr[i][j] == 'T')
+				count++;
+			j++;
+		}
+		i++;
+	}
+	if (count != 2)
+		throw_parse_error(ERR_MISSING_SYMBOL, "'T' count is not equal two");
+}
 
 void	map_validate(t_map *map)
 {
@@ -34,6 +57,8 @@ void	map_validate(t_map *map)
 		i++;
 	}
 	player_check(count, i, j);
+	if (map->bonus)
+		check_portal(map);
 }
 
 void	flood_fill_iter(char **arr, int row, int col)

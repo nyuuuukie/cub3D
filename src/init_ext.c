@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 18:15:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 06:44:46 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 22:10:04 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void 	init_params(t_all *all)
 	all->sky_exist = 0;
 	all->ceil_exist = 0;
 	all->wp_i = 0;
+	all->tpf = 0;
 	if (!all->ZBuffer)
 		throw_engine_error(all, ERR_CANNOT_ALLOC, 0);
 	all->coin_counter = 0;

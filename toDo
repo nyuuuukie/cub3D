@@ -1,57 +1,57 @@
-[x] 0.	change sort sprite algorythm maybe
+[?] 0.	change sort sprite algorythm maybe
 [o] 1.	change keycodes on MacOS
 [o] 2.	add skybox
-[?] 3.	makefile fix relink
+[o] 3.	makefile fix relink
 [o] 4.	clean all function
-[x] 5.	create both functions to work properly:
-[x]     engine_error  function
+[o] 5.	create both functions to work properly:
+[o]     engine_error  function
 [o]     parse_error function
 [o] 6.	fix bmp screenshot on MacOS (get_screen_size failure maybe?)
 [x] 7.	add bonus dependencies
 [o] 8.	add shadow functions
 [o] 9.	add color_from_img function
-[x] 10. fix parser (the part with map and \n and spaces)
+[o] 10. fix parser (the part with map and \n and spaces)
 [o] 11. split draw_column function
 [x] 12. parser norm
 [x] 13. files ierarchy?
-[x] 14. change put_pixel function
-[?] 15. check leaks (valgrind & leaks)
+[o] 14. change put_pixel function
+[x] 15. check leaks (valgrind & leaks)
 [o] 16. try textures of different sizes
 [x] 17. rename all files!
 [o] 18. split calculations and writing to image
-[x] 19. fix screenshot (left border printed with wrong color)
-[?] 20. sprite on the wall (need to skip black color)
-[x] 21. fix brightness (switch no and so, find better dependency)
+[o] 19. fix screenshot (left border printed with wrong color)
+[o] 20. sprite on the wall (need to skip black color)
+[-] 21. fix brightness (switch no and so, find better dependency)
 [o] 22. add more textures (for testing and high dpi)
-[x] 23. add screamer
-[x] 24. texture with different width and height displays incorrectly
+[-] 23. add screamer
+[o] 24. texture with different width and height displays incorrectly
 [o] 25. ceil texture (need to paint floor and ceil at the same time)
 [o] 26. shadows on sprite
 [o] 27. black dots on textures and sprites
 [o] 28. path to the music file in scene file
-[x] 29. dependency in the makefile
+[o] 29. dependency in the makefile
 [o] 30. weapon sprite movements
 
 [o] 31. split draw background and draw walls into different cycles
-[x] 32. make draw ceil and draw floor independent
-[?] 33. space key
+[-] 32. make draw ceil and draw floor independent
+[-] 33. space key
 [o] 34 .shadows on one key and weapon in the another
 
 [o] 35. draw second sprite
-[x] 36. add sound
+[o] 36. add sound
+
+[o] An HUD.
+[?] Crouch.
+[o] Secret doors.
+[?] Doors which can open and close.
 
 
-• An HUD.
-• Crouch.
-• Secret doors.
-• Doors which can open and close.
-
-
-• Life bar.
-• More items in the maze. 
-• Earning points and/or losing life by picking up objects/traps. add coin
+[?] Life bar.
+[o] More items in the maze. 
+[o] Earning points and/or losing life by picking up objects/traps. add coin
 [o] Animations of a gun shot or animated sprite. need to finish
-• Several levels. add 2-3 levels on oblivion
-• Weapons and bad guys to fight! cyber
+[?] Several levels. add 2-3 levels on oblivion
+[o] Weapons and bad guys to fight! cyber
 
 [x] Fix music and bash input close. Try to create a new thread each time music started.
+[x] First sprite is not shown

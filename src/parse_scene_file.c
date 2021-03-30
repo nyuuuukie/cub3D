@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 21:46:58 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/23 19:17:03 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 23:19:07 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,12 @@ int		parse_map(t_map *map)
 	arr_create(&map->arr, map->rows, map->cols);
 	arr_fill(map->arr, map->lst);
 	map_validate(map);
+	
 	arr_replace(map->arr, '#', '0');
 	map->sprites = arr_replace(map->arr, 'x', '2');
-	map->sprites += arr_replace(map->arr, '.', '3');
+	map->sprites += arr_replace(map->arr, 'T', 'T');
+	map->keys = arr_replace(map->arr, '.', '3');
+	map->sprites += map->keys;
 	print_status("Map's validation ", 0, "OK");
 	return (0);
 }

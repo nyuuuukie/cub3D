@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 06:22:41 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 22:09:53 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct		s_map
 	int				rows;
 	int				cols;
 	int				sprites;
+	int				keys;
 	char			**arr;
 	t_list			*lst;
 	t_track			tr;
@@ -126,6 +127,8 @@ typedef struct	s_all
 	t_texture sky;
 	t_texture flr;
 	t_texture wpn[ANIM_FRAMES];
+
+	t_texture tp[ANIM_FRAMES];
 	t_texture *cur;
 
 	t_texture digits[10];
@@ -162,6 +165,7 @@ typedef struct	s_all
 	int		hit_wall;
 	int		side_wall;
 
+	int		tpf;
 	int		wall_h;
 	double	k_speed;
 	double	m_speed;
@@ -180,7 +184,7 @@ typedef struct	s_all
 
 	
 
-	int offset;
+	int		offset;
 
 	int		cmx;
 	int		cmy;
@@ -195,6 +199,7 @@ typedef struct	s_all
 	int music_started;
 	int sound_started;
 	int wsound_started;
+	int csound_started;
 	
 	char *active_sound;
 	int *active_hndl;
@@ -203,6 +208,7 @@ typedef struct	s_all
 	pid_t wsound;
 	pid_t music;
 	pid_t sound;
+	pid_t csound;
 	pthread_t pmusic;
 
 

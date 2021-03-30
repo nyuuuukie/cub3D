@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 23:05:04 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/29 22:12:20 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 19:40:24 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,19 @@ void *init_wsound_fork(void * prm)
 		music_start(all, &all->wsound, all->map->wsound, S_VOLUME);
 		waitpid(all->wsound, 0, 0);
 		all->wsound_started = 0;
+	}
+	return (NULL);
+}
+
+void *init_csound_fork(void * prm)
+{
+	t_all *all = (t_all*)prm;
+	if (all->csound_started == 0)
+	{
+		all->csound_started = 1;
+		music_start(all, &all->csound, "music/keys.mp3", S_VOLUME);
+		waitpid(all->csound, 0, 0);
+		all->csound_started = 0;
 	}
 	return (NULL);
 }

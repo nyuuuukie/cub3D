@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:37:15 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 06:45:00 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 23:28:48 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,44 +56,63 @@ void	print_map(char **arr)
 		ft_putendl_fd(arr[i++], 1);
 }
 
-void	move_bonus_check(t_all *all, t_vector new)
+
+void	change_pos(t_all *all, int x, int y)
 {
-	calculate_weapon_offset(all);
-	if (all->map->arr[(int)new.x][(int)all->pos.y] == '2' || 
-		all->map->arr[(int)all->pos.x][(int)new.y] == '2')
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;	
+	while (i < all->map->sprites)
+	{
+		if (all->sprites[i].id == 'T')
+		{
+			if ((int)ceil(all->sprites[i].p.x) != x && (int)ceil(all->sprites[i].p.y) != y)
+			{
+				printf("teleported!\n");
+				all->pos.x = x;
+				all->pos.y = y;
+				break;
+			}
+		}
+		i++;
+	}
+}
+
+void 	check_map_pos(t_all *all, int x, int y)
+{
+	if (all->map->arr[x][y] == '2')
 	{
 		#ifdef BONUS
 			init_music(all, init_sound_fork);
 		#endif
 	}
-	else if (all->map->arr[(int)new.x][(int)all->pos.y] == '3')
+	else if (all->map->arr[x][y] == '3')
 	{
-		// #ifdef BONUS
-		// 	init_music(all, init_sound_fork);
-		// #endif
-		all->coin_counter++;
-		// remove_sprite(all, new.x, all->pos.y);
-		all->map->arr[(int)new.x][(int)all->pos.y] = '0';
-		all->sprites[all->map->sprites - 1].id = 'T';
+		#ifdef BONUS
+			init_music(all, init_csound_fork);
+		#endif
+		all->map->keys--;
+		all->map->arr[x][y] = '0';
+		all->sprites[all->map->sprites - 1].id = 'X';
 		all->sprites[all->map->sprites - 1].p.x = -1;
 		all->sprites[all->map->sprites - 1].p.y = -1;
 		all->sprites[all->map->sprites - 1].p.dist = -1;
-		// print_map(all->map->arr);
 	}
-	else if (all->map->arr[(int)all->pos.x][(int)new.y] == '3')
+	else if (all->map->arr[x][y] == 'T' && all->map->keys == 0)
 	{
-		// #ifdef BONUS
-		// 	init_music(all, init_sound_fork);
-		// #endif
-		all->coin_counter++;
-		// remove_sprite(all, new.x, all->pos.y);
-		all->map->arr[(int)all->pos.x][(int)new.y] = '0';
-		all->sprites[all->map->sprites - 1].id = 'T';
-		all->sprites[all->map->sprites - 1].p.x = -1;
-		all->sprites[all->map->sprites - 1].p.y = -1;
-		all->sprites[all->map->sprites - 1].p.dist = -1;
-		// print_map(all->map->arr);
+		//Check if T has exit (second T symbol in map) fix in parser
+		//find pos of second T
+		// printf("teleported");		change_pos(all, x, y);
 	}
+}
+
+void	move_bonus_check(t_all *all, t_vector new)
+{
+	calculate_weapon_offset(all);
+	check_map_pos(all, new.x, all->pos.y);
+	check_map_pos(all, all->pos.x, new.y);
 }
 
 void	move(t_all *all, t_vector *base, int sign)

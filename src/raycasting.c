@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 17:00:57 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 23:16:28 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void    put_pixel(t_img *img, int x, int y, int color)
 {
-		*(int*)(img->addr + y * img->len + x * (img->bpp / 8)) = color;
+	*(int*)(img->addr + y * img->len + x * (img->bpp / 8)) = color;
 }
 
-void	calculate_dist_to_sprite(t_all *all)
+void	calculate_dist_to_sprites(t_all *all)
 {
 	t_vector a;
 	int i;
@@ -167,7 +167,7 @@ void	draw_hud(t_all *all)
 	
 	//y = 10;
 	x = all->map->w - 10; 
-	count = all->coin_counter;
+	count = all->map->keys;
 	 while (count != 0)
 	{
 		x -= all->map->h / 20 + 1;
@@ -178,36 +178,36 @@ void	draw_hud(t_all *all)
 
 // void	calculate_sprites()
 // {
-
 // }
-
 
 // void	calculate_sprite_size(t_all *all)
 // {
-	
 // }
 
-// void 	check_sprite_coords(t_all *all)
+// void check_sprite_coords(t_all *all)
 // {
-
 // }
 
 // void	draw_sprite(t_all *all)
 // {
-	
 // }
 
 void	draw_sprites(t_all *all)
 {
 	double det;
 	
-	calculate_dist_to_sprite(all);
+	calculate_dist_to_sprites(all);
 
 	if (all->map->sprites > 1)
 		sort_sprites(all);
 
 	for (int i = 0; i < all->map->sprites; i++)
     {
+		t_texture *s;
+
+		if (all->sprites[i].id == 'T' && all->map->keys != 0)
+			continue;
+		
 		vector_init(&all->d, all->sprites[i].p.x - all->pos.x, 
 						all->sprites[i].p.y - all->pos.y);
 
@@ -230,19 +230,20 @@ void	draw_sprites(t_all *all)
 		if (all->s_beg.y < 0)
 			all->s_beg.y = 0;
 		if (all->s_end.y >= all->map->h)
-			all->s_end.y = all->map->h;// - 1;
+			all->s_end.y = all->map->h;
 		if (all->s_beg.x < 0) 
 			all->s_beg.x = 0;
 		if (all->s_end.x >= all->map->w) 
-			all->s_end.x = all->map->w;// - 1;
+			all->s_end.x = all->map->w;
 		
-		t_texture *s;
-
 		if (all->sprites[i].id == '2')
 			s = &(all->s1);
 		else
 			s = &(all->s2);
-
+			
+		if (all->sprites[i].id == 'T')
+			s = &(all->tp[all->tpf]);
+		
 		for (int sx = all->s_beg.x; sx < all->s_end.x; sx++)
 		{
 			all->tex.x = (int)(256 * (sx - (-all->s_size.x / 2 + all->sp_scr_x)) * s->w / all->s_size.x) / 256 + 1;
@@ -345,29 +346,6 @@ int		mouse_action(t_all *all)
 	return (0);
 }
 
-// int		draw_fire(t_all *all)
-// {
-// 	t_v_int tex;
-// 	int y;
-// 	int x;
-// 	x = 0;
-// 	while (x < all->map->w)
-// 	{
-// 		y = 0;
-// 		while (y < all->map->h)
-// 		{
-// 			tex.x = 1.0 * x / all->map->w * all->fire.w;
-// 			tex.y = 1.0 * y / all->map->h * all->fire.h + 0.5 * all->r;
-// 			all->color = color_from_txt(&all->fire, tex.x, tex.y);
-// 			if ((all->color & 0x00FFFFFF) != 0)
-// 				put_pixel(&all->img, x, y, all->color);
-// 			y++;
-// 		}
-// 		x++;
-// 	}
-// 	return (0);
-// }
-
 int		draw_all(t_all *all)
 {
 	draw_walls(all);
@@ -378,6 +356,10 @@ int		draw_all(t_all *all)
 		all->wp_i++;
 	if (!all->wsound_started)
 		all->wp_i = 0;
+
+	all->tpf++;
+	if (all->tpf >= ANIM_FRAMES)
+		all->tpf = 0;
 	#ifdef BONUS
 		if (!all->ceil_exist && all->keys.p)
 			draw_rain(all);
@@ -390,7 +372,16 @@ int		draw_all(t_all *all)
 
 void fire(t_all *all)
 {
-	(void)all;
+	all->keys.f = 0;
+	// if (all->s_beg.x > all->map->w / 2 - 10 && all->map->w / 2 + 10 < all->s_end.x)
+	// {
+		// printf("killed!\n");
+		// all->map->arr[(int)all->sprites[all->map->sprites - 1].p.x][(int)all->sprites[all->map->sprites - 1].p.y] = '0';
+		// all->sprites[all->map->sprites - 1].id = 'X';
+		// all->sprites[all->map->sprites - 1].p.x = -1;
+		// all->sprites[all->map->sprites - 1].p.y = -1;
+		// all->sprites[all->map->sprites - 1].p.dist = -1;
+	// }
 	#ifdef BONUS
 		if (all->map->bonus && all->keys.k1)
 			init_music(all, init_wsound_fork);
@@ -414,6 +405,7 @@ int		render(t_all *all)
 {
 	mlx_do_sync(all->mlx);
 	all->frame_count++;
+
 	key_action(all);
 	if (all->map->bonus)
 		mouse_action(all);
@@ -524,25 +516,6 @@ void	calculate_texture_coordinates(t_all *all)
 		all->tex.x = all->cur->w - all->tex.x - 1;
 }
 
-
-void	map_iterator(t_all *all, void (*f)(t_all *))
-{
-	int y;
-	int x;
-
-	x = 0;
-	while (x < all->map->w)
-	{
-		y = 0;
-		while (y < all->map->h)
-		{
-			f(all);
-			y++;
-		}
-		x++;
-	}
-}
-
 void	init_bonus_flags(t_all *all)
 {
 	if (all->map->bonus)
@@ -558,12 +531,11 @@ void	init_bonus_flags(t_all *all)
 	}
 }
 
-int is_lightning(t_all *all)
+int		is_lightning(t_all *all)
 {
 	return ((all->frame_count % 100 < 5 ) || \
 			(all->frame_count % 100 > 20 && all->frame_count % 100 < 25));
 }
-
 
 void	draw_floor_ceil(t_all *all, int x, int y)
 {
@@ -624,10 +596,8 @@ void	draw_background(t_all *all, int x)
 
 int		calculate_floor_ceil_text_coord(t_all *all)
 {
-	vector_int_init(&all->tex_f, (int)(all->floor.x * all->flr.w) % all->flr.w, 
+	vector_int_init(&all->tex_f, (int)(all->floor.x * all->flr.w) % all->flr.w,
 						  (int)(all->floor.y * all->flr.h) % all->flr.h);
-	
-
 	vector_int_init(&all->tex_c, (int)(all->floor.x * all->sky.w) % all->sky.w, 
 						  (int)(all->floor.y * all->sky.h) % all->sky.h);
 	return (0);
@@ -682,7 +652,7 @@ void	put_column(t_all *all, int x)
 			#ifdef BONUS
 			 	if (all->keys.k0)
 			 		all->color = color_make_darker(all->dist_to_wall / 20, all->color);				
-				if (all->keys.p && (all->frame_count % 100 < 5 || (all->frame_count % 100 > 20 && all->frame_count % 100 < 25)))
+				if (all->keys.p && is_lightning(all)) //(all->frame_count % 100 < 5 || (all->frame_count % 100 > 20 && all->frame_count % 100 < 25)))
 					all->color = color_negative(all->color);
 			#endif
 			if ((all->color & 0x00FFFFFF) != 0)
