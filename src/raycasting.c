@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 05:23:15 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 17:00:57 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,27 +157,15 @@ void	draw_number(t_all *all, int x, int y, int num)
 		}
 		i++;
 	}
-	// while (i < all->digits[num].h)
-	// {
-	// 	j = 0;
-	// 	while (j < all->digits[num].w)
-	// 	{
-	// 		int color = color_from_txt(&all->digits[num], j, i);
-	// 		if ((color & 0xFFFFFFFF) == 0)
-	// 			put_pixel(&all->img, x + j, y + i, color);
-	// 		j++;
-	// 	}
-	// 	i++;
-	// }
 }
 
 void	draw_hud(t_all *all)
 {
 	int x;
-	int y;
+	//int y;
 	int count;
 	
-	y = 10;
+	//y = 10;
 	x = all->map->w - 10; 
 	count = all->coin_counter;
 	 while (count != 0)

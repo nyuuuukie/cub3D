@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/29 22:06:22 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 16:57:30 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ void check_anim_dir(t_map *map)
 			close(fd);
 		i++;
 	}
+	free(path);
 }
 
 void	parse_wpath(t_map *map, char **texture, char *name, char *ext)
