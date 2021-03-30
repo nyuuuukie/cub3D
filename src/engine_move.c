@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:37:15 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 02:56:20 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 06:45:00 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	remove_sprite(t_all *all, int x, int y)
 	}
 	
 }
-
 
 void	print_map(char **arr)
 {
