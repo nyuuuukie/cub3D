@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 00:15:06 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 06:22:41 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,8 @@ typedef struct	s_all
 	t_texture flr;
 	t_texture wpn[ANIM_FRAMES];
 	t_texture *cur;
-	// t_texture fire;
+
+	t_texture digits[10];
 	int		color;
 
 	/*raycast*/
@@ -222,7 +223,6 @@ typedef struct	s_all
 	int	floor_exist;
 	
 	int coin_counter;
-	// int is_shooting;
 }				t_all;
 
 #endif

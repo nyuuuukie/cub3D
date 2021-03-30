@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/29 22:47:42 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 05:23:15 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	sort_sprites(t_all *all)
 			swap_c_values(&all->sprites[i].id, &all->sprites[i + 1].id);
 			swap_d_values(&all->sprites[i].p.dist, &all->sprites[i + 1].p.dist);
 			i = -1;
-		}	
+		}
 		i++;
 	}
 }
@@ -137,6 +137,56 @@ void	draw_weapon(t_all *all)
 	}
 }
 
+void	draw_number(t_all *all, int x, int y, int num)
+{
+	int i;
+	int j;
+	int scale;
+	
+	i = 0;
+	scale = all->map->h / 20 + 1;
+	while (i < scale)
+	{
+		j = 0;
+		while (j < scale)
+		{
+			int color = color_from_txt(&all->digits[num], 1.0 * all->digits[num].w * j / scale, 1.0 * all->digits[num].w * i / scale);
+			if ((color & 0xFFFFFFFF) == 0)
+				put_pixel(&all->img, x + j, y + i, color_negative(color));
+			j++;
+		}
+		i++;
+	}
+	// while (i < all->digits[num].h)
+	// {
+	// 	j = 0;
+	// 	while (j < all->digits[num].w)
+	// 	{
+	// 		int color = color_from_txt(&all->digits[num], j, i);
+	// 		if ((color & 0xFFFFFFFF) == 0)
+	// 			put_pixel(&all->img, x + j, y + i, color);
+	// 		j++;
+	// 	}
+	// 	i++;
+	// }
+}
+
+void	draw_hud(t_all *all)
+{
+	int x;
+	int y;
+	int count;
+	
+	y = 10;
+	x = all->map->w - 10; 
+	count = all->coin_counter;
+	 while (count != 0)
+	{
+		x -= all->map->h / 20 + 1;
+		draw_number(all, x, 10, count % 10);
+		count /= 10;
+	}
+}
 
 // void	calculate_sprites()
 // {
@@ -345,6 +395,7 @@ int		draw_all(t_all *all)
 			draw_rain(all);
 		if (all->keys.k1)
 			draw_weapon(all);
+		draw_hud(all);
 	#endif
 	return (0);
 }

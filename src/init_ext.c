@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 18:15:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/27 18:59:59 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 02:41:30 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void 	init_params(t_all *all)
 	all->wp_i = 0;
 	if (!all->ZBuffer)
 		throw_engine_error(all, ERR_CANNOT_ALLOC, 0);
-
+	all->coin_counter = 0;
 	all->sound_started = 0;
 	all->wsound_started = 0;
 	all->music_started = 0;

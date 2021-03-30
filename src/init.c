@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 21:48:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 00:07:56 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 06:39:51 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,16 @@ void	init_texture(t_all *all, char *path, t_texture *t)
 		throw_engine_error(all, ERR_MLX_TXT_FAIL, path);
 }
 
-void	init_anim_texture(t_all *all, t_texture txt[])
+void	init_mult_textures(t_all *all, t_texture txt[], char *dir, int num)
 {
 	int i;
 	int len;
 	char *path;
 
 	i = 0;
-	path = ft_strjoin(all->map->WP_path, "/0.xpm");
+	path = ft_strjoin(dir, "/0.xpm");
 	len  = ft_strlen(path);
-	while (i < ANIM_FRAMES)
+	while (i < num)
 	{
 		init_texture(all, path, &(txt[i]));
 		path[len - 5] += 1;
@@ -98,7 +98,8 @@ void	init_textures(t_all *all)
 		init_texture(all, all->map->AS_path, &all->s2);
 		init_texture(all, all->map->FT_path, &all->flr);
 		init_texture(all, all->map->SK_path, &all->sky);
-		init_anim_texture(all, all->wpn);
+		init_mult_textures(all, all->wpn, all->map->WP_path, ANIM_FRAMES);
+		init_mult_textures(all, all->digits, "textures/digits", 10);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 15:01:24 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 00:15:28 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/30 06:21:12 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,24 @@ void    free_all_bonus(t_all *all)
 {
     int i;
 
-    i = 0;
-    if (all->map->SK_path)
+    
+    if (all->map->SK_path && all->mlx && all->sky.img.img)
         mlx_destroy_image(all->mlx, all->sky.img.img);
-    if (all->map->FT_path)
+    if (all->map->FT_path && all->mlx && all->flr.img.img)
         mlx_destroy_image(all->mlx, all->flr.img.img);
-    if (all->map->AS_path)
+    if (all->map->AS_path && all->mlx && all->s2.img.img)
         mlx_destroy_image(all->mlx, all->s2.img.img);
-    if (all->map->WP_path)
+    if (all->map->WP_path && all->mlx)
     {
-        while (i < ANIM_FRAMES)
+        i = 0;
+        while (i < ANIM_FRAMES && all->wpn[i].img.img)
             mlx_destroy_image(all->mlx, all->wpn[i++].img.img);
+    }
+    if (all->mlx)
+    {
+        i = 0;
+        while (i < 10 && all->digits[i].img.img)
+            mlx_destroy_image(all->mlx, all->digits[i++].img.img);
     }
 }
 
