@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:37:15 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 23:28:48 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/31 21:22:24 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,15 @@ void	remove_sprite(t_all *all, int x, int y)
 	{
 		if ((int)all->sprites[i].p.x == x && (int)all->sprites[i].p.y == y)
 		{
-			all->sprites[i].id = 'T';
+			all->map->arr[x][y] = '0';
+			all->sprites[i].id = 'X';
 			all->sprites[i].p.x = -1;
 			all->sprites[i].p.y = -1;
 			all->sprites[i].p.dist = -1;
+			break;
 		}
 		i++;
 	}
-	
 }
 
 void	print_map(char **arr)
@@ -56,63 +57,55 @@ void	print_map(char **arr)
 		ft_putendl_fd(arr[i++], 1);
 }
 
-
-void	change_pos(t_all *all, int x, int y)
+void	change_pos(t_all *all, char t)
 {
 	int i;
 	int j;
 
 	i = 0;
-	j = 0;	
-	while (i < all->map->sprites)
-	{
-		if (all->sprites[i].id == 'T')
+	while (all->map->rows - 1)
+	{	
+		j = 0;	
+		while (all->map->arr[i][j] != '\0')
 		{
-			if ((int)ceil(all->sprites[i].p.x) != x && (int)ceil(all->sprites[i].p.y) != y)
+			if (all->map->arr[i][j] == t)
 			{
-				printf("teleported!\n");
-				all->pos.x = x;
-				all->pos.y = y;
-				break;
+				all->pos.x = i + 0.5 + 1 * all->dir.y;
+				all->pos.y = j + 0.5 + 1 * all->dir.x;
+				return ;
 			}
+			j++;	
 		}
 		i++;
 	}
 }
 
-void 	check_map_pos(t_all *all, int x, int y)
+void 	check_map_position(t_all *all, int x, int y)
 {
 	if (all->map->arr[x][y] == '2')
 	{
-		#ifdef BONUS
-			init_music(all, init_sound_fork);
-		#endif
+		init_music(all, init_sound_fork);
 	}
 	else if (all->map->arr[x][y] == '3')
 	{
-		#ifdef BONUS
-			init_music(all, init_csound_fork);
-		#endif
+		init_music(all, init_csound_fork);
 		all->map->keys--;
-		all->map->arr[x][y] = '0';
-		all->sprites[all->map->sprites - 1].id = 'X';
-		all->sprites[all->map->sprites - 1].p.x = -1;
-		all->sprites[all->map->sprites - 1].p.y = -1;
-		all->sprites[all->map->sprites - 1].p.dist = -1;
+		remove_sprite(all, x, y);
 	}
-	else if (all->map->arr[x][y] == 'T' && all->map->keys == 0)
+	else if (all->map->keys == 0)
 	{
-		//Check if T has exit (second T symbol in map) fix in parser
-		//find pos of second T
-		// printf("teleported");		change_pos(all, x, y);
+		if (all->map->arr[x][y] == 'T')
+			change_pos(all, 'H');
+		else if (all->map->arr[x][y] == 'H')
+			change_pos(all, 'T');
 	}
 }
 
 void	move_bonus_check(t_all *all, t_vector new)
 {
 	calculate_weapon_offset(all);
-	check_map_pos(all, new.x, all->pos.y);
-	check_map_pos(all, all->pos.x, new.y);
+	check_map_position(all, new.x, all->pos.y);
+	check_map_position(all, all->pos.x, new.y);
 }
 
 void	move(t_all *all, t_vector *base, int sign)
@@ -125,7 +118,7 @@ void	move(t_all *all, t_vector *base, int sign)
 		all->pos.x = new.x;
 	if (!ft_strchr("321", all->map->arr[(int)all->pos.x][(int)new.y]))
 		all->pos.y = new.y;
-	
-	if (all->map->bonus)
+	#ifdef BONUS
 		move_bonus_check(all, new);	
+	#endif
 }

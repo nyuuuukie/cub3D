@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 23:17:22 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/31 17:45:56 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@
 	# define FLOOD_FILL_SPEC "02NSWE"
 	# define SPRITES "2"
 #else
-	# define ALLOWED_MAP_SPEC "0123TNSWE "
-	# define FLOOD_FILL_SPEC "023TNSWE"
-	# define SPRITES "23T"
+	# define ALLOWED_MAP_SPEC "0123THNSWE "
+	# define FLOOD_FILL_SPEC "023THNSWE"
+	# define SPRITES "23TH"
 #endif
 
 #ifndef LINUX

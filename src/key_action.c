@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 19:39:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 22:36:40 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/31 21:16:00 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int key_action(t_all *all)
 			fire(all);
 	#endif
 	all->k_speed = all->keys.sh + 1.0;
-	// all->offset = all->keys.sp * all->screen_h / 10;
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 23:16:28 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 01:38:17 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,10 +162,8 @@ void	draw_number(t_all *all, int x, int y, int num)
 void	draw_hud(t_all *all)
 {
 	int x;
-	//int y;
 	int count;
 	
-	//y = 10;
 	x = all->map->w - 10; 
 	count = all->map->keys;
 	 while (count != 0)
@@ -175,22 +173,6 @@ void	draw_hud(t_all *all)
 		count /= 10;
 	}
 }
-
-// void	calculate_sprites()
-// {
-// }
-
-// void	calculate_sprite_size(t_all *all)
-// {
-// }
-
-// void check_sprite_coords(t_all *all)
-// {
-// }
-
-// void	draw_sprite(t_all *all)
-// {
-// }
 
 void	draw_sprites(t_all *all)
 {
@@ -205,7 +187,7 @@ void	draw_sprites(t_all *all)
     {
 		t_texture *s;
 
-		if (all->sprites[i].id == 'T' && all->map->keys != 0)
+		if ((all->sprites[i].id == 'T' || all->sprites[i].id == 'H') && all->map->keys != 0)
 			continue;
 		
 		vector_init(&all->d, all->sprites[i].p.x - all->pos.x, 
@@ -241,7 +223,7 @@ void	draw_sprites(t_all *all)
 		else
 			s = &(all->s2);
 			
-		if (all->sprites[i].id == 'T')
+		if (all->sprites[i].id == 'T' || all->sprites[i].id == 'H')
 			s = &(all->tp[all->tpf]);
 		
 		for (int sx = all->s_beg.x; sx < all->s_end.x; sx++)
@@ -373,15 +355,6 @@ int		draw_all(t_all *all)
 void fire(t_all *all)
 {
 	all->keys.f = 0;
-	// if (all->s_beg.x > all->map->w / 2 - 10 && all->map->w / 2 + 10 < all->s_end.x)
-	// {
-		// printf("killed!\n");
-		// all->map->arr[(int)all->sprites[all->map->sprites - 1].p.x][(int)all->sprites[all->map->sprites - 1].p.y] = '0';
-		// all->sprites[all->map->sprites - 1].id = 'X';
-		// all->sprites[all->map->sprites - 1].p.x = -1;
-		// all->sprites[all->map->sprites - 1].p.y = -1;
-		// all->sprites[all->map->sprites - 1].p.dist = -1;
-	// }
 	#ifdef BONUS
 		if (all->map->bonus && all->keys.k1)
 			init_music(all, init_wsound_fork);
@@ -407,6 +380,7 @@ int		render(t_all *all)
 	all->frame_count++;
 
 	key_action(all);
+
 	if (all->map->bonus)
 		mouse_action(all);
 	draw_all(all);
@@ -430,6 +404,33 @@ void	start_main_loop(t_all *all)
 	mlx_loop(all->mlx);
 }
 
+void	check_if_sprite_hit(t_all *all, int x, int y)
+{
+	if (all->map->bonus && all->map->arr[x][y] == '2')
+	{
+		all->hit_sprite = 1;
+		if (all->remove == 1)
+		{
+			remove_sprite(all, x, y);
+		}
+		all->remove = 0;
+	}
+}
+
+void	check_shooted_sprite(t_all *all)
+{
+	int w;
+
+	if (all->map->arr[all->grid.x][all->grid.y] == '2')
+	{
+		w = all->map->w / 2;
+		if (all->remove == 1 && all->it.x >= w - 5 && all->it.x <= w + 5)
+		{
+			remove_sprite(all, all->grid.x, all->grid.y);
+			all->remove = 0;
+		}
+	}
+}
 
 void	calculate_collision_coordinates(t_all *all)
 {
@@ -450,6 +451,9 @@ void	calculate_collision_coordinates(t_all *all)
 		}
 		if (all->map->arr[all->grid.x][all->grid.y] == '1') 
 			all->hit_wall = 1;
+		#ifdef BONUS
+			check_shooted_sprite(all);
+		#endif
 	}
 }
 
@@ -569,6 +573,8 @@ void	draw_floor_ceil(t_all *all, int x, int y)
 	}
 	if (all->map->bonus && all->keys.p && is_lightning(all))
 		f = color_negative(f);
+	if (all->map->bonus && all->keys.p && is_lightning(all))
+		c = color_negative(c);
 	put_pixel(&all->img, x, y, f);
 	put_pixel(&all->img, x, all->map->h - y - 1, c);
 }
@@ -663,12 +669,13 @@ void	put_column(t_all *all, int x)
 
 void	draw_walls(t_all *all)
 {
-	int x;
+	// int x;
 
-	x = 0;
-	while (x < all->map->w)
+	// x = 0;
+	all->it.x = 0;
+	while (all->it.x < all->map->w)
 	{
-		vector_init(&all->cam, 2.0 * x / all->map->w - 1, 0.0);
+		vector_init(&all->cam, 2.0 * all->it.x / all->map->w - 1, 0.0);
 		vector_init(&all->ray,  all->dir.x + all->plane.x * all->cam.x, \
 								all->dir.y + all->plane.y * all->cam.x);
 		vector_init(&all->delta, fabs(1 / all->ray.x), fabs(1 / all->ray.y));
@@ -680,10 +687,10 @@ void	draw_walls(t_all *all)
 		calculate_wall_height(all);
 		calculate_wall_borders(all);
 		calculate_texture_coordinates(all);
-		draw_background(all, x);
+		draw_background(all, all->it.x);
 		if (all->screen == 0)
-			all->ZBuffer[x] = all->dist_to_wall;
-		put_column(all, x);
-		x++;
+			all->ZBuffer[all->it.x] = all->dist_to_wall;
+		put_column(all, all->it.x);
+		all->it.x++;
 	}
 }

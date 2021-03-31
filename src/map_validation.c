@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:10:32 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 23:14:33 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/31 13:31:31 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	check_portal(t_map *map)
 		j = 0;
 		while (map->arr[i][j] != '\0')
 		{
-			if (map->arr[i][j] == 'T')
+			if (map->arr[i][j] == 'T' || map->arr[i][j] == 'H')
 				count++;
 			j++;
 		}

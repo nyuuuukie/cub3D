@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 22:30:00 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/31 17:08:09 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ void*   init_csound_fork(void * prm);
 void    free_all(t_all *all);
 
 
-
+void	change_pos(t_all *all, char t);
+void	remove_sprite(t_all *all, int x, int y);
 
 #endif

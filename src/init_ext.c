@@ -6,13 +6,13 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 18:15:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 22:10:04 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/31 22:14:46 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void init_mouse(t_all *all)
+void	init_mouse(t_all *all)
 {
 	int h;
 	int w;
@@ -38,21 +38,24 @@ void 	init_params(t_all *all)
 	all->inc = 3;
 	all->offset = 0;
 	all->pmx = all->screen_w / 2;
+	
 	all->ZBuffer = malloc(sizeof(double) * all->map->w);
+	if (!all->ZBuffer)
+		throw_engine_error(all, ERR_CANNOT_ALLOC, 0);
 
 	all->floor_exist = 0;
 	all->sky_exist = 0;
 	all->ceil_exist = 0;
 	all->wp_i = 0;
 	all->tpf = 0;
-	if (!all->ZBuffer)
-		throw_engine_error(all, ERR_CANNOT_ALLOC, 0);
 	all->coin_counter = 0;
 	all->sound_started = 0;
 	all->wsound_started = 0;
 	all->music_started = 0;
 	vector_int_init(&all->scale, 1, 1);
+	vector_int_init(&all->it, 0, 0);
 	all->vmove = 0.0;
+	all->remove = 0;
 }
 
 void	init_all(t_all *all)

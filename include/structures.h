@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 22:09:53 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/31 22:13:09 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,8 +182,6 @@ typedef struct	s_all
 	unsigned int frame_count;
 	double *ZBuffer;
 
-	
-
 	int		offset;
 
 	int		cmx;
@@ -228,7 +226,11 @@ typedef struct	s_all
 	int	ceil_exist;
 	int	floor_exist;
 	
+	int hit_sprite;
+	int remove;
 	int coin_counter;
+
+	t_v_int it;
 }				t_all;
 
 #endif

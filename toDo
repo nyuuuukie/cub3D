@@ -41,17 +41,19 @@
 [o] 36. add sound
 
 [o] An HUD.
-[?] Crouch.
+[-] Crouch.
 [o] Secret doors.
-[?] Doors which can open and close.
+[-] Doors which can open and close.
 
 
-[?] Life bar.
+[-] Life bar.
 [o] More items in the maze. 
 [o] Earning points and/or losing life by picking up objects/traps. add coin
 [o] Animations of a gun shot or animated sprite. need to finish
-[?] Several levels. add 2-3 levels on oblivion
+[-] Several levels. add 2-3 levels on oblivion
 [o] Weapons and bad guys to fight! cyber
 
-[x] Fix music and bash input close. Try to create a new thread each time music started.
-[x] First sprite is not shown
+[-] Fix music and bash input close. Try to create a new thread each time music started.
+[o] First sprite is not shown
+
+[x] allocate memory for all and map on heap

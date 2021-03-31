@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 01:16:02 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/25 17:41:33 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/31 14:12:35 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		color_from_txt(t_texture *txt, int x, int y)
 	t_img *img;
 
 	img = &txt->img;
-	if (x >= 0 && y >= 0 && x <= txt->w && y <= txt->h)
+	if (x >= 0 && y >= 0 && x < txt->w && y < txt->h) // <=
 		return (*(int *)(img->addr + y * img->len + x * (img->bpp / 8))); 
 	else
 		return (0x00000000);

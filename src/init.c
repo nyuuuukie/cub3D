@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 21:48:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 22:09:42 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/03/31 17:44:02 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ void	init_textures(t_all *all)
 		init_texture(all, all->map->AS_path, &all->s2);
 		init_texture(all, all->map->FT_path, &all->flr);
 		init_texture(all, all->map->SK_path, &all->sky);
-		// init_texture(all, "sprites/tp.xpm", &all->tp);
 		init_mult_textures(all, all->wpn, all->map->WP_path, ANIM_FRAMES);
 		init_mult_textures(all, all->tp, "textures/cyber/tp.anim", ANIM_FRAMES);
 		init_mult_textures(all, all->digits, "textures/digits", 10);
