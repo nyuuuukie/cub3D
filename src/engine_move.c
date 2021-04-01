@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:37:15 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/31 21:22:24 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 02:47:48 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,16 +101,16 @@ void 	check_map_position(t_all *all, int x, int y)
 	}
 }
 
-void	move_bonus_check(t_all *all, t_vector new)
+void	move_bonus_check(t_all *all, t_v_dbl new)
 {
 	calculate_weapon_offset(all);
 	check_map_position(all, new.x, all->pos.y);
 	check_map_position(all, all->pos.x, new.y);
 }
 
-void	move(t_all *all, t_vector *base, int sign)
+void	move(t_all *all, t_v_dbl *base, int sign)
 {
-	t_vector	new;
+	t_v_dbl	new;
  
 	new.x = all->pos.x + (sign * base->x * all->m_speed * all->k_speed);
 	new.y = all->pos.y + (sign * base->y * all->m_speed * all->k_speed);

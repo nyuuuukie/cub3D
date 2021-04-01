@@ -10,6 +10,9 @@ AS sprites/woman.xpm
 SK textures/cyber/cyber.xpm
 FT textures/cyber/floor.xpm
 WP textures/cyber/weapon.anim
+TP textures/tp.anim
+DG textures/digits.anim
+KS music/keys.mp3
 MC music/cyber.mp3
 SD music/wtfu.mp3
 WS music/bullet.mp3

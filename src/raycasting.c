@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 01:38:17 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 03:51:28 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ void    put_pixel(t_img *img, int x, int y, int color)
 
 void	calculate_dist_to_sprites(t_all *all)
 {
-	t_vector a;
+	t_v_dbl a;
 	int i;
 
 	i = 0;
 	while (i < all->map->sprites)
 	{
-		vector_init(&a, all->pos.x - all->sprites[i].p.x, all->pos.y - all->sprites[i].p.y);
+		v_dbl_init(&a, all->pos.x - all->sprites[i].p.x, all->pos.y - all->sprites[i].p.y);
 		all->sprites[i].p.dist = a.x * a.x + a.y * a.y;
 		i++;
 	}
@@ -68,7 +68,7 @@ void	sort_sprites(t_all *all)
 	}
 }
 
-void	vector_int_init(t_v_int *vect, int x, int y)
+void	v_int_init(t_v_int *vect, int x, int y)
 {
 	vect->x = x;
 	vect->y = y;
@@ -92,7 +92,7 @@ void	draw_rain(t_all *all)
 	{
 		small = random_number(1, 15);
 		big = random_number(5, 30);
-		if (all->ZBuffer[x] > 0.5)
+		if (all->zbuf[x] > 0.5)
 		{
 			y = random_number(0, all->map->h / 6 + 1);
 			while (y < all->map->h)
@@ -190,23 +190,23 @@ void	draw_sprites(t_all *all)
 		if ((all->sprites[i].id == 'T' || all->sprites[i].id == 'H') && all->map->keys != 0)
 			continue;
 		
-		vector_init(&all->d, all->sprites[i].p.x - all->pos.x, 
+		v_dbl_init(&all->d, all->sprites[i].p.x - all->pos.x, 
 						all->sprites[i].p.y - all->pos.y);
 
 		det = 1.0 / (all->plane.x * all->dir.y - all->dir.x * all->plane.y);
 
-		vector_init(&all->t, det * (all->dir.y * all->d.x - all->dir.x * all->d.y),
+		v_dbl_init(&all->t, det * (all->dir.y * all->d.x - all->dir.x * all->d.y),
 							det * (-all->plane.y * all->d.x + all->plane.x * all->d.y));
 
 		all->sp_scr_x = (int)((all->map->w / 2) * (1 + all->t.x / all->t.y));
 
 		all->vm_scr = (int)(all->vmove / all->t.y);
 
-		vector_int_init(&all->s_size, abs((int)(all->map->w / all->t.y)) / all->scale.x,
+		v_int_init(&all->s_size, abs((int)(all->map->w / all->t.y)) / all->scale.x,
 								  	  abs((int)(all->map->h / all->t.y)) / all->scale.y);
-		vector_int_init(&all->s_beg, -all->s_size.x / 2 + all->sp_scr_x, 
+		v_int_init(&all->s_beg, -all->s_size.x / 2 + all->sp_scr_x, 
 						-all->s_size.y / 2 + all->map->h / 2 + all->vm_scr);
-		vector_int_init(&all->s_end, all->s_size.x / 2 + all->sp_scr_x, 
+		v_int_init(&all->s_end, all->s_size.x / 2 + all->sp_scr_x, 
 						all->s_size.y / 2 + all->map->h / 2 + all->vm_scr);
 
 		if (all->s_beg.y < 0)
@@ -230,7 +230,7 @@ void	draw_sprites(t_all *all)
 		{
 			all->tex.x = (int)(256 * (sx - (-all->s_size.x / 2 + all->sp_scr_x)) * s->w / all->s_size.x) / 256 + 1;
 			
-			if (all->t.y > 0 && sx > 0 && sx < all->map->w && all->t.y < all->ZBuffer[sx])
+			if (all->t.y > 0 && sx > 0 && sx < all->map->w && all->t.y < all->zbuf[sx])
 			{
 				for (int sy = all->s_beg.y; sy < all->s_end.y; sy++) 
 				{
@@ -273,7 +273,7 @@ void	init_sprites(t_all *all)
 			if (ft_strchr(SPRITES, all->map->arr[i][j]))
 			{
 				all->sprites[n].id = all->map->arr[i][j];
-				vector_init(&(all->sprites[n++].p), i + 0.5, j + 0.5);
+				v_dbl_init(&(all->sprites[n++].p), i + 0.5, j + 0.5);
 			}
 			j++;
 		}
@@ -408,11 +408,8 @@ void	check_if_sprite_hit(t_all *all, int x, int y)
 {
 	if (all->map->bonus && all->map->arr[x][y] == '2')
 	{
-		all->hit_sprite = 1;
 		if (all->remove == 1)
-		{
 			remove_sprite(all, x, y);
-		}
 		all->remove = 0;
 	}
 }
@@ -581,16 +578,16 @@ void	draw_floor_ceil(t_all *all, int x, int y)
 
 void	draw_background(t_all *all, int x)
 {
-	t_vector k;
-	t_vector floor_wall;
+	t_v_dbl k;
+	t_v_dbl floor_wall;
 	
 	int y;
-	vector_init(&k, (all->ray.x < 0), (all->ray.y < 0));
+	v_dbl_init(&k, (all->ray.x < 0), (all->ray.y < 0));
 	
 	if (all->side_wall == 0)
-		vector_init(&floor_wall, all->grid.x + k.x, all->grid.y + all->ratio);
+		v_dbl_init(&floor_wall, all->grid.x + k.x, all->grid.y + all->ratio);
 	else
-		vector_init(&floor_wall, all->grid.x + all->ratio, all->grid.y + k.y);
+		v_dbl_init(&floor_wall, all->grid.x + all->ratio, all->grid.y + k.y);
 	
 	y = all->map->h / 2;
 	while (y < all->map->h)
@@ -602,9 +599,9 @@ void	draw_background(t_all *all, int x)
 
 int		calculate_floor_ceil_text_coord(t_all *all)
 {
-	vector_int_init(&all->tex_f, (int)(all->floor.x * all->flr.w) % all->flr.w,
+	v_int_init(&all->tex_f, (int)(all->floor.x * all->flr.w) % all->flr.w,
 						  (int)(all->floor.y * all->flr.h) % all->flr.h);
-	vector_int_init(&all->tex_c, (int)(all->floor.x * all->sky.w) % all->sky.w, 
+	v_int_init(&all->tex_c, (int)(all->floor.x * all->sky.w) % all->sky.w, 
 						  (int)(all->floor.y * all->sky.h) % all->sky.h);
 	return (0);
 }
@@ -612,16 +609,16 @@ int		calculate_floor_ceil_text_coord(t_all *all)
 int		calculate_floor_color(t_all *all, int y)
 {
 	double w;
-	t_vector k;
-	t_vector f_w;
+	t_v_dbl k;
+	t_v_dbl f_w;
 	
-	vector_init(&k, (all->ray.x < 0), (all->ray.y < 0));
+	v_dbl_init(&k, (all->ray.x < 0), (all->ray.y < 0));
 	if (all->side_wall == 0)
-		vector_init(&f_w, all->grid.x + k.x, all->grid.y + all->ratio);
+		v_dbl_init(&f_w, all->grid.x + k.x, all->grid.y + all->ratio);
     else
-		vector_init(&f_w, all->grid.x + all->ratio, all->grid.y + k.y);
+		v_dbl_init(&f_w, all->grid.x + all->ratio, all->grid.y + k.y);
 	w = all->map->h / (2.0 * y - all->map->h) / (all->dist_to_wall);
-	vector_init(&all->floor, w * f_w.x + (1.0 - w) * all->pos.x,
+	v_dbl_init(&all->floor, w * f_w.x + (1.0 - w) * all->pos.x,
 							 w * f_w.y + (1.0 - w) * all->pos.y);
 	calculate_floor_ceil_text_coord(all);
 	return (0);
@@ -638,14 +635,14 @@ void	put_column(t_all *all, int x)
 	double step = 1.0 * all->cur->w / all->wall_h;
 	double texPos = (all->wall_beg - all->map->h / 2 + all->wall_h / 2) * step;
 
-	t_vector k;
-	t_vector floor_wall;
-	vector_init(&k, (all->ray.x < 0), (all->ray.y < 0));
+	t_v_dbl k;
+	t_v_dbl floor_wall;
+	v_dbl_init(&k, (all->ray.x < 0), (all->ray.y < 0));
 	
 	if (all->side_wall == 0)
-		vector_init(&floor_wall, all->grid.x + k.x, all->grid.y + all->ratio);
+		v_dbl_init(&floor_wall, all->grid.x + k.x, all->grid.y + all->ratio);
     else
-		vector_init(&floor_wall, all->grid.x + all->ratio, all->grid.y + k.y);
+		v_dbl_init(&floor_wall, all->grid.x + all->ratio, all->grid.y + k.y);
 
 	for (int y = 0; y < all->map->h; y++)
 	{
@@ -662,7 +659,7 @@ void	put_column(t_all *all, int x)
 					all->color = color_negative(all->color);
 			#endif
 			if ((all->color & 0x00FFFFFF) != 0)
-				put_pixel(&all->img, x, y + all->offset, all->color);
+				put_pixel(&all->img, x, y, all->color);
 		}
 	}	
 }
@@ -675,11 +672,11 @@ void	draw_walls(t_all *all)
 	all->it.x = 0;
 	while (all->it.x < all->map->w)
 	{
-		vector_init(&all->cam, 2.0 * all->it.x / all->map->w - 1, 0.0);
-		vector_init(&all->ray,  all->dir.x + all->plane.x * all->cam.x, \
+		v_dbl_init(&all->cam, 2.0 * all->it.x / all->map->w - 1, 0.0);
+		v_dbl_init(&all->ray,  all->dir.x + all->plane.x * all->cam.x, \
 								all->dir.y + all->plane.y * all->cam.x);
-		vector_init(&all->delta, fabs(1 / all->ray.x), fabs(1 / all->ray.y));
-		vector_int_init(&all->grid, all->pos.x, all->pos.y);
+		v_dbl_init(&all->delta, fabs(1 / all->ray.x), fabs(1 / all->ray.y));
+		v_int_init(&all->grid, all->pos.x, all->pos.y);
 		recognize_texture(all);
 		calculate_initial_dist(all);
 		calculate_collision_coordinates(all);
@@ -689,7 +686,7 @@ void	draw_walls(t_all *all)
 		calculate_texture_coordinates(all);
 		draw_background(all, all->it.x);
 		if (all->screen == 0)
-			all->ZBuffer[all->it.x] = all->dist_to_wall;
+			all->zbuf[all->it.x] = all->dist_to_wall;
 		put_column(all, all->it.x);
 		all->it.x++;
 	}

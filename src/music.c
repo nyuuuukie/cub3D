@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 23:05:04 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/31 21:06:26 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 02:49:52 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ void init_music(t_all *all, void *f(void *))
 
 void *init_music_fork(void * prm)
 {
-	t_all *all = (t_all*)prm;
+	t_all *all;
+	
+	all = (t_all*)prm;
 	if (all->music_started == 0)
 	{
 		all->music_started = 1;
@@ -36,7 +38,9 @@ void *init_music_fork(void * prm)
 
 void *init_sound_fork(void * prm)
 {
-	t_all *all = (t_all*)prm;
+	t_all *all;
+	
+	all = (t_all*)prm;
 	if (all->sound_started == 0)
 	{
 		all->sound_started = 1;
@@ -49,7 +53,9 @@ void *init_sound_fork(void * prm)
 
 void *init_wsound_fork(void * prm)
 {
-	t_all *all = (t_all*)prm;
+	t_all *all;
+	
+	all = (t_all*)prm;
 	if (all->wsound_started == 0)
 	{
 		all->remove = 1;
@@ -68,7 +74,7 @@ void *init_csound_fork(void * prm)
 	if (all->csound_started == 0)
 	{
 		all->csound_started = 1;
-		music_start(all, &all->csound, "music/keys.mp3", S_VOLUME);
+		music_start(all, &all->csound, all->map->csound, S_VOLUME);
 		waitpid(all->csound, 0, 0);
 		all->csound_started = 0;
 	}

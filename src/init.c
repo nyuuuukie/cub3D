@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 21:48:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/31 17:44:02 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 03:09:33 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	init_images(t_all *all)
 {
 	int i;
 
-	i = 0; 
+	i = 0;
 	all->img.img = NULL;
 	all->no.img.img = NULL;
 	all->so.img.img = NULL;
@@ -81,26 +81,25 @@ void	init_images(t_all *all)
 	all->s2.img.img = NULL;
 	all->flr.img.img = NULL;
 	all->sky.img.img = NULL;
-	
 	while (i < ANIM_FRAMES)
 		all->wpn[i++].img.img = NULL;
 }
 
 void	init_textures(t_all *all)
 {
-	init_texture(all, all->map->NO_path, &all->no);
-	init_texture(all, all->map->SO_path, &all->so);
-	init_texture(all, all->map->WE_path, &all->we);
-	init_texture(all, all->map->EA_path, &all->ea);
+	init_texture(all, all->map->no_path, &all->no);
+	init_texture(all, all->map->so_path, &all->so);
+	init_texture(all, all->map->we_path, &all->we);
+	init_texture(all, all->map->ea_path, &all->ea);
 	init_texture(all, all->map->sprite, &all->s1);
 	if (all->map->bonus)
 	{
-		init_texture(all, all->map->AS_path, &all->s2);
-		init_texture(all, all->map->FT_path, &all->flr);
-		init_texture(all, all->map->SK_path, &all->sky);
-		init_mult_textures(all, all->wpn, all->map->WP_path, ANIM_FRAMES);
-		init_mult_textures(all, all->tp, "textures/cyber/tp.anim", ANIM_FRAMES);
-		init_mult_textures(all, all->digits, "textures/digits", 10);
+		init_texture(all, all->map->as_path, &all->s2);
+		init_texture(all, all->map->ft_path, &all->flr);
+		init_texture(all, all->map->sk_path, &all->sky);
+		init_mult_textures(all, all->wpn, all->map->wp_path, ANIM_FRAMES);
+		init_mult_textures(all, all->tp, all->map->tp_path, ANIM_FRAMES);
+		init_mult_textures(all, all->digits, all->map->dg_path, 10);
 	}
 }
 

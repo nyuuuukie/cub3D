@@ -6,231 +6,203 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/31 22:13:09 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 03:45:08 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_MAP_H
-# define FT_MAP_H
+#ifndef STRUCTURES_H
+# define STRUCTURES_H
 
-typedef struct	s_clr
+typedef struct		s_clr
 {
-	int			val[3];
-	int			set;
-}				t_clr;
+	int	set;
+	int	val[3];
+}					t_clr;
 
-typedef struct	s_track
+typedef struct		s_track
 {
-	int			line;
-	int			i;
-}				t_track;
+	int	i;
+	int	line;
+}					t_track;
 
 typedef struct		s_map
 {
-	int				fd;
-	int 			w;
-	int 			h;
-	char			*NO_path;
-	char			*SO_path;
-	char			*WE_path;
-	char			*EA_path;
-	char			*WP_path;
-	char			*FT_path;
-	char			*SK_path;
-	char			*AS_path;
-	char			*music;
-	char			*sound;
-	char			*wsound;
-	char			*sprite;
-	t_clr			f;
-	t_clr			c;
-	char			*line;
-	int				rows;
-	int				cols;
-	int				sprites;
-	int				keys;
-	char			**arr;
-	t_list			*lst;
-	t_track			tr;
-	char			bonus;
-	
+	int			fd;
+	int			w;
+	int			h;
+	int			rows;
+	int			cols;
+	int			keys;
+	int			sprites;
+	char		*no_path;
+	char		*so_path;
+	char		*we_path;
+	char		*ea_path;
+	char		*wp_path;
+	char		*ft_path;
+	char		*sk_path;
+	char		*as_path;
+	char		*tp_path;
+	char		*dg_path;
+	char		*music;
+	char		*sound;
+	char		*wsound;
+	char		*csound;
+	char		*sprite;
+	char		*line;
+	char		**arr;
+	char		bonus;
+	t_clr		f;
+	t_clr		c;
+	t_list		*lst;
+	t_track		tr;
 }					t_map;
 
-typedef struct  s_img
+typedef struct		s_img
 {
-    void        *img;
-    char        *addr;
-    int         bpp;
-    int         len;
-    int         end;
-}               t_img;
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		len;
+	int		end;
+}					t_img;
 
-typedef struct s_vector
+typedef struct		s_v_dbl
 {
-	double x;
-	double y;
-	double dist;
-}				t_vector;
+	double	x;
+	double	y;
+	double	dist;
+}					t_v_dbl;
 
-typedef struct s_v_int
+typedef struct		s_v_int
 {
-	int x;
-	int y;
-}				t_v_int;
+	int	x;
+	int	y;
+}					t_v_int;
 
-typedef struct s_texture
+typedef struct		s_texture
 {
-    int     w;
-    int     h;
-    t_img	img;
-	char    *path;
-}				t_texture;
-
-typedef struct s_sprite
-{
-	char id;
-	t_vector p;
-}				t_sprite;
-
-typedef struct 	s_keys
-{
-	char w;
-	char s;
-	char a;
-	char d;
-	char r;
-	char l;
-	char k0;
-	char k1;
-	char p;
-	char sh;
-	char f;
-}				t_keys;
-
-typedef struct	s_all
-{
-	int		screen;
-	void    *mlx;
-	void    *win;
-
-	t_keys	keys;
-	t_map	*map;
+	int		w;
+	int		h;
 	t_img	img;
-	
-	int wp_i;
-	t_texture s1;
-	t_texture s2;
-	t_texture no;
-	t_texture so;
-	t_texture we;
-	t_texture ea;
-	t_texture sky;
-	t_texture flr;
-	t_texture wpn[ANIM_FRAMES];
+	char	*path;
+}					t_texture;
 
-	t_texture tp[ANIM_FRAMES];
-	t_texture *cur;
+typedef struct		s_sprite
+{
+	char	id;
+	t_v_dbl	p;
+}					t_sprite;
 
-	t_texture digits[10];
-	int		color;
+typedef struct		s_keys
+{
+	char	w;
+	char	s;
+	char	a;
+	char	d;
+	char	r;
+	char	l;
+	char	p;
+	char	f;
+	char	k0;
+	char	k1;
+	char	sh;
+}					t_keys;
 
-	/*raycast*/
-	t_vector pos;
-	t_vector dir;
-	t_vector plane;
-	t_vector norm;
-	t_vector ray;
-	
-	t_vector next;
-	t_vector delta;
-	t_vector step;
-	t_vector cam;
-	
-	t_vector floor;
+typedef struct		s_all
+{
+	long long	frame_count;
+	int			screen;
+	void		*mlx;
+	void		*win;
 
-	t_sprite *sprites;
-	
-	t_v_int grid;
-	t_v_int tex;
-	
-	t_v_int tex_f;
-	t_v_int tex_c;
-	
-	double r;
-	double n;
-	double inc;
+	t_keys		keys;
+	t_map		*map;
+	t_img		img;
+	t_texture	s1;
+	t_texture	s2;
+	t_texture	no;
+	t_texture	so;
+	t_texture	we;
+	t_texture	ea;
+	t_texture	sky;
+	t_texture	flr;
+	t_texture	digits[10];
+	t_texture	tp[ANIM_FRAMES];
+	t_texture	wpn[ANIM_FRAMES];
+	t_texture	*cur;
 
-	int		wall_beg;
-	int		wall_end;
-	int		hit_wall;
-	int		side_wall;
+	int			color;
+	int			sky_exist;
+	int			ceil_exist;
+	int			floor_exist;
 
-	int		tpf;
-	int		wall_h;
-	double	k_speed;
-	double	m_speed;
-	double	r_angle;
-	double 	dist_to_wall;
-	double	ratio;
+	t_v_dbl		pos;
+	t_v_dbl		dir;
+	t_v_dbl		ray;
+	t_v_dbl		cam;
+	t_v_dbl		norm;
+	t_v_dbl		next;
+	t_v_dbl		step;
+	t_v_dbl		plane;
+	t_v_dbl		delta;
+	t_v_dbl		floor;
+	t_v_int		it;
+	t_v_int		tex;
+	t_v_int		grid;
+	t_v_int		tex_f;
+	t_v_int		tex_c;
+	t_sprite	*sprites;
+	double		r;
+	double		n;
+	double		inc;
+	double		ratio;
+	int			wall_h;
+	int			wall_beg;
+	int			wall_end;
+	int			hit_wall;
+	int			side_wall;
+	double		dist_to_wall;
 
-	/* shadows' parabola koefficients */
-	double a;
-	double b;
-	double c;
+	int			tpf;
+	int			wp_i;
+	double		k_speed;
+	double		m_speed;
+	double		r_angle;
 
-	double brightness;
-	unsigned int frame_count;
-	double *ZBuffer;
+	double		a;
+	double		b;
+	double		c;
 
-	int		offset;
+	double		rotate;
+	int			cmx;
+	int			cmy;
+	int			pmx;
+	int			pmy;
+	int			screen_w;
+	int			screen_h;
 
-	int		cmx;
-	int		cmy;
-	int		pmx;
-	int		pmy;
-	double	rotate;
+	pthread_t	pmusic;
+	pid_t		music;
+	pid_t		sound;
+	pid_t		csound;
+	pid_t		wsound;
+	int			music_started;
+	int			sound_started;
+	int			wsound_started;
+	int			csound_started;
 
-	int screen_w;
-	int screen_h;
-
-	/* music */
-	int music_started;
-	int sound_started;
-	int wsound_started;
-	int csound_started;
-	
-	char *active_sound;
-	int *active_hndl;
-	pid_t *active_pid;
-
-	pid_t wsound;
-	pid_t music;
-	pid_t sound;
-	pid_t csound;
-	pthread_t pmusic;
-
-
-	/* sprites */
-	t_v_int scale;
-	double vmove;
-	t_vector t;
-	t_vector d;
-	t_v_int s_size;
-	t_v_int s_beg;
-	t_v_int s_end;
-
-	int sp_scr_x;
-	int vm_scr;	
-
-	int	sky_exist;
-	int	ceil_exist;
-	int	floor_exist;
-	
-	int hit_sprite;
-	int remove;
-	int coin_counter;
-
-	t_v_int it;
-}				t_all;
-
+	double		*zbuf;
+	double		vmove;
+	t_v_dbl		t;
+	t_v_dbl		d;
+	t_v_int		s_beg;
+	t_v_int		s_end;
+	t_v_int		scale;
+	t_v_int		s_size;
+	int			sp_scr_x;
+	int			vm_scr;
+	int			remove;
+	int			coin_counter;
+}					t_all;
 #endif

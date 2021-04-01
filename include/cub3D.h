@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/31 17:08:09 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 03:51:28 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	init_window(t_all *all);
 void	init_textures(t_all *all);
 void	init_screen_size(t_all *all);
 void	init_img(t_all *all, t_img *img);
-void	init_vectors(t_all *all, int i, int j);
+void	init_v_dbls(t_all *all, int i, int j);
 void	init_texture(t_all *all, char *path, t_texture *t);
 
 void	init_bonus_flags(t_all *all);
@@ -108,12 +108,12 @@ void	init_shadow_params(t_all *all);
 
 
 /* vector.c */
-void    vector_init(t_vector *vect, double x, double y);
-void	vector_int_init(t_v_int *vect, int x, int y);
-double  vector_mlp(t_vector *v1, t_vector *v2);
-double  vector_len(t_vector *v);
-double  vector_angle(t_vector *v1, t_vector *v2);
-void	vector_rotate(t_vector *v, double angle);
+void    v_dbl_init(t_v_dbl *vect, double x, double y);
+void	v_int_init(t_v_int *vect, int x, int y);
+double  vector_mlp(t_v_dbl *v1, t_v_dbl *v2);
+double  vector_len(t_v_dbl *v);
+double  vector_angle(t_v_dbl *v1, t_v_dbl *v2);
+void	vector_rotate(t_v_dbl *v, double angle);
 
 /* key_action.c */
 void	init_keys(t_all* all);
@@ -123,7 +123,7 @@ int		key_press(int keycode, t_all *all);
 
 /* engine_move.c */
 void	rotate(t_all *all, int sign, double angle);
-void	move(t_all *all, t_vector *base, int sign);
+void	move(t_all *all, t_v_dbl *base, int sign);
 
 /* colors.c */
 int		color_make_lighter(double perc, int color);

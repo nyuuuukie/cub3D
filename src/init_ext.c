@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 18:15:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/31 22:14:46 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 03:51:28 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ void 	init_params(t_all *all)
 	all->frame_count = 0;
 	all->r = -60;
 	all->inc = 3;
-	all->offset = 0;
+	// all->offset = 0;
 	all->pmx = all->screen_w / 2;
 	
-	all->ZBuffer = malloc(sizeof(double) * all->map->w);
-	if (!all->ZBuffer)
+	all->zbuf = malloc(sizeof(double) * all->map->w);
+	if (!all->zbuf)
 		throw_engine_error(all, ERR_CANNOT_ALLOC, 0);
 
 	all->floor_exist = 0;
@@ -52,8 +52,8 @@ void 	init_params(t_all *all)
 	all->sound_started = 0;
 	all->wsound_started = 0;
 	all->music_started = 0;
-	vector_int_init(&all->scale, 1, 1);
-	vector_int_init(&all->it, 0, 0);
+	v_int_init(&all->scale, 1, 1);
+	v_int_init(&all->it, 0, 0);
 	all->vmove = 0.0;
 	all->remove = 0;
 }
@@ -73,27 +73,27 @@ void	init_all(t_all *all)
 	init_sprites(all);
 }
 
-void	init_vectors(t_all *all, int i, int j)
+void	init_v_dbls(t_all *all, int i, int j)
 {
 	if (all->map->arr[i][j] == 'N')
 	{
-		vector_init(&all->dir, -1.0, 0.0);
-		vector_init(&all->plane, 0.0, 0.66);
+		v_dbl_init(&all->dir, -1.0, 0.0);
+		v_dbl_init(&all->plane, 0.0, 0.66);
 	}
 	if (all->map->arr[i][j] == 'E')
 	{
-		vector_init(&all->dir, 0.0, 1.0);
-		vector_init(&all->plane, 0.66, 0);
+		v_dbl_init(&all->dir, 0.0, 1.0);
+		v_dbl_init(&all->plane, 0.66, 0);
 	}
 	if (all->map->arr[i][j] == 'W')
 	{
-		vector_init(&all->dir, 0.0, -1.0);
-		vector_init(&all->plane, -0.66, 0);
+		v_dbl_init(&all->dir, 0.0, -1.0);
+		v_dbl_init(&all->plane, -0.66, 0);
 	}
 	if (all->map->arr[i][j] == 'S')
 	{
-		vector_init(&all->dir, 1.0, 0.0);
-		vector_init(&all->plane, 0.0, -0.66);
+		v_dbl_init(&all->dir, 1.0, 0.0);
+		v_dbl_init(&all->plane, 0.0, -0.66);
 	}
 }
 
@@ -110,25 +110,25 @@ void	init_coord(t_all *all)
  		{	
 			if (ft_strchr("NSWE", all->map->arr[i][j]))
  			{
-				init_vectors(all, i, j);
-				vector_init(&all->pos, i + 0.5, j + 0.5);
+				init_v_dbls(all, i, j);
+				v_dbl_init(&all->pos, i + 0.5, j + 0.5);
 			}
  			j++;
  		}
  		i++;
 	}
-	vector_init(&all->norm, 0.0, 1.0);	
+	v_dbl_init(&all->norm, 0.0, 1.0);	
 }
 
 void	init_shadow_params(t_all *all)
 {
-	t_vector x;
-	t_vector y;
-	t_vector z;
+	t_v_dbl x;
+	t_v_dbl y;
+	t_v_dbl z;
 	
-	vector_init(&x, 0.0f, 8.0 * all->map->h / 10);
-	vector_init(&y, all->map->w / 2.0, 7.5 * all->map->h / 10);
-	vector_init(&z, all->map->w, 8.0 * all->map->h / 10);
+	v_dbl_init(&x, 0.0f, 8.0 * all->map->h / 10);
+	v_dbl_init(&y, all->map->w / 2.0, 7.5 * all->map->h / 10);
+	v_dbl_init(&z, all->map->w, 8.0 * all->map->h / 10);
 	all->a = ((y.y - x.y) * z.x + (y.x * x.y) - (x.x * y.y)) / (y.x - x.x);
 	all->a = z.y - all->a;
 	all->a /= (z.x - x.x - y.x) * z.x + (x.x * y.x);

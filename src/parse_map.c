@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/30 22:31:16 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 03:09:33 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,13 +172,19 @@ void	parse_color(t_map *map, t_clr *clr, char *name)
 void	parse_identify_line_bonus(t_map *map)
 {
 	if (!ft_strncmp(map->line, "SK", 2))
-		parse_path(map, &map->SK_path, "SK", ".xpm");
+		parse_path(map, &map->sk_path, "SK", ".xpm");
 	else if (!ft_strncmp(map->line, "WP", 2))
-		parse_wpath(map, &map->WP_path, "WP", ".anim");
+		parse_wpath(map, &map->wp_path, "WP", ".anim");
+	else if (!ft_strncmp(map->line, "TP", 2))
+		parse_wpath(map, &map->tp_path, "TP", ".anim");
+	else if (!ft_strncmp(map->line, "DG", 2))
+		parse_wpath(map, &map->dg_path, "DG", ".anim");
 	else if (!ft_strncmp(map->line, "FT", 2))
-		parse_path(map, &map->FT_path, "FT", ".xpm");
+		parse_path(map, &map->ft_path, "FT", ".xpm");
 	else if (!ft_strncmp(map->line, "AS", 2))
-		parse_path(map, &map->AS_path, "AS", ".xpm");
+		parse_path(map, &map->as_path, "AS", ".xpm");
+	else if (!ft_strncmp(map->line, "KS", 2))
+		parse_path(map, &map->csound, "KS", ".mp3");
 	else if (!ft_strncmp(map->line, "MC", 2))
 		parse_path(map, &map->music, "MC", ".mp3");
 	else if (!ft_strncmp(map->line, "SD", 2))
@@ -194,13 +200,13 @@ void	parse_identify_line(t_map *map)
 	if (!ft_strncmp(map->line, "R", 1))
 		parse_resolution(map);
 	else if (!ft_strncmp(map->line, "NO", 2))
-		parse_path(map, &map->NO_path, "NO", ".xpm");
+		parse_path(map, &map->no_path, "NO", ".xpm");
 	else if (!ft_strncmp(map->line, "SO", 2))
-		parse_path(map, &map->SO_path, "SO", ".xpm");
+		parse_path(map, &map->so_path, "SO", ".xpm");
 	else if (!ft_strncmp(map->line, "WE", 2))
-		parse_path(map, &map->WE_path, "WE", ".xpm");
+		parse_path(map, &map->we_path, "WE", ".xpm");
 	else if (!ft_strncmp(map->line, "EA", 2))
-		parse_path(map, &map->EA_path, "EA", ".xpm");
+		parse_path(map, &map->ea_path, "EA", ".xpm");
 	else if (!ft_strncmp(map->line, "S ", 2))
 		parse_path(map, &map->sprite, "S", ".xpm");
 	else if (!ft_strncmp(map->line, "F ", 2))
@@ -222,6 +228,19 @@ int		map_getline(t_map *map)
 	return (res);
 }
 
+int		is_prm_complete_b(t_map *map)
+{
+	if (map->wp_path == 0 || map->sk_path == 0 || map->tp_path == 0)
+		return (0);
+	if (map->ft_path == 0 || map->as_path == 0 || map->dg_path == 0)
+		return (0);
+	if (map->sound == 0 || map->music == 0)
+		return (0);
+	if (map->wsound == 0 || map->csound == 0)
+		return (0);
+	return (1);
+}
+
 int		is_prm_complete(t_map *map)
 {
 	int res;
@@ -229,23 +248,16 @@ int		is_prm_complete(t_map *map)
 	res = 1;
 	if (map->w == 0 || map->h == 0)
 		res = 0;
-	if (map->SO_path == 0 || map->NO_path == 0)
+	if (map->so_path == 0 || map->no_path == 0)
 		res = 0;
-	if (map->WE_path == 0 || map->EA_path == 0)
+	if (map->we_path == 0 || map->ea_path == 0)
 		res = 0;
 	if (map->c.set == 0 || map->f.set == 0)
 		res = 0;
 	if (map->sprite == 0)
 		res = 0;
 	if (map->bonus)
-	{
-		if (map->WP_path == 0 || map->SK_path == 0)
-			res = 0;
-		if (map->FT_path == 0 || map->AS_path == 0)
-			res = 0;
-		if (map->sound == 0 || map->music == 0 || map->wsound == 0)
-			res = 0;
-	}
+		res *= is_prm_complete_b(map);
 	return (res);
 }
 
