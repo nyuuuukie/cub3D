@@ -59,7 +59,8 @@ SOURCES =	main.c \
 			music.c \
 			save.c \
 			free_all.c \
-			sprites.c
+			sprites.c \
+			parse_prm.c
 
 B_SOURCES = 
 

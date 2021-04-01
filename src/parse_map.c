@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 03:09:33 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 15:43:28 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,25 +57,10 @@ void	get_number(t_map *map, char *separators, int *number)
 		throw_parse_error(ERR_MISSING_SYMBOL, &map->line[map->tr.i]);
 }
 
-void	check_number(unsigned int num, long long min, long long max)
+void	check_number(int num, int min, int max)
 {
 	if (num < min || num > max)
 		throw_parse_error(ERR_OUT_OF_BOUND, 0);
-}
-
-void	parse_resolution(t_map *map)
-{
-	map->tr.i = 0;
-	check_and_skip(map, 'R');
-	check_and_skip(map, ' ');
-	skip_symbol(map, ' ');
-	get_number(map, " ", &map->w);
-	check_and_skip(map, ' ');
-	skip_symbol(map, ' ');
-	get_number(map, " ", &map->h);
-	skip_symbol(map, ' ');
-	check_symbol(map, '\0');
-	print_status("Resolution", 0, "OK");
 }
 
 void	check_duplicate(char *texture, char *ptr)
@@ -84,7 +69,7 @@ void	check_duplicate(char *texture, char *ptr)
 		throw_parse_error(ERR_DUPLICATE_SPEC, ptr);
 }
 
-void check_anim_dir(t_map *map)
+void	check_anim_dir(t_map *map)
 {
 	int i;
 	int fd;
@@ -106,33 +91,6 @@ void check_anim_dir(t_map *map)
 	free(path);
 }
 
-void	parse_wpath(t_map *map, char **texture, char *name, char *ext)
-{
-	map->tr.i = 0;
-	check_duplicate(*texture, map->line);
-	while (map->tr.i < ft_strlen(name))
-		check_and_skip(map, name[map->tr.i]);
-	check_symbol(map, ' ');
-	skip_symbol(map, ' ');
-	check_file_path(map, ext);
-	check_anim_dir(map);
-	*texture = ft_strdup(&map->line[map->tr.i]);
-	print_status("Texture", name, "OK");
-}
-
-void	parse_path(t_map *map, char **texture, char *name, char *ext)
-{
-	map->tr.i = 0;
-	check_duplicate(*texture, map->line);
-	while (map->tr.i < ft_strlen(name))
-		check_and_skip(map, name[map->tr.i]);
-	check_symbol(map, ' ');
-	skip_symbol(map, ' ');
-	check_file_path(map, ext);
-	*texture = ft_strdup(&map->line[map->tr.i]);
-	print_status("Texture", name, "OK");
-}
-
 void	print_status(char *title, char *name, char *status)
 {
 	write(1, title, ft_strlen(title));
@@ -143,30 +101,6 @@ void	print_status(char *title, char *name, char *status)
 	write(1, "[", 1);
 	write(1, status, ft_strlen(status));
 	write(1, "]\n", 2);
-}
-
-void	parse_color(t_map *map, t_clr *clr, char *name)
-{
-	int j;
-
-	j = 0;
-	if (clr->set == 1)
-		throw_parse_error(ERR_DUPLICATE_SPEC, "Color");
-	check_and_skip(map, name[0]);
-	check_and_skip(map, ' ');
-	while (j < 3)
-	{
-		skip_symbol(map, ' ');
-		get_number(map, " ,", &clr->val[j]);
-		skip_symbol(map, ' ');
-		if (j != 2)
-			check_and_skip(map, ',');
-		check_number(clr->val[j], COLOR_MIN_VALUE, COLOR_MAX_VALUE);
-		j++;
-	}
-	check_symbol(map, '\0');
-	clr->set = 1;
-	print_status("Color", name, "OK");
 }
 
 void	parse_identify_line_bonus(t_map *map)
@@ -228,7 +162,7 @@ int		map_getline(t_map *map)
 	return (res);
 }
 
-int		is_prm_complete_b(t_map *map)
+int		is_prm_complete_bonus(t_map *map)
 {
 	if (map->wp_path == 0 || map->sk_path == 0 || map->tp_path == 0)
 		return (0);
@@ -257,7 +191,7 @@ int		is_prm_complete(t_map *map)
 	if (map->sprite == 0)
 		res = 0;
 	if (map->bonus)
-		res *= is_prm_complete_b(map);
+		res *= is_prm_complete_bonus(map);
 	return (res);
 }
 

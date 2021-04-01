@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 05:55:56 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 15:44:20 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,26 @@ void	parse_identify_line(t_map *map);
 int		is_prm_complete(t_map *map);
 void	print_status(char *title, char *name, char *status);
 void	check_portal(t_map *map);
+
+void	parse_resolution(t_map *map);
+void	parse_color(t_map *map, t_clr *clr, char *name);
+void	parse_path(t_map *map, char **texture, char *name, char *ext);
+void	parse_wpath(t_map *map, char **texture, char *name, char *ext);
+
+void	check_number(int num, int min, int max);
+void	skip_symbol(t_map *map, char c);
+void	check_and_skip(t_map *map, const char c);
+void	check_symbol(t_map *map, const char c);
+int		ft_atoi_u(char *s, int *number);
+void	get_number(t_map *map, char *separators, int *number);
+void	check_duplicate(char *texture, char *ptr);
+void	check_anim_dir(t_map *map);
+
+void	parse_identify_line_bonus(t_map *map);
+int		is_prm_complete_bonus(t_map *map);
+void	map_add_node(t_list **head, char *line);
+void	skip_empty_lines(t_map *map);
+int		map_to_list(t_map *map);
 
 /* Errors.c */
 char	*get_error_msg(t_error code);
