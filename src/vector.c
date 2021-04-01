@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/07 17:07:18 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 05:55:16 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 18:14:37 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,16 @@ void	v_dbl_init(t_v_dbl *vect, double x, double y)
 	vect->y = y;
 }
 
-double	v_dbl_mlp(t_v_dbl *v1, t_v_dbl *v2)
+void	v_int_init(t_v_int *vect, int x, int y)
 {
-	return (v1->x * v2->x + v1->y * v2->y);
+	vect->x = x;
+	vect->y = y;
 }
+
+// double	v_dbl_mlp(t_v_dbl *v1, t_v_dbl *v2)
+// {
+// 	return (v1->x * v2->x + v1->y * v2->y);
+// }
 
 double	v_dbl_len(t_v_dbl *v)
 {
@@ -39,5 +45,8 @@ double	v_dbl_len(t_v_dbl *v)
 
 double	v_dbl_angle(t_v_dbl *v1, t_v_dbl *v2)
 {
-	return (acos(v_dbl_mlp(v1, v2) / (v_dbl_len(v1) * v_dbl_len(v2))));
+	double mlp;
+
+	mlp = v1->x * v2->x + v1->y * v2->y;
+	return (acos(mlp / (v_dbl_len(v1) * v_dbl_len(v2))));
 }

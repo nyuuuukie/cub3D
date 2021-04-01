@@ -6,194 +6,11 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 05:25:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 15:43:28 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 16:07:08 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-int		ft_atoi_u(char *s, int *number)
-{
-	int i;
-
-	i = 0;
-	*number = 0;
-	while (ft_isdigit(s[i]) && i < R_MAX_LEN)
-	{
-		*number = *number * 10 + (s[i++] - '0');
-    }
-    return (i);
-}
-
-void	check_symbol(t_map *map, const char c)
-{
-	if (map->line[map->tr.i] != c)
-		throw_parse_error(ERR_MISSING_SYMBOL, &map->line[map->tr.i]);
-}
-
-void	check_and_skip(t_map *map, const char c)
-{
-	check_symbol(map, c);
-	map->tr.i++;
-}
-
-void	skip_symbol(t_map *map, char c)
-{
-	while (map->line[map->tr.i] == c)
-		map->tr.i++;
-}
-
-void	get_number(t_map *map, char *separators, int *number)
-{
-	int res;
-
-	if (map->line[map->tr.i] == '0' && ft_isdigit(map->line[map->tr.i + 1]))
-		throw_parse_error(ERR_ZERO_BEFORE_NUM, &map->line[map->tr.i]);
-	res = ft_atoi_u(&map->line[map->tr.i], number);
-	map->tr.i += res;
-	while (ft_isdigit(map->line[map->tr.i]))
-		map->tr.i++;
-	if (res == 0 || !ft_strchr(separators, map->line[map->tr.i]))
-		throw_parse_error(ERR_MISSING_SYMBOL, &map->line[map->tr.i]);
-}
-
-void	check_number(int num, int min, int max)
-{
-	if (num < min || num > max)
-		throw_parse_error(ERR_OUT_OF_BOUND, 0);
-}
-
-void	check_duplicate(char *texture, char *ptr)
-{
-	if (texture != NULL)
-		throw_parse_error(ERR_DUPLICATE_SPEC, ptr);
-}
-
-void	check_anim_dir(t_map *map)
-{
-	int i;
-	int fd;
-	int len;
-	char *path;
-
-	i = 0;
-	path = ft_strjoin(&map->line[map->tr.i], "/0.xpm");
-	len  = ft_strlen(path);
-	while (i < ANIM_FRAMES)
-	{
-		path[len - 5] = '0' + i;
-		if ((fd = open(path, O_RDONLY)) < 0)
-			throw_parse_error(ERR_NO_FILE, path);
-		else
-			close(fd);
-		i++;
-	}
-	free(path);
-}
-
-void	print_status(char *title, char *name, char *status)
-{
-	write(1, title, ft_strlen(title));
-	if (name)
-		write(1, " ", 1);
-	write(1, name, ft_strlen(name));
-	write(1, ": ", 2);
-	write(1, "[", 1);
-	write(1, status, ft_strlen(status));
-	write(1, "]\n", 2);
-}
-
-void	parse_identify_line_bonus(t_map *map)
-{
-	if (!ft_strncmp(map->line, "SK", 2))
-		parse_path(map, &map->sk_path, "SK", ".xpm");
-	else if (!ft_strncmp(map->line, "WP", 2))
-		parse_wpath(map, &map->wp_path, "WP", ".anim");
-	else if (!ft_strncmp(map->line, "TP", 2))
-		parse_wpath(map, &map->tp_path, "TP", ".anim");
-	else if (!ft_strncmp(map->line, "DG", 2))
-		parse_wpath(map, &map->dg_path, "DG", ".anim");
-	else if (!ft_strncmp(map->line, "FT", 2))
-		parse_path(map, &map->ft_path, "FT", ".xpm");
-	else if (!ft_strncmp(map->line, "AS", 2))
-		parse_path(map, &map->as_path, "AS", ".xpm");
-	else if (!ft_strncmp(map->line, "KS", 2))
-		parse_path(map, &map->csound, "KS", ".mp3");
-	else if (!ft_strncmp(map->line, "MC", 2))
-		parse_path(map, &map->music, "MC", ".mp3");
-	else if (!ft_strncmp(map->line, "SD", 2))
-		parse_path(map, &map->sound, "SD", ".mp3");
-	else if (!ft_strncmp(map->line, "WS", 2))
-		parse_path(map, &map->wsound, "WS", ".mp3");
-	else
-		throw_parse_error(ERR_ID_NOT_FOUND, 0);
-}
-
-void	parse_identify_line(t_map *map)
-{
-	if (!ft_strncmp(map->line, "R", 1))
-		parse_resolution(map);
-	else if (!ft_strncmp(map->line, "NO", 2))
-		parse_path(map, &map->no_path, "NO", ".xpm");
-	else if (!ft_strncmp(map->line, "SO", 2))
-		parse_path(map, &map->so_path, "SO", ".xpm");
-	else if (!ft_strncmp(map->line, "WE", 2))
-		parse_path(map, &map->we_path, "WE", ".xpm");
-	else if (!ft_strncmp(map->line, "EA", 2))
-		parse_path(map, &map->ea_path, "EA", ".xpm");
-	else if (!ft_strncmp(map->line, "S ", 2))
-		parse_path(map, &map->sprite, "S", ".xpm");
-	else if (!ft_strncmp(map->line, "F ", 2))
-		parse_color(map, &map->f, "F");
-	else if (!ft_strncmp(map->line, "C ", 2))
-		parse_color(map, &map->c, "C");
-	else if (map->bonus == 1)
-		parse_identify_line_bonus(map);
-	else
-		throw_parse_error(ERR_ID_NOT_FOUND, 0);
-}
-
-int		map_getline(t_map *map)
-{
-	int res;
-
-	if ((res = get_next_line(map->fd, &map->line)) < 0)
-		throw_parse_error(ERR_GET_NEXT_LINE, 0);
-	return (res);
-}
-
-int		is_prm_complete_bonus(t_map *map)
-{
-	if (map->wp_path == 0 || map->sk_path == 0 || map->tp_path == 0)
-		return (0);
-	if (map->ft_path == 0 || map->as_path == 0 || map->dg_path == 0)
-		return (0);
-	if (map->sound == 0 || map->music == 0)
-		return (0);
-	if (map->wsound == 0 || map->csound == 0)
-		return (0);
-	return (1);
-}
-
-int		is_prm_complete(t_map *map)
-{
-	int res;
-
-	res = 1;
-	if (map->w == 0 || map->h == 0)
-		res = 0;
-	if (map->so_path == 0 || map->no_path == 0)
-		res = 0;
-	if (map->we_path == 0 || map->ea_path == 0)
-		res = 0;
-	if (map->c.set == 0 || map->f.set == 0)
-		res = 0;
-	if (map->sprite == 0)
-		res = 0;
-	if (map->bonus)
-		res *= is_prm_complete_bonus(map);
-	return (res);
-}
 
 void	map_add_node(t_list **head, char *line)
 {
@@ -211,24 +28,6 @@ void	map_add_node(t_list **head, char *line)
 		}
 	}
 	ft_lstadd_back(head, ft_lstnew(ft_strdup(line)));
-}
-
-void	skip_empty_lines(t_map *map)
-{
-	int	res;
-	
-	res = 1;
-	while ((res = map_getline(map)) > 0 && map->line[0] == '\0')
-	{
-		map->tr.line++;
-		free(map->line);
-	}
-	map->tr.line++;
-	if (res == 0)
-	{
-		free(map->line);
-		throw_parse_error(ERR_MAP_MISSING, 0);
-	}
 }
 
 int		map_to_list(t_map *map)
@@ -250,4 +49,13 @@ int		map_to_list(t_map *map)
 	map->rows = ft_lstsize(map->lst) + 2;
 	map->cols = ft_lstmax_cont_len(map->lst);
 	return (0);
+}
+
+int		map_getline(t_map *map)
+{
+	int res;
+
+	if ((res = get_next_line(map->fd, &map->line)) < 0)
+		throw_parse_error(ERR_GET_NEXT_LINE, 0);
+	return (res);
 }

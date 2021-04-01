@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 15:44:20 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 22:29:14 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,8 +156,7 @@ void	bitmap_header(t_all *all, int fd);
 void	bitmap_info_header(t_all *all, int fd);
 char	*bitmap_check_exist(void);
 
-int		draw_all(t_all *all);
-void	draw_background(t_all *all, int x);
+
 void	fire(t_all *all);
 
 /* music */
@@ -173,5 +172,45 @@ void	free_all(t_all *all);
 
 void	change_pos(t_all *all, char t);
 void	remove_sprite(t_all *all, int x, int y);
+
+/* sprites */
+void	remove_sprite(t_all *all, int x, int y);
+void	sort_sprites(t_all *all);
+void	calculate_dist_to_sprites(t_all *all);
+
+
+void	check_shooted_sprite(t_all *all);
+
+void	calculate_wall_height(t_all *all);
+void	calculate_wall_borders(t_all *all);
+void	calculate_initial_dist(t_all *all);
+void	calculate_distance_to_wall(t_all *all);
+void	calculate_texture_coordinates(t_all *all);
+void	calculate_collision_coordinates(t_all *all);
+
+
+/* engine mouse */
+int		mouse_action(t_all *all);
+
+void	swap_d_values(double *a, double *b);
+void	swap_c_values(char *a, char *b);
+int		random_number(int min, int max);
+
+
+void    put_pixel(t_img *img, int x, int y, int color);
+void	put_column(t_all *all, int x);
+
+void	draw_hud(t_all *all);
+void	draw_rain(t_all *all);
+void	draw_weapon(t_all *all);
+void	draw_number(t_all *all, int x, int y, int num);
+
+void	calculate_dist_to_sprites(t_all *all);
+
+void	draw_sprites(t_all *all);
+int		draw_all(t_all *all);
+void	draw_background(t_all *all, int x);
+void	draw_walls(t_all *all);
+void	draw_floor_ceil(t_all *all, int x, int y);
 
 #endif

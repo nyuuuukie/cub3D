@@ -41,26 +41,42 @@ GNL_DIR = get_next_line
 
 SOURCES =	main.c \
 			check_arguments.c \
-			parse_map.c \
 			errors.c \
-			parse_scene_file.c \
 			arrays.c \
-			map_validation.c \
 			map_utils.c \
 			vector.c \
+			map_validation.c \
 			raycasting.c \
 			key_action.c \
 			engine_move.c \
 			engine.c \
 			init.c \
 			init_ext.c \
-			colors.c\
-			math_utils.c\
+			colors.c \
+			math_utils.c \
 			music.c \
 			save.c \
 			free_all.c \
 			sprites.c \
-			parse_prm.c
+			parse_map.c \
+			parse_num.c \
+			parse_prm.c \
+			parse_skip.c \
+			parse_print.c\
+			parse_check.c \
+			parse_identify.c \
+			parse_scene_file.c \
+			parse_is_complete.c \
+			engine_calculate.c\
+			engine_mouse.c \
+			engine_utils.c \
+			engine_calculate.c\
+			engine_calculate_ext.c\
+			engine_draw_bonus.c\
+			engine_draw_ext.c\
+			engine_draw_sprites.c\
+			engine_draw.c\
+			engine_put_image.c
 
 B_SOURCES = 
 

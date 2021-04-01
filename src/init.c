@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 21:48:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 06:57:55 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 18:28:09 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,33 @@ void	init_texture(t_all *all, char *path, t_texture *t)
 	img->addr = mlx_get_data_addr(img->img, &img->bpp, &img->len, &img->end);
 	if (!img->addr)
 		throw_engine_error(all, ERR_MLX_TXT_FAIL, path);
+}
+
+void	init_sprites(t_all *all)
+{
+	int i;
+	int j;
+	int n;
+
+	i = 0;
+	n = 0;
+	all->sprites = malloc(sizeof(t_sprite) * all->map->sprites);
+	if (!all->sprites)
+		throw_engine_error(all, ERR_CANNOT_ALLOC, "Sprites");
+	while (i < all->map->rows && n < all->map->sprites)
+	{
+		j = 0;
+		while (j < all->map->cols && n < all->map->sprites)
+		{
+			if (ft_strchr(SPRITES, all->map->arr[i][j]))
+			{
+				all->sprites[n].id = all->map->arr[i][j];
+				v_dbl_init(&(all->sprites[n++].p), i + 0.5, j + 0.5);
+			}
+			j++;
+		}
+		i++;
+	}
 }
 
 void	init_mult_textures(t_all *all, t_texture txt[], char *dir, int num)
