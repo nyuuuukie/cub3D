@@ -6,11 +6,23 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 18:15:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 07:01:50 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 01:40:29 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
+
+#ifdef LINUX
+void	move_mouse(t_all *all, int w, int h)
+{
+	mlx_mouse_move(all->mlx, all->win, w, h);
+}
+#else
+void	move_mouse(t_all *all, int w, int h)
+{
+	mlx_mouse_move(all->win, w, h);
+}
+#endif
 
 void	init_mouse(t_all *all)
 {
@@ -21,11 +33,7 @@ void	init_mouse(t_all *all)
 	{
 		h = all->screen_h / 2;
 		w = all->screen_w / 2;
-		#ifdef LINUX
-			mlx_mouse_move(all->mlx, all->win, w, h);
-		#else
-			mlx_mouse_move(all->win, w, h);
-		#endif
+		move_mouse(all, w, h);
 	}
 }
 

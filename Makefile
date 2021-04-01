@@ -48,8 +48,6 @@ SOURCES =	main.c \
 			map_validation.c \
 			raycasting.c \
 			key_action.c \
-			engine_move.c \
-			engine.c \
 			init.c \
 			init_ext.c \
 			colors.c \
@@ -67,18 +65,27 @@ SOURCES =	main.c \
 			parse_identify.c \
 			parse_scene_file.c \
 			parse_is_complete.c \
-			engine_calculate.c\
+			engine.c \
+			engine_move.c \
+			engine_calculate.c \
 			engine_mouse.c \
 			engine_utils.c \
-			engine_calculate.c\
-			engine_calculate_ext.c\
-			engine_draw_bonus.c\
-			engine_draw_ext.c\
-			engine_draw_sprites.c\
-			engine_draw.c\
-			engine_put_image.c
+			engine_calculate_ext.c \
+			engine_draw_bonus.c \
+			engine_draw_ext.c \
+			engine_draw_sprites.c \
+			engine_draw.c \
+			engine_put_image.c \
+			engine_textures.c\
+			engine_init_bonus_flags.c
 
-B_SOURCES = 
+ifeq ($(BSRC), "TRUE")
+	B_SOURCES = 
+else
+	B_SOURCES = 
+endif
+
+
 
 GNL_SRC = 	get_next_line.c
 

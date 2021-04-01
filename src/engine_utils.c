@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 18:27:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 20:21:01 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 00:29:34 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,10 @@ void	swap_c_values(char *a, char *b)
 int		random_number(int min, int max)
 {
 	return (rand() % (max - min) + min);
+}
+
+int		is_lightning(t_all *all)
+{
+	return ((all->frame_count % 100 < 5 ) || \
+			(all->frame_count % 100 > 20 && all->frame_count % 100 < 25));
 }

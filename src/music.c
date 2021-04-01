@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 23:05:04 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 06:48:06 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 00:33:48 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ void	*init_csound_fork(void *prm)
 	return (NULL);
 }
 
+#ifdef BONUS
+
 int		music_start(t_all *all, pid_t *x, char *filename, char *volume)
 {
 	(void)all;
@@ -91,3 +93,16 @@ int		music_start(t_all *all, pid_t *x, char *filename, char *volume)
 		waitpid(*x, 0, 0);
 	return (0);
 }
+
+#else
+
+int		music_start(t_all *all, pid_t *x, char *filename, char *volume)
+{
+	(void)all;
+	(void)x;
+	(void)filename;
+	(void)volume;
+	return (0);
+}
+
+#endif

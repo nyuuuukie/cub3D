@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 22:29:14 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 02:11:22 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,7 @@ void	calculate_distance_to_wall(t_all *all);
 void	calculate_texture_coordinates(t_all *all);
 void	calculate_collision_coordinates(t_all *all);
 
+void	calculate_wall_prm(t_all *all, t_v_dbl *floor_wall, t_v_dbl *k);
 
 /* engine mouse */
 int		mouse_action(t_all *all);
@@ -198,7 +199,7 @@ int		random_number(int min, int max);
 
 
 void    put_pixel(t_img *img, int x, int y, int color);
-void	put_column(t_all *all, int x);
+void	draw_wall_line(t_all *all);
 
 void	draw_hud(t_all *all);
 void	draw_rain(t_all *all);
@@ -209,8 +210,17 @@ void	calculate_dist_to_sprites(t_all *all);
 
 void	draw_sprites(t_all *all);
 int		draw_all(t_all *all);
-void	draw_background(t_all *all, int x);
+void	draw_background(t_all *all);
 void	draw_walls(t_all *all);
 void	draw_floor_ceil(t_all *all, int x, int y);
+
+void	draw_bonus_part(t_all *all);
+void	recognize_texture(t_all *all);
+int		is_lightning(t_all *all);
+
+void	check_if_sprite_hit(t_all *all, int x, int y);
+void	check_shooted_sprite(t_all *all);
+
+int		is_lightning(t_all *all);
 
 #endif

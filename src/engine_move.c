@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:37:15 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 06:54:35 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 02:01:23 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ void	move(t_all *all, t_v_dbl *base, int sign)
 		all->pos.x = new.x;
 	if (!ft_strchr("321", all->map->arr[(int)all->pos.x][(int)new.y]))
 		all->pos.y = new.y;
-	#ifdef BONUS
+	if (all->map->bonus)
 		move_bonus_check(all, new);
-	#endif
 }

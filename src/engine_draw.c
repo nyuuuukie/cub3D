@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 20:28:33 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 20:30:33 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 02:12:52 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,17 @@ int		draw_all(t_all *all)
 	return (0);
 }
 
-void	draw_background(t_all *all, int x)
+void	draw_background(t_all *all)
 {
 	t_v_dbl k;
 	t_v_dbl floor_wall;
-	
-	int y;
-	v_dbl_init(&k, (all->ray.x < 0), (all->ray.y < 0));
-	
-	if (all->side_wall == 0)
-		v_dbl_init(&floor_wall, all->grid.x + k.x, all->grid.y + all->ratio);
-	else
-		v_dbl_init(&floor_wall, all->grid.x + all->ratio, all->grid.y + k.y);
-	
-	y = all->map->h / 2;
-	while (y < all->map->h)
+
+	calculate_wall_prm(all, &floor_wall, &k);
+	all->it.y = all->map->h / 2;
+	while (all->it.y < all->map->h)
 	{
-		draw_floor_ceil(all, x, y);
-		y++;
+		draw_floor_ceil(all, all->it.x, all->it.y);
+		all->it.y++;
 	}
 }
 
@@ -56,22 +49,19 @@ void	draw_walls(t_all *all)
 		calculate_initial_dist(all);
 		calculate_collision_coordinates(all);
 		calculate_distance_to_wall(all);
-		calculate_wall_height(all);
 		calculate_wall_borders(all);
 		calculate_texture_coordinates(all);
-		draw_background(all, all->it.x);
-		if (all->screen == 0)
-			all->zbuf[all->it.x] = all->dist_to_wall;
-		put_column(all, all->it.x);
+		draw_background(all);
+		draw_wall_line(all);
 		all->it.x++;
 	}
 }
 
 void	draw_floor_ceil(t_all *all, int x, int y)
 {
-	int f;
-	int c;
-	double d_k;
+	int		f;
+	int		c;
+	double	k;
 
 	if (all->floor_exist || all->ceil_exist)
 		calculate_floor_color(all, y);
@@ -91,11 +81,11 @@ void	draw_floor_ceil(t_all *all, int x, int y)
 	if (all->keys.k0)
 	{
 		if (y < all->a * x * x + all->b * x + all->c)
-			d_k = 1.65;
+			k = 1.65;
 		else
-			d_k = 1.5;
-		f = color_make_darker(1 - (double)y / (d_k * all->map->h), f);
-		c = color_make_darker(1 - (double)y / (d_k * all->map->h), c);
+			k = 1.5;
+		f = color_make_darker(1 - (double)y / (k * all->map->h), f);
+		c = color_make_darker(1 - (double)y / (k * all->map->h), c);
 	}
 	if (all->map->bonus && all->keys.p && is_lightning(all))
 		f = color_negative(f);
