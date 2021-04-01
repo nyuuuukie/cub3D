@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 23:10:32 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/31 13:31:31 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 06:16:27 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	check_portal(t_map *map)
 {
-	int 	i;
-	int 	j;
-	int 	count;
-	
+	int	i;
+	int	j;
+	int	count;
+
 	i = 1;
 	count = 0;
 	while (i < map->rows - 1)
@@ -25,22 +25,22 @@ void	check_portal(t_map *map)
 		j = 0;
 		while (map->arr[i][j] != '\0')
 		{
-			if (map->arr[i][j] == 'T' || map->arr[i][j] == 'H')
+			if (ft_strchr("TH", map->arr[i][j]) != NULL)
 				count++;
 			j++;
 		}
 		i++;
 	}
 	if (count != 2)
-		throw_parse_error(ERR_MISSING_SYMBOL, "'T' count is not equal two");
+		throw_parse_error(ERR_MISSING_SYMBOL, "T/P must be unique");
 }
 
 void	map_validate(t_map *map)
 {
-	int 	i;
-	int 	j;
-	int 	count;
-	
+	int	i;
+	int	j;
+	int	count;
+
 	i = 1;
 	count = 0;
 	while (i < map->rows - 1)
@@ -57,8 +57,6 @@ void	map_validate(t_map *map)
 		i++;
 	}
 	player_check(count, i, j);
-	if (map->bonus)
-		check_portal(map);
 }
 
 void	flood_fill_iter(char **arr, int row, int col)
@@ -100,6 +98,10 @@ int		flood_fill(char **arr, int row, int col)
 				arr[row][col] = '#';
 			if (arr[row][col] == '3')
 				arr[row][col] = '.';
+			if (arr[row][col] == 'T')
+				arr[row][col] = '@';
+			if (arr[row][col] == 'H')
+				arr[row][col] = '*';
 			flood_fill_iter(arr, row, col);
 		}
 	}
@@ -117,7 +119,7 @@ void	player_check(int count, int row, int col)
 		map->tr.line += row - 1;
 		if (count == 0)
 			throw_parse_error(ERR_PLAYER_NOT_FOUND, 0);
-		else 
+		else
 			throw_parse_error(ERR_TOO_MANY_PLAYERS, 0);
 	}
 }

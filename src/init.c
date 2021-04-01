@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 21:48:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 03:09:33 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 06:57:55 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ void	init_texture(t_all *all, char *path, t_texture *t)
 
 void	init_mult_textures(t_all *all, t_texture txt[], char *dir, int num)
 {
-	int i;
-	int len;
-	char *path;
+	int		i;
+	int		len;
+	char	*path;
 
 	i = 0;
 	path = ft_strjoin(dir, "/0.xpm");
-	len  = ft_strlen(path);
+	len	= ft_strlen(path);
 	while (i < num)
 	{
 		init_texture(all, path, &(txt[i]));

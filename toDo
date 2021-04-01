@@ -57,3 +57,13 @@
 [o] First sprite is not shown
 
 [x] allocate memory for all and map on heap
+
+colors.c: color_from_txt (in if // <=)
+
+norme:
+    raycasting.c
+    engine_move.c
+    parse_map.c
+    init_ext.c
+    init.c
+    music.c

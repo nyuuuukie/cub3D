@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 21:46:58 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/31 16:45:05 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 06:14:50 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,17 @@ void	parse_scene_file(t_map *map, char *path)
 int		parse_map(t_map *map)
 {
 	map->tr.i = 0;
-	map_to_list(map);	
+	map_to_list(map);
 	arr_create(&map->arr, map->rows, map->cols);
 	arr_fill(map->arr, map->lst);
 	map_validate(map);
-	
 	arr_replace(map->arr, '#', '0');
 	map->sprites = arr_replace(map->arr, 'x', '2');
-	map->sprites += arr_replace(map->arr, 'T', 'T');
-	map->sprites += arr_replace(map->arr, 'H', 'H');
+	map->sprites += arr_replace(map->arr, '@', 'T');
+	map->sprites += arr_replace(map->arr, '*', 'H');
 	map->keys = arr_replace(map->arr, '.', '3');
+	if (map->bonus)
+		check_portal(map);
 	map->sprites += map->keys;
 	print_status("Map's validation ", 0, "OK");
 	return (0);

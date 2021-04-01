@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:34:29 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/27 19:39:07 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 05:47:13 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	throw_engine_error(t_all *all, t_error msg, char *add)
 {
 	print_error(get_error_msg(msg), 0, add);
 	free_all(all);
-	// (void)all;
 	exit(1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:37:15 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 02:47:48 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 06:54:35 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,15 @@
 
 void	rotate(t_all *all, int sign, double angle)
 {
-	vector_rotate(&all->dir, sign * angle);
-	vector_rotate(&all->plane, sign * angle);                                                                            
+	v_dbl_rotate(&all->dir, sign * angle);
+	v_dbl_rotate(&all->plane, sign * angle);
 }
 
-
-//MOVE
 void	calculate_weapon_offset(t_all *all)
 {
-	if ((int)all->r > -1 || (int)all->r < -60) //make constant
+	if ((int)all->r > -1 || (int)all->r < -60)
 		all->inc *= -1;
 	all->r += all->inc;
-}
-
-
-void	remove_sprite(t_all *all, int x, int y)
-{
-	int i;
-
-	i = 0;
-	while (i < all->map->sprites)
-	{
-		if ((int)all->sprites[i].p.x == x && (int)all->sprites[i].p.y == y)
-		{
-			all->map->arr[x][y] = '0';
-			all->sprites[i].id = 'X';
-			all->sprites[i].p.x = -1;
-			all->sprites[i].p.y = -1;
-			all->sprites[i].p.dist = -1;
-			break;
-		}
-		i++;
-	}
 }
 
 void	print_map(char **arr)
@@ -64,8 +41,8 @@ void	change_pos(t_all *all, char t)
 
 	i = 0;
 	while (all->map->rows - 1)
-	{	
-		j = 0;	
+	{
+		j = 0;
 		while (all->map->arr[i][j] != '\0')
 		{
 			if (all->map->arr[i][j] == t)
@@ -74,13 +51,13 @@ void	change_pos(t_all *all, char t)
 				all->pos.y = j + 0.5 + 1 * all->dir.x;
 				return ;
 			}
-			j++;	
+			j++;
 		}
 		i++;
 	}
 }
 
-void 	check_map_position(t_all *all, int x, int y)
+void	check_map_position(t_all *all, int x, int y)
 {
 	if (all->map->arr[x][y] == '2')
 	{
@@ -111,7 +88,7 @@ void	move_bonus_check(t_all *all, t_v_dbl new)
 void	move(t_all *all, t_v_dbl *base, int sign)
 {
 	t_v_dbl	new;
- 
+
 	new.x = all->pos.x + (sign * base->x * all->m_speed * all->k_speed);
 	new.y = all->pos.y + (sign * base->y * all->m_speed * all->k_speed);
 	if (!ft_strchr("321", all->map->arr[(int)new.x][(int)all->pos.y]))
@@ -119,6 +96,6 @@ void	move(t_all *all, t_v_dbl *base, int sign)
 	if (!ft_strchr("321", all->map->arr[(int)all->pos.x][(int)new.y]))
 		all->pos.y = new.y;
 	#ifdef BONUS
-		move_bonus_check(all, new);	
+		move_bonus_check(all, new);
 	#endif
 }

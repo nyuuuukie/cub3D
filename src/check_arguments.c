@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 21:45:51 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/29 21:58:47 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 04:38:15 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int		check_extension(t_map *map, const char *ext)
 {
 	int i;
 	int end;
-	
+
 	i = 0;
 	end = ft_strlen(map->line) - 1;
 	while (i < EXTENSION_LEN && end != 0 && map->line[end] != '.')
@@ -27,7 +27,7 @@ int		check_extension(t_map *map, const char *ext)
 	if (!(end != 0 && !ft_strcmp(&map->line[end], ext)))
 	{
 		map->tr.i = end;
-		throw_parse_error(ERR_WRONG_EXT, &map->line[end]);	
+		throw_parse_error(ERR_WRONG_EXT, &map->line[end]);
 	}
 	return (0);
 }
@@ -54,7 +54,7 @@ int		check_file_path(t_map *map, char *ext)
 	return (0);
 }
 
-int check_save_arg(int argc, char **argv)
+int		check_save_arg(int argc, char **argv)
 {
 	if (argc == 3)
 	{

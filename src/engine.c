@@ -6,16 +6,16 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:35:59 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 02:59:37 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 05:47:02 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int 	start_engine(t_map *map, int mode)
+int		start_engine(t_map *map, int mode)
 {
 	t_all *all;
-	
+
 	all = (t_all *)malloc(sizeof(t_all));
 	if (all == NULL)
 		throw_parse_error(ERR_CANNOT_ALLOC, "Cannot allocate t_all");
@@ -33,20 +33,34 @@ int 	start_engine(t_map *map, int mode)
 	return (0);
 }
 
-int	stop_engine(void *ptr)
+#ifdef BONUS
+
+int		stop_engine(void *ptr)
 {
 	t_all *all;
 
 	all = (t_all *)ptr;
-	#ifdef BONUS
 	if (all->map->bonus && all->music != 0)
-    	kill(all->music, SIGKILL);
+		kill(all->music, SIGKILL);
 	if (all->map->bonus && all->sound != 0)
-    	kill(all->sound, SIGKILL);
+		kill(all->sound, SIGKILL);
 	if (all->map->bonus && all->wsound != 0)
-    	kill(all->wsound, SIGKILL);
-	#endif
+		kill(all->wsound, SIGKILL);
 	free_all(all);
 	ft_putstr_fd("cub3D stopped", 1);
 	exit(0);
 }
+
+#else
+
+int		stop_engine(void *ptr)
+{
+	t_all *all;
+
+	all = (t_all *)ptr;
+	free_all(all);
+	ft_putstr_fd("cub3D stopped", 1);
+	exit(0);
+}
+
+#endif

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 17:05:13 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/29 22:17:38 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 05:59:16 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,13 @@ void	bitmap_info_header(t_all *all, int fd)
 
 char	*bitmap_check_exist(void)
 {
-	static int index;
-	char *filename;
-	char *num;
-	int fd;
+	char	*filename;
+	int		index;
+	char	*num;
+	int		fd;
 
 	fd = 1;
+	index = 0;
 	while (fd > 0)
 	{
 		num = ft_itoa(index++);
@@ -96,7 +97,7 @@ void	bitmap_to_file(t_all *all)
 	close(fd);
 }
 
-void make_screenshot(t_all *all)
+void	make_screenshot(t_all *all)
 {
 	init_all(all);
 	draw_all(all);

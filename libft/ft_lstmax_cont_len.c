@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 20:39:56 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/02/16 20:42:01 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 04:33:28 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int		ft_lstmax_cont_len(t_list *lst)
 {
-	int 	max;
-	int		curr;
+	int	max;
+	int	curr;
 
 	max = 0;
 	while (lst)

@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_error.h                                         :+:      :+:    :+:   */
+/*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:40:31 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/13 17:02:21 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 04:25:51 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_ERROR_H
-# define FT_ERROR_H
+#ifndef ERROR_H
+# define ERROR_H
 
-typedef enum	e_err_msg {
+typedef enum	e_error {
 	ERR_ARG_NUM = 0,
 	ERR_WRONG_EXT = 1,
 	ERR_NO_FILE = 2,
@@ -22,7 +22,7 @@ typedef enum	e_err_msg {
 	ERR_ZERO_BEFORE_NUM = 5,
 	ERR_DUPLICATE_SPEC = 6,
 	ERR_NEGATIVE_VALUE = 7,
-	ERR_ID_NOT_FOUND = 8, 
+	ERR_ID_NOT_FOUND = 8,
 	ERR_MAP_MISSING = 9,
 	ERR_GET_NEXT_LINE = 10,
 	ERR_CANNOT_ALLOC = 11,

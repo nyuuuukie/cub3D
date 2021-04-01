@@ -58,7 +58,8 @@ SOURCES =	main.c \
 			math_utils.c\
 			music.c \
 			save.c \
-			clean.c
+			free_all.c \
+			sprites.c
 
 B_SOURCES = 
 

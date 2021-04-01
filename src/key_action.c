@@ -6,13 +6,13 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 19:39:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/03/31 21:16:00 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 06:52:07 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void init_keys(t_all* all)
+void	init_keys(t_all *all)
 {
 	all->keys.w = 0;
 	all->keys.a = 0;
@@ -27,7 +27,7 @@ void init_keys(t_all* all)
 	all->keys.f = 0;
 }
 
-int key_action(t_all *all)
+int		key_action(t_all *all)
 {
 	if (all->keys.w && !all->keys.s)
 		move(all, &all->dir, 1);
@@ -41,10 +41,8 @@ int key_action(t_all *all)
 		rotate(all, 1, all->r_angle);
 	if (all->keys.r && !all->keys.l)
 		rotate(all, -1, all->r_angle);
-	#ifdef BONUS
-		if (all->keys.f)
-			fire(all);
-	#endif
+	if (all->map->bonus && all->keys.f)
+		fire(all);
 	all->k_speed = all->keys.sh + 1.0;
 	return (0);
 }
@@ -71,7 +69,7 @@ int		key_release(int keycode, t_all *all)
 int		key_press(int keycode, t_all *all)
 {
 	if (keycode == KEY_W)
-		all->keys.w = 1;	
+		all->keys.w = 1;
 	else if (keycode == KEY_S)
 		all->keys.s = 1;
 	else if (keycode == KEY_A)

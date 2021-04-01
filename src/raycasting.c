@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 03:51:28 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/01 06:50:08 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,7 +285,7 @@ void	recognize_texture(t_all *all)
 {
 	double ang;
 	
-	ang = vector_angle(&all->norm, &all->ray);
+	ang = v_dbl_angle(&all->norm, &all->ray);
 	ang = get_angle(ang);
 
 	if (all->ray.x < 0.0f)
@@ -352,7 +352,9 @@ int		draw_all(t_all *all)
 	return (0);
 }
 
-void fire(t_all *all)
+#ifdef BONUS
+
+void	fire(t_all *all)
 {
 	all->keys.f = 0;
 	#ifdef BONUS
@@ -360,6 +362,17 @@ void fire(t_all *all)
 			init_music(all, init_wsound_fork);
 	#endif
 }
+
+#else
+
+void	fire(t_all *all)
+{
+	all->keys.f = 0;
+	if (all->map->bonus && all->keys.k1)
+		init_music(all, init_wsound_fork);
+}
+
+#endif
 
 int 	mouse_press(int button, int x, int y, void *param)
 {
