@@ -6,11 +6,11 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 21:46:58 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 06:14:50 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 09:03:09 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 void	parse_scene_file(t_map *map, char *path)
 {

@@ -6,11 +6,11 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 01:16:02 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 04:42:28 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 09:03:09 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 int		color_from_prm(t_clr *clr)
 {

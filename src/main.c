@@ -6,11 +6,11 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:46:26 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 02:54:27 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 09:03:09 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 int	main(int argc, char **argv)
 {

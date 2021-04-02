@@ -6,11 +6,11 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 17:19:31 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 00:46:44 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 09:03:09 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 int		mouse_press(int button, int x, int y, void *param)
 {

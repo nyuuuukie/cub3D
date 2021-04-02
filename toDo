@@ -43,10 +43,6 @@
 [o] An HUD.
 [-] Crouch.
 [o] Secret doors.
-[-] Doors which can open and close.
-
-
-[-] Life bar.
 [o] More items in the maze. 
 [o] Earning points and/or losing life by picking up objects/traps. add coin
 [o] Animations of a gun shot or animated sprite. need to finish
@@ -56,9 +52,14 @@
 [-] Fix music and bash input close. Try to create a new thread each time music started.
 [o] First sprite is not shown
 
-[x] allocate memory for all and map on heap
+[?] allocate memory for all and map on heap
 
-colors.c: color_from_txt (in if // <=)
+[x] parse 0 as skybox and c as ceil
+[x] teleport in the room with ceil
+[x] add kill counter and draw it
+[x] add bullets sprite and ability to pick them up
+[?] add lifebar
+[x] finish norm
 
 norme:
     engine_draw_bonus.c
@@ -67,5 +68,3 @@ norme:
     engine_move.c
     init_ext.c
     init.c
-
-engine_get_color.c

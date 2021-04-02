@@ -6,11 +6,11 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 18:27:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 05:12:11 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 09:03:09 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 void	swap_d_values(double *a, double *b)
 {

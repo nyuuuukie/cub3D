@@ -6,13 +6,13 @@ SO textures/cyber/cement2.xpm
 WE textures/cyber/cement3.xpm
 EA textures/cyber/cement4.xpm
 
-AS sprites/woman.xpm
+AS sprites/chip.xpm
 SK textures/cyber/cyber.xpm
 FT textures/cyber/floor.xpm
 WP textures/cyber/pistol.anim
 TP textures/tp.anim
 DG textures/digits.anim
-KS music/keys.mp3
+KS music/pickup.mp3
 MC music/cyber.mp3
 SD music/wtfu.mp3
 WS music/pistol.mp3

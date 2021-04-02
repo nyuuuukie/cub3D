@@ -6,11 +6,11 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 18:15:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 01:40:29 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 09:03:09 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 #ifdef LINUX
 void	move_mouse(t_all *all, int w, int h)
@@ -56,6 +56,7 @@ void	init_params(t_all *all)
 	all->coin_counter = 0;
 	all->sound_started = 0;
 	all->wsound_started = 0;
+	all->csound_started = 0;
 	all->music_started = 0;
 	v_int_init(&all->it, 0, 0);
 	v_int_init(&all->scale, 1, 1);

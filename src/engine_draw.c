@@ -6,19 +6,18 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 20:28:33 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 04:26:45 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 09:03:09 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
-int		draw_all(t_all *all)
+void	draw_all(t_all *all)
 {
 	draw_walls(all);
 	if (all->map->sprites > 0)
 		draw_sprites(all);
 	draw_bonus_part(all);
-	return (0);
 }
 
 void	draw_background(t_all *all)

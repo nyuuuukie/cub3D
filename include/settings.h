@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 01:03:36 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 09:02:08 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,20 @@
 # define SETTINGS_H
 
 # ifdef BONUS
-/* #  define CEIL */
 #  define SKY
 #  define MUSIC
 #  define FLOOR
 # endif
 
-# define START_CUB3D 1
-# define MAKE_SCREENSHOT 2
+# define ANIM_FRAMES 6
 
-# define SCALE 6
-
-/* Resolution */
 # define R_MAX_LEN 6
-// # define R_MIN_WIDTH 10
-// # define R_MIN_HEIGHT 10
-// # define R_MAX_WIDTH 1000000
-// # define R_MAX_HEIGHT 1000000
 
-/* Colors */
+/*
+**Colors
+*/
 # define COLOR_MIN_VALUE 0
 # define COLOR_MAX_VALUE 255
-
 # define MIN_R 15
 # define MIN_G 15
 # define MIN_B 15
@@ -43,11 +35,15 @@
 # define MAX_G 240
 # define MAX_B 240
 
-/* File */
+/*
+**File
+*/
 # define EXTENSION_LEN 5
 # define GNL_BUF_SIZE 10000000
 
-/* Map */
+/*
+**Map
+*/
 # ifndef BONUS
 #  define ALLOWED_MAP_SPEC "012NSWE "
 #  define FLOOD_FILL_SPEC "02NSWE"
@@ -65,8 +61,5 @@
 #  define S_VOLUME "-g 80"
 #  define M_VOLUME "-g 40"
 # endif
-
-/* Engine */
-# define ANIM_FRAMES 6
 
 #endif
