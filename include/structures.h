@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 03:45:08 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 19:24:37 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ typedef struct		s_all
 	t_v_int		tex_f;
 	t_v_int		tex_c;
 	t_sprite	*sprites;
+	t_texture	*s;
 	double		r;
 	double		n;
 	double		inc;
@@ -192,6 +193,7 @@ typedef struct		s_all
 	int			wsound_started;
 	int			csound_started;
 
+	double		det;
 	double		*zbuf;
 	double		vmove;
 	t_v_dbl		t;
