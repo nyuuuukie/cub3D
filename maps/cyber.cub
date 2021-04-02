@@ -9,13 +9,13 @@ EA textures/cyber/cement4.xpm
 AS sprites/woman.xpm
 SK textures/cyber/cyber.xpm
 FT textures/cyber/floor.xpm
-WP textures/cyber/weapon.anim
+WP textures/cyber/pistol.anim
 TP textures/tp.anim
 DG textures/digits.anim
 KS music/keys.mp3
 MC music/cyber.mp3
 SD music/wtfu.mp3
-WS music/bullet.mp3
+WS music/pistol.mp3
 
 F 255, 154, 141
 C 60, 74, 81 

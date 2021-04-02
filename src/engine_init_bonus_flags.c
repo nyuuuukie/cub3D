@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/02 00:30:08 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 00:48:13 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 04:07:29 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,3 @@ void	init_bonus_flags(t_all *all)
 		init_floor_exist(all);
 	}
 }
-
-

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 20:35:08 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 20:35:52 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 06:15:16 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ void	draw_rain(t_all *all)
 	int big;
 	int small;
 	int drop_len;
-	
+
 	x = 0;
 	while (x < all->map->w)
 	{
-		small = random_number(1, 15);
-		big = random_number(5, 30);
 		if (all->zbuf[x] > 0.5)
 		{
+			small = random_number(1, 15);
+			big = random_number(5, 30);
 			y = random_number(0, all->map->h / 6 + 1);
 			while (y < all->map->h)
 			{
@@ -75,6 +75,7 @@ void	draw_number(t_all *all, int x, int y, int num)
 	int i;
 	int j;
 	int scale;
+	int color;
 	
 	i = 0;
 	scale = all->map->h / 20 + 1;
@@ -83,9 +84,11 @@ void	draw_number(t_all *all, int x, int y, int num)
 		j = 0;
 		while (j < scale)
 		{
-			int color = color_from_txt(&all->digits[num], 1.0 * all->digits[num].w * j / scale, 1.0 * all->digits[num].w * i / scale);
+			color = color_from_txt(&all->digits[num], 
+				1.0 * all->digits[num].w * j / scale, 
+					1.0 * all->digits[num].w * i / scale);
 			if ((color & 0xFFFFFFFF) == 0)
-				put_pixel(&all->img, x + j, y + i, color_negative(color));
+				put_pixel(&all->img, x + j, y + i, color);
 			j++;
 		}
 		i++;

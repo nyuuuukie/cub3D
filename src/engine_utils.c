@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 18:27:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 00:29:34 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 05:12:11 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int		random_number(int min, int max)
 
 int		is_lightning(t_all *all)
 {
-	return ((all->frame_count % 100 < 5 ) || \
-			(all->frame_count % 100 > 20 && all->frame_count % 100 < 25));
+	return ((all->frame_count % 100 < 5) ||
+			(all->frame_count % 100 > 20 &&
+			all->frame_count % 100 < 25));
 }

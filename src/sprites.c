@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 04:44:36 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 23:02:46 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 05:15:39 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ void	sort_sprites(t_all *all)
 
 void	calculate_dist_to_sprites(t_all *all)
 {
-	t_v_dbl a;
-	int i;
+	t_v_dbl	a;
+	int		i;
 
 	i = 0;
 	while (i < all->map->sprites)

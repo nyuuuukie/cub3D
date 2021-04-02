@@ -61,9 +61,11 @@
 colors.c: color_from_txt (in if // <=)
 
 norme:
-    raycasting.c
+    engine_draw_bonus.c
+    engine_draw_sprites.c
+    engine_init_bonus_flags.c
     engine_move.c
-    parse_map.c
     init_ext.c
     init.c
-    music.c
+
+engine_get_color.c

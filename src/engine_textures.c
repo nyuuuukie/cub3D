@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 22:59:16 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/01 22:59:30 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 05:10:23 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 void	recognize_texture(t_all *all)
 {
 	double ang;
-	
+
 	ang = v_dbl_angle(&all->norm, &all->ray);
 	ang = get_angle(ang);
-
 	if (all->ray.x < 0.0f)
 		ang = 360 - ang;
 	if (all->side_wall == 0)
@@ -27,7 +26,7 @@ void	recognize_texture(t_all *all)
 			all->cur = &all->no;
 		else
 			all->cur = &all->so;
-	}	
+	}
 	else
 	{
 		if (ang >= 90.0f && ang <= 270.0f)

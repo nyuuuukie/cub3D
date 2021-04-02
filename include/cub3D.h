@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 18:49:35 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 02:11:22 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/02 04:59:18 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@
 int		start_engine(t_map *map, int mode);
 int		stop_engine(void *ptr);
 
-int		calculate_floor_color(t_all *all, int y);
-int		calculate_skybox_color(t_all *all, int y);
+int		calculate_floor_color(t_all *all);
+int		calculate_skybox_color(t_all *all);
 
 /* Check input arguments */
 int		check_save_arg(int argc, char **argv);
@@ -212,7 +212,7 @@ void	draw_sprites(t_all *all);
 int		draw_all(t_all *all);
 void	draw_background(t_all *all);
 void	draw_walls(t_all *all);
-void	draw_floor_ceil(t_all *all, int x, int y);
+void	draw_floor_ceil(t_all *all);
 
 void	draw_bonus_part(t_all *all);
 void	recognize_texture(t_all *all);
@@ -222,5 +222,9 @@ void	check_if_sprite_hit(t_all *all, int x, int y);
 void	check_shooted_sprite(t_all *all);
 
 int		is_lightning(t_all *all);
+
+void	get_fc_color(t_all *all, int *f, int *c);
+void	get_shadow_color(t_all *all, int *f, int *c);
+void	get_lightning_color(t_all *all, int *f, int *c);
 
 #endif
