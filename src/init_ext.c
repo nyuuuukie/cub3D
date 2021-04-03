@@ -6,36 +6,11 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 18:15:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 19:25:25 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/03 19:27:53 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-#ifdef LINUX
-void	move_mouse(t_all *all, int w, int h)
-{
-	mlx_mouse_move(all->mlx, all->win, w, h);
-}
-#else
-void	move_mouse(t_all *all, int w, int h)
-{
-	mlx_mouse_move(all->win, w, h);
-}
-#endif
-
-void	init_mouse(t_all *all)
-{
-	int h;
-	int w;
-
-	if (all->map->bonus && all->screen == 0)
-	{
-		h = all->screen_h / 2;
-		w = all->screen_w / 2;
-		move_mouse(all, w, h);
-	}
-}
 
 void	init_params(t_all *all)
 {
@@ -105,12 +80,12 @@ void	init_vectors(t_all *all, int i, int j)
 
 void	init_coord(t_all *all)
 {
- 	int	i;
- 	int	j;
+	int	i;
+	int	j;
 
 	i = 1;
 	while (i < all->map->rows)
- 	{
+	{
 		j = 1;
 		while (j < all->map->cols + 1)
 		{

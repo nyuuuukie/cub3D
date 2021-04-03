@@ -6,21 +6,14 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 07:23:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 09:02:08 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/03 16:10:23 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SETTINGS_H
 # define SETTINGS_H
 
-# ifdef BONUS
-#  define SKY
-#  define MUSIC
-#  define FLOOR
-# endif
-
 # define ANIM_FRAMES 6
-
 # define R_MAX_LEN 6
 
 /*

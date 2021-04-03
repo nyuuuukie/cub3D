@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 20:28:33 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 09:03:09 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/03 16:39:04 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,7 @@ void	draw_all(t_all *all)
 
 void	draw_background(t_all *all)
 {
-	t_v_dbl k;
-	t_v_dbl floor_wall;
-
-	calculate_wall_prm(all, &floor_wall, &k);
-	all->it.y = all->map->h / 2;
+	all->it.y = all->wall_end;
 	while (all->it.y < all->map->h)
 	{
 		draw_floor_ceil(all);
@@ -50,6 +46,7 @@ void	draw_walls(t_all *all)
 		calculate_distance_to_wall(all);
 		calculate_wall_borders(all);
 		calculate_texture_coordinates(all);
+		calculate_wall_prm(all, &all->f_w, &all->k);
 		draw_background(all);
 		draw_wall_line(all);
 		all->it.x++;
@@ -62,8 +59,11 @@ void	draw_floor_ceil(t_all *all)
 	int	c;
 
 	get_fc_color(all, &f, &c);
-	get_shadow_color(all, &f, &c);
-	get_lightning_color(all, &f, &c);
+	if (all->map->bonus)
+	{
+		get_shadow_color(all, &f, &c);
+		get_lightning_color(all, &f, &c);
+	}
 	put_pixel(&all->img, all->it.x, all->it.y, f);
 	put_pixel(&all->img, all->it.x, all->map->h - all->it.y - 1, c);
 }

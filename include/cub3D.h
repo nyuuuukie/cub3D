@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3D.h                                            :+:      :+:    :+:   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/02 08:59:58 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 09:03:09 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/03 19:34:06 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,10 @@ void	fire(t_all *all);
 /*
 **Init
 */
+void    get_screen_size(t_all *all);
+
 void	init_all(t_all *all);
+void	init_mouse(t_all *all);
 void	init_coord(t_all *all);
 void	init_images(t_all *all);
 void	init_window(t_all *all);
@@ -209,6 +212,7 @@ void	change_pos(t_all *all, char t);
 */
 void	remove_sprite(t_all *all, int x, int y);
 void	sort_sprites(t_all *all);
+void	calculate_weapon_offset(t_all *all);
 void	calculate_dist_to_sprites(t_all *all);
 void	calculate_wall_height(t_all *all);
 void	calculate_wall_borders(t_all *all);
@@ -224,6 +228,8 @@ void	check_shooted_sprite(t_all *all);
 **Mouse
 */
 int		mouse_action(t_all *all);
+void	move_mouse(t_all *all, int w, int h);
+void	get_mouse_pos(t_all *all);
 
 /*
 **Utils.c
@@ -249,5 +255,9 @@ void	draw_background(t_all *all);
 void	draw_floor_ceil(t_all *all);
 void	draw_bonus_part(t_all *all);
 void	draw_number(t_all *all, int x, int y, int num);
+
+void	change_pos(t_all *all, char t);
+void	move_bonus_check(t_all *all, t_v_dbl n);
+void	check_map_position(t_all *all, int x, int y);
 
 #endif

@@ -79,7 +79,11 @@ SOURCES =	main.c \
 			engine_textures.c\
 			engine_init_bonus_flags.c\
 			engine_get_color.c\
-			music_thread.c
+			music_thread.c \
+			engine_check_pos.c\
+			engine_defined_functions.c\
+			engine_defined_functions_ext.c\
+			engine_init.c
 
 ifeq ($(BSRC), "TRUE")
 	B_SOURCES = 

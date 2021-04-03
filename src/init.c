@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 21:48:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 09:03:09 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/03 19:30:39 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,33 +49,6 @@ void	init_texture(t_all *all, char *path, t_texture *t)
 		throw_engine_error(all, ERR_MLX_TXT_FAIL, path);
 }
 
-void	init_sprites(t_all *all)
-{
-	int i;
-	int j;
-	int n;
-
-	i = 0;
-	n = 0;
-	all->sprites = malloc(sizeof(t_sprite) * all->map->sprites);
-	if (!all->sprites)
-		throw_engine_error(all, ERR_CANNOT_ALLOC, "Sprites");
-	while (i < all->map->rows && n < all->map->sprites)
-	{
-		j = 0;
-		while (j < all->map->cols && n < all->map->sprites)
-		{
-			if (ft_strchr(SPRITES, all->map->arr[i][j]))
-			{
-				all->sprites[n].id = all->map->arr[i][j];
-				v_dbl_init(&(all->sprites[n++].p), i + 0.5, j + 0.5);
-			}
-			j++;
-		}
-		i++;
-	}
-}
-
 void	init_mult_textures(t_all *all, t_texture txt[], char *dir, int num)
 {
 	int		i;
@@ -84,7 +57,7 @@ void	init_mult_textures(t_all *all, t_texture txt[], char *dir, int num)
 
 	i = 0;
 	path = ft_strjoin(dir, "/0.xpm");
-	len	= ft_strlen(path);
+	len = ft_strlen(path);
 	while (i < num)
 	{
 		init_texture(all, path, &(txt[i]));
@@ -92,24 +65,6 @@ void	init_mult_textures(t_all *all, t_texture txt[], char *dir, int num)
 		i++;
 	}
 	free(path);
-}
-
-void	init_images(t_all *all)
-{
-	int i;
-
-	i = 0;
-	all->img.img = NULL;
-	all->no.img.img = NULL;
-	all->so.img.img = NULL;
-	all->ea.img.img = NULL;
-	all->we.img.img = NULL;
-	all->s1.img.img = NULL;
-	all->s2.img.img = NULL;
-	all->flr.img.img = NULL;
-	all->sky.img.img = NULL;
-	while (i < ANIM_FRAMES)
-		all->wpn[i++].img.img = NULL;
 }
 
 void	init_textures(t_all *all)
@@ -127,28 +82,5 @@ void	init_textures(t_all *all)
 		init_mult_textures(all, all->wpn, all->map->wp_path, ANIM_FRAMES);
 		init_mult_textures(all, all->tp, all->map->tp_path, ANIM_FRAMES);
 		init_mult_textures(all, all->digits, all->map->dg_path, 10);
-	}
-}
-
-void	init_screen_size(t_all *all)
-{
-	#ifdef LINUX
-		mlx_get_screen_size(all->mlx, &all->screen_w, &all->screen_h);
-	#else
-		mlx_get_screen_size(&all->screen_w, &all->screen_h);
-	#endif
-	if (all->screen == 0)
-	{
-		if (all->map->h > all->screen_h)
-			all->map->h = all->screen_h;
-		if (all->map->w > all->screen_w)
-			all->map->w = all->screen_w;
-	}
-	else
-	{
-		if (all->map->h > 20000)
-			all->map->h = 20000;
-		if (all->map->w > 20000)
-			all->map->w = 20000;
 	}
 }

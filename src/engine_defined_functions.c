@@ -1,44 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   engine_draw_ext.c                                  :+:      :+:    :+:   */
+/*   engine_defined_functions.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/01 20:32:06 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/03 13:44:18 by mhufflep         ###   ########.fr       */
+/*   Created: 2021/04/03 19:22:04 by mhufflep          #+#    #+#             */
+/*   Updated: 2021/04/03 19:25:15 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-#ifdef BONUS
+#ifdef LINUX
 
-void	draw_bonus_part(t_all *all)
+void	get_mouse_pos(t_all *all)
 {
-	if (all->map->bonus)
-	{
-		if (all->wsound_started && all->wp_i < ANIM_FRAMES - 1)
-			all->wp_i++;
-		if (!all->wsound_started)
-			all->wp_i = 0;
-		all->tpf++;
-		if (all->tpf >= ANIM_FRAMES)
-			all->tpf = 0;
-		if (!all->ceil_exist && all->keys.p)
-			draw_rain(all);
-		if (all->keys.k1)
-			draw_weapon(all);
-		draw_hud(all);
-	}
+	mlx_mouse_hide(all->mlx, all->win);
+	mlx_mouse_get_pos(all->mlx, all->win, &all->cmx, &all->cmy);
+}
+
+void	move_mouse(t_all *all, int w, int h)
+{
+	mlx_mouse_move(all->mlx, all->win, w, h);
 }
 
 #else
 
-void	draw_bonus_part(t_all *all)
+void	get_mouse_pos(t_all *all)
 {
-	(void)all;
-	return ;
+	mlx_mouse_hide();
+	mlx_mouse_get_pos(all->win, &all->cmx, &all->cmy);
+}
+
+void	move_mouse(t_all *all, int w, int h)
+{
+	mlx_mouse_move(all->win, w, h);
 }
 
 #endif

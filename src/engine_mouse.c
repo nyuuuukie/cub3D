@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 17:19:31 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 09:03:09 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/03 19:27:59 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,6 @@ int		mouse_press(int button, int x, int y, void *param)
 	return (0);
 }
 
-#ifdef LINUX
-
-void	get_mouse_pos(t_all *all)
-{
-	mlx_mouse_hide(all->mlx, all->win);
-	mlx_mouse_get_pos(all->mlx, all->win, &all->cmx, &all->cmy);
-}
-
-#else
-
-void	get_mouse_pos(t_all *all)
-{
-	mlx_mouse_hide();
-	mlx_mouse_get_pos(all->win, &all->cmx, &all->cmy);
-}
-
-#endif
-
 int		mouse_action(t_all *all)
 {
 	double	angle;
@@ -55,4 +37,17 @@ int		mouse_action(t_all *all)
 	all->pmx = all->cmx;
 	rotate(all, sign, angle);
 	return (0);
+}
+
+void	init_mouse(t_all *all)
+{
+	int h;
+	int w;
+
+	if (all->map->bonus && all->screen == 0)
+	{
+		h = all->screen_h / 2;
+		w = all->screen_w / 2;
+		move_mouse(all, w, h);
+	}
 }

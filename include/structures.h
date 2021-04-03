@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 19:24:37 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/03 13:23:20 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,5 +206,9 @@ typedef struct		s_all
 	int			vm_scr;
 	int			remove;
 	int			coin_counter;
+
+	t_v_dbl		f_w;
+	t_v_dbl		k;
+	int			num_scale;
 }					t_all;
 #endif

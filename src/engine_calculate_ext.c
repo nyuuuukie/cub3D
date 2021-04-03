@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 20:33:20 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 09:03:09 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/03 15:57:41 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,10 @@ void	calculate_wall_prm(t_all *all, t_v_dbl *f_w, t_v_dbl *k)
 int		calculate_floor_color(t_all *all)
 {
 	double	w;
-	t_v_dbl	k;
-	t_v_dbl	f_w;
 
-	calculate_wall_prm(all, &f_w, &k);
 	w = all->map->h / (2.0 * all->it.y - all->map->h) / (all->dist_to_wall);
-	all->floor.x = w * f_w.x + (1.0 - w) * all->pos.x;
-	all->floor.y = w * f_w.y + (1.0 - w) * all->pos.y;
+	all->floor.x = w * all->f_w.x + (1.0 - w) * all->pos.x;
+	all->floor.y = w * all->f_w.y + (1.0 - w) * all->pos.y;
 	calculate_floor_ceil_text_coord(all);
 	return (0);
 }
@@ -52,4 +49,11 @@ int		calculate_skybox_color(t_all *all)
 	x = all->n / 360.0 * all->sky.w;
 	y = 1.0 * (all->map->h - all->it.y) / all->map->h * all->sky.h;
 	return (color_from_txt(&all->sky, x, y));
+}
+
+void	calculate_weapon_offset(t_all *all)
+{
+	if ((int)all->r > -1 || (int)all->r < -60)
+		all->inc *= -1;
+	all->r += all->inc;
 }

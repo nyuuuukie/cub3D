@@ -61,6 +61,10 @@
 [?] add lifebar
 [x] finish norm
 
+[x] add fixed ceil texture
+[x] add second portal
+[x] fix portal sprite
+[x] counter on keys of closed 
 norme:
     engine_draw_bonus.c
     engine_draw_sprites.c

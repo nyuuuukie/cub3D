@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 09:06:44 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/03 16:10:43 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void	fire(t_all *all)
 int		render(t_all *all)
 {
 	mlx_do_sync(all->mlx);
-	if (!all->music_started && all->map->bonus)
-		init_music(all, init_music_fork);
 	all->frame_count++;
+	if (all->map->bonus && !all->music_started)
+		init_music(all, init_music_fork);
 	key_action(all);
 	if (all->map->bonus)
 		mouse_action(all);
