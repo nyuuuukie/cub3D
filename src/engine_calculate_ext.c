@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 20:33:20 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/03 15:57:41 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/03 20:04:14 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int		calculate_floor_ceil_text_coord(t_all *all)
 {
 	v_int_init(&all->tex_f, (int)(all->floor.x * all->flr.w) % all->flr.w,
 							(int)(all->floor.y * all->flr.h) % all->flr.h);
-	v_int_init(&all->tex_c, (int)(all->floor.x * all->sky.w) % all->sky.w,
-							(int)(all->floor.y * all->sky.h) % all->sky.h);
+	v_int_init(&all->tex_c, (int)(all->floor.x * all->cl.w) % all->cl.w,
+							(int)(all->floor.y * all->cl.h) % all->cl.h);
 	return (0);
 }
 

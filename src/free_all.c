@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 15:01:24 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 09:03:09 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/04 04:51:12 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,12 @@ void	free_map_ext(t_map *map)
 		free(map->sk_path);
 	if (map->ft_path)
 		free(map->ft_path);
+	if (map->ct_path)
+		free(map->ct_path);
 	if (map->wsound)
 		free(map->wsound);
+	if (map->nl_path)
+		free(map->nl_path);
 	if (map->csound)
 		free(map->csound);
 }
@@ -72,6 +76,8 @@ void	free_all_bonus(t_all *all)
 		mlx_destroy_image(all->mlx, all->sky.img.img);
 	if (all->map->ft_path && all->mlx && all->flr.img.img)
 		mlx_destroy_image(all->mlx, all->flr.img.img);
+	if (all->map->ct_path && all->mlx && all->cl.img.img)
+		mlx_destroy_image(all->mlx, all->cl.img.img);
 	if (all->map->as_path && all->mlx && all->s2.img.img)
 		mlx_destroy_image(all->mlx, all->s2.img.img);
 	if (all->mlx && all->map->wp_path)

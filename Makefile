@@ -83,7 +83,8 @@ SOURCES =	main.c \
 			engine_check_pos.c\
 			engine_defined_functions.c\
 			engine_defined_functions_ext.c\
-			engine_init.c
+			engine_init.c\
+			engine_next.c
 
 ifeq ($(BSRC), "TRUE")
 	B_SOURCES = 

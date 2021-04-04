@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/02 08:59:58 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/03 19:34:06 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/04 04:52:09 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,7 @@ void	*init_csound_fork(void *prm);
 void	free_all(t_all *all);
 void	free_map(t_map *map);
 void	change_pos(t_all *all, char t);
-
+void	kill_music(t_all *all);
 /*
 **Sprites
 */
@@ -259,5 +259,6 @@ void	draw_number(t_all *all, int x, int y, int num);
 void	change_pos(t_all *all, char t);
 void	move_bonus_check(t_all *all, t_v_dbl n);
 void	check_map_position(t_all *all, int x, int y);
+int     next_level(t_all *all);
 
 #endif

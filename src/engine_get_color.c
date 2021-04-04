@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/02 02:24:22 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 09:03:09 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/03 20:01:37 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,16 @@ void	get_fc_color(t_all *all, int *f, int *c)
 {
 	if (all->floor_exist || all->ceil_exist)
 		calculate_floor_color(all);
-	if (all->ceil_exist)
-		*c = color_from_txt(&all->sky, all->tex_c.x, all->tex_c.y);
-	else if (all->sky_exist)
-		*c = calculate_skybox_color(all);
-	else
-		*c = color_from_prm(&all->map->c);
 	if (all->floor_exist)
 		*f = color_from_txt(&all->flr, all->tex_f.x, all->tex_f.y);
 	else
 		*f = color_from_prm(&all->map->f);
+	if (all->ceil_exist)
+		*c = color_from_txt(&all->cl, all->tex_c.x, all->tex_c.y);
+	else if (all->sky_exist)
+		*c = calculate_skybox_color(all);
+	else
+		*c = color_from_prm(&all->map->c);
 }
 
 void	get_shadow_color(t_all *all, int *f, int *c)

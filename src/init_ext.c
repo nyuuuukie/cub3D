@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 18:15:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/03 19:27:53 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/04 03:57:24 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	init_params(t_all *all)
 	all->ceil_exist = 0;
 	all->wp_i = 0;
 	all->tpf = 0;
-	all->coin_counter = 0;
 	all->sound_started = 0;
 	all->wsound_started = 0;
 	all->csound_started = 0;
@@ -37,6 +36,7 @@ void	init_params(t_all *all)
 	v_int_init(&all->scale, 1, 1);
 	all->vmove = 0.0;
 	all->remove = 0;
+	all->kill_counter = 0;
 }
 
 void	init_all(t_all *all)

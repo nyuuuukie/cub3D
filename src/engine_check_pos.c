@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 15:54:06 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/03 16:39:17 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/04 04:51:59 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	change_pos(t_all *all, char t)
 			{
 				all->pos.x = i + 0.5 + 1 * roundf(all->dir.y);
 				all->pos.y = j + 0.5 + 1 * roundf(all->dir.x);
+				all->sky_exist = !all->sky_exist;
+				all->ceil_exist = !all->ceil_exist;
 				return ;
 			}
 			j++;
@@ -46,6 +48,10 @@ void	check_map_position(t_all *all, int x, int y)
 		init_music(all, init_csound_fork);
 		all->map->keys--;
 		remove_sprite(all, x, y);
+	}
+	else if (all->map->arr[x][y] == 'O')
+	{
+		next_level(all);
 	}
 	else if (all->map->keys == 0)
 	{

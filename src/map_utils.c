@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 11:47:11 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 09:03:09 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/04 02:56:11 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ void	set_default_bonus(t_map *map)
 	map->sk_path = 0;
 	map->wp_path = 0;
 	map->ft_path = 0;
+	map->ct_path = 0;
 	map->as_path = 0;
 	map->tp_path = 0;
 	map->dg_path = 0;
+	map->nl_path = 0;
 	map->music = 0;
 	map->sound = 0;
 	map->wsound = 0;

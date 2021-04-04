@@ -52,19 +52,15 @@
 [-] Fix music and bash input close. Try to create a new thread each time music started.
 [o] First sprite is not shown
 
-[?] allocate memory for all and map on heap
-
-[x] parse 0 as skybox and c as ceil
 [x] teleport in the room with ceil
 [x] add kill counter and draw it
 [x] add bullets sprite and ability to pick them up
 [?] add lifebar
-[x] finish norm
 
-[x] add fixed ceil texture
-[x] add second portal
 [x] fix portal sprite
-[x] counter on keys of closed 
+[x] counter on keys of closed
+[x] fix remove sprite function
+
 norme:
     engine_draw_bonus.c
     engine_draw_sprites.c

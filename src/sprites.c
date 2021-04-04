@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 04:44:36 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 09:03:09 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/04 03:56:14 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,10 @@ void	check_if_sprite_hit(t_all *all, int x, int y)
 	if (all->map->bonus && all->map->arr[x][y] == '2')
 	{
 		if (all->remove == 1)
+		{
+			all->remove = 0;
 			remove_sprite(all, x, y);
+		}
 		all->remove = 0;
 	}
 }
@@ -87,6 +90,7 @@ void	check_shooted_sprite(t_all *all)
 		{
 			remove_sprite(all, all->grid.x, all->grid.y);
 			all->remove = 0;
+			all->kill_counter++;
 		}
 	}
 }

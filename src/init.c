@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 21:48:07 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/03 19:30:39 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/03 21:30:50 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	init_textures(t_all *all)
 	if (all->map->bonus)
 	{
 		init_texture(all, all->map->as_path, &all->s2);
+		init_texture(all, all->map->ct_path, &all->cl);
 		init_texture(all, all->map->ft_path, &all->flr);
 		init_texture(all, all->map->sk_path, &all->sky);
 		init_mult_textures(all, all->wpn, all->map->wp_path, ANIM_FRAMES);

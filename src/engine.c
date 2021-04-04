@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:35:59 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/02 09:03:09 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/04 04:30:28 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,24 @@ int		start_engine(t_map *map, int mode)
 
 #ifdef BONUS
 
-int		stop_engine(void *ptr)
+void	kill_music(t_all *all)
 {
-	t_all *all;
-
-	all = (t_all *)ptr;
 	if (all->map->bonus && all->music != 0)
 		kill(all->music, SIGKILL);
 	if (all->map->bonus && all->sound != 0)
 		kill(all->sound, SIGKILL);
 	if (all->map->bonus && all->wsound != 0)
 		kill(all->wsound, SIGKILL);
+	if (all->map->bonus && all->csound != 0)
+		kill(all->csound, SIGKILL);
+}
+
+int		stop_engine(void *ptr)
+{
+	t_all *all;
+
+	all = (t_all *)ptr;
+	kill_music(all);
 	free_all(all);
 	ft_putstr_fd("cub3D stopped", 1);
 	exit(0);
@@ -53,12 +60,18 @@ int		stop_engine(void *ptr)
 
 #else
 
+void	kill_music(t_all *all)
+{
+	(void)all;
+}
+
 int		stop_engine(void *ptr)
 {
 	t_all *all;
 
 	all = (t_all *)ptr;
 	free_all(all);
+	kill(all->music, SIGKILL);
 	ft_putstr_fd("cub3D stopped", 1);
 	exit(0);
 }

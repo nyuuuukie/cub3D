@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 20:35:08 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/03 19:20:36 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/04 03:59:36 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,20 +91,24 @@ void	draw_number(t_all *all, int x, int y, int num)
 
 void	draw_hud(t_all *all)
 {
-	int x;
 	int xr;
 	int count;
 
-	x = all->map->w / 2 - 10;
+	all->num_scale = all->map->h / 20 + 1;
 	xr = all->map->w - 10;
 	count = all->map->keys;
-	all->num_scale = all->map->h / 20 + 1;
 	while (count != 0)
 	{
-		x -= all->num_scale;
 		xr -= all->num_scale;
 		draw_number(all, xr, 10, count % 10);
-		draw_number(all, x, 10, count % 10);
+		count /= 10;
+	}
+	count = all->kill_counter;
+	xr = all->num_scale * 4 + 10;
+	while (count != 0)
+	{
+		xr -= all->num_scale;
+		draw_number(all, xr, 10, count % 10);
 		count /= 10;
 	}
 }

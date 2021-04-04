@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/03 13:23:20 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/04 03:57:27 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,12 @@ typedef struct		s_map
 	char		*ea_path;
 	char		*wp_path;
 	char		*ft_path;
+	char		*ct_path;
 	char		*sk_path;
 	char		*as_path;
 	char		*tp_path;
 	char		*dg_path;
+	char		*nl_path;
 	char		*music;
 	char		*sound;
 	char		*wsound;
@@ -127,6 +129,7 @@ typedef struct		s_all
 	t_texture	ea;
 	t_texture	sky;
 	t_texture	flr;
+	t_texture	cl;
 	t_texture	digits[10];
 	t_texture	tp[ANIM_FRAMES];
 	t_texture	wpn[ANIM_FRAMES];
@@ -205,7 +208,7 @@ typedef struct		s_all
 	int			sp_scr_x;
 	int			vm_scr;
 	int			remove;
-	int			coin_counter;
+	int			kill_counter;
 
 	t_v_dbl		f_w;
 	t_v_dbl		k;
