@@ -6,7 +6,7 @@ SO textures/oblivion/obl9.xpm
 WE textures/oblivion/obl10.xpm
 EA textures/oblivion/obl12.xpm
 
-AS sprites/bag2.xpm
+AS sprites/bag.xpm
 SK textures/oblivion/back_shining.xpm
 CT textures/oblivion/grass.xpm
 FT textures/oblivion/gravel.xpm
