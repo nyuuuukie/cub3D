@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/02 08:59:58 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/04 05:12:42 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/06 01:40:37 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <stdio.h>
-# include <signal.h>
 # include <string.h>
 # include <math.h>
 # define _USE_MATH_DEFINES
 
+# include <signal.h>
+# include <sys/wait.h>
 # include <pthread.h>
 
 # include "mlx.h"
