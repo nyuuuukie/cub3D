@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 19:30:01 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/03 19:31:08 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/04 06:30:47 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,13 @@ void	init_images(t_all *all)
 	all->s1.img.img = NULL;
 	all->s2.img.img = NULL;
 	all->flr.img.img = NULL;
+	all->cl.img.img = NULL;
 	all->sky.img.img = NULL;
 	while (i < ANIM_FRAMES)
 		all->wpn[i++].img.img = NULL;
+	i = 0;
+	while (i < ANIM_FRAMES)
+		all->tp[i++].img.img = NULL;
 }
 
 void	init_screen_size(t_all *all)

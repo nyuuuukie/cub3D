@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 18:15:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/04 03:57:24 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/04 07:03:07 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	init_params(t_all *all)
 	all->vmove = 0.0;
 	all->remove = 0;
 	all->kill_counter = 0;
+	all->exit = 1;
 }
 
 void	init_all(t_all *all)
@@ -44,9 +45,11 @@ void	init_all(t_all *all)
 	init_images(all);
 	init_params(all);
 	init_bonus_flags(all);
-	init_window(all);
+	if (all->exit)
+		init_window(all);
 	init_mouse(all);
-	init_img(all, &all->img);
+	if (all->exit)
+		init_img(all, &all->img);
 	init_keys(all);
 	init_coord(all);
 	init_textures(all);

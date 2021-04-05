@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 15:01:24 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/04 04:51:12 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/04 07:04:49 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,12 @@ void	free_all(t_all *all)
 		mlx_destroy_image(all->mlx, all->s1.img.img);
 	if (all->map->bonus)
 		free_all_bonus(all);
-	if (all->mlx && all->img.img)
+	if (all->mlx && all->img.img && all->exit)
 		mlx_destroy_image(all->mlx, all->img.img);
-	if (all->screen == 0)
+	if (all->screen == 0 && all->exit)
 		mlx_destroy_window(all->mlx, all->win);
 	free_map(all->map);
 	free(all->zbuf);
 	free(all->mlx);
+	init_images(all);
 }

@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 20:00:48 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/03 16:10:43 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/04 07:00:49 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int		render(t_all *all)
 void	start_main_loop(t_all *all)
 {
 	init_all(all);
+	all->exit = 1;
 	mlx_hook(all->win, KEY_PRESS_EVENT, KEY_PRESS_MASK, key_press, all);
 	mlx_hook(all->win, KEY_RELEASE_EVENT, KEY_RELEASE_MASK, key_release, all);
 	mlx_hook(all->win, 17, 1L << 17, stop_engine, all);

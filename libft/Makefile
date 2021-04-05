@@ -1,4 +1,4 @@
-.PHONY: all clean fclean re bonus bonus_files_add create_dir
+.PHONY: all clean fclean re bonus add_files
 
 NAME = libft.a
 CC = gcc
@@ -26,6 +26,7 @@ BONUS_SRC = ft_lstnew.c \
 			ft_lstmap.c \
 			ft_lstmax_cont_len.c
 
+
 OBJECTS = $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 OBJECTS_BONUS = $(addprefix $(OBJ_DIR)/, $(BONUS_SRC:.c=.o))
 
@@ -42,7 +43,7 @@ $(OBJ_DIR)/%.o: %.c
 	@$(CC) $(CFLAGS) -c $< $(INCLUDES) -o $@
 
 clean: 
-	@rm -rf $(OBJECTS) $(OBJECTS_BONUS)
+	@rm -rf $(OBJ_DIR)/*.o
 
 fclean: clean
 	@rm -rf $(NAME)
@@ -54,4 +55,5 @@ bonus: all bonus_files_add
 
 bonus_files_add: $(OBJECTS_BONUS)
 	@ar rcs $(NAME) $?
+
 

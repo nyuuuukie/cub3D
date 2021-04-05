@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 20:35:59 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/04 04:30:28 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/04 07:05:59 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int		stop_engine(void *ptr)
 	t_all *all;
 
 	all = (t_all *)ptr;
+	all->exit = 1;
 	kill_music(all);
 	free_all(all);
 	ft_putstr_fd("cub3D stopped", 1);
@@ -70,6 +71,7 @@ int		stop_engine(void *ptr)
 	t_all *all;
 
 	all = (t_all *)ptr;
+	all->exit = 1;
 	free_all(all);
 	kill(all->music, SIGKILL);
 	ft_putstr_fd("cub3D stopped", 1);

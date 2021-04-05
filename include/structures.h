@@ -6,7 +6,7 @@
 /*   By: mhufflep <mhufflep@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 06:02:52 by mhufflep          #+#    #+#             */
-/*   Updated: 2021/04/04 03:57:27 by mhufflep         ###   ########.fr       */
+/*   Updated: 2021/04/04 06:45:32 by mhufflep         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,5 +213,6 @@ typedef struct		s_all
 	t_v_dbl		f_w;
 	t_v_dbl		k;
 	int			num_scale;
+	int			exit;
 }					t_all;
 #endif

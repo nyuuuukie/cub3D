@@ -56,6 +56,7 @@ SOURCES =	main.c \
 			save.c \
 			free_all.c \
 			sprites.c \
+			music_thread.c \
 			parse_map.c \
 			parse_num.c \
 			parse_prm.c \
@@ -79,17 +80,23 @@ SOURCES =	main.c \
 			engine_textures.c\
 			engine_init_bonus_flags.c\
 			engine_get_color.c\
-			music_thread.c \
 			engine_check_pos.c\
 			engine_defined_functions.c\
 			engine_defined_functions_ext.c\
 			engine_init.c\
 			engine_next.c
 
+HEADER_FILES = cub3d.h \
+				error.h \
+				events.h \
+				keycodes.h \
+				settings.h \
+				structures.h
+
 ifeq ($(BSRC), "TRUE")
-	B_SOURCES = 
+	B_LIB = -lpthread
 else
-	B_SOURCES = 
+	B_LIB = 
 endif
 
 
@@ -101,13 +108,14 @@ GNL_SRC = 	get_next_line.c
 GNL_OBJ = $(addprefix $(OBJ_DIR)/, $(GNL_SRC:.c=.o))
 OBJECTS = $(addprefix $(OBJ_DIR)/, $(SOURCES:.c=.o))
 
+
 ######################## HEADERS #############################
 
-HEADERS = $(INC_DIR)/*.h
+HEADERS = $(addprefix $(INC_DIR)/, $(HEADER_FILES))
 
 ######################## INSTRUCTIONS ########################
 
-all: libft mlx create_dir $(ACT_DIR) $(NAME)
+all: libft mlx create_dir $(GNL_OBJ) $(NAME)
 
 r: all
 	./${NAME} ${MAP}
@@ -134,32 +142,36 @@ $(GNL_OBJ): $(GNL_DIR)/$(GNL_SRC)
 	@$(CC) $(CFLAGS) -c $< $(INCLUDE_FLAGS) -o $@
 
 libft:
-	@$(MAKE) bonus -C $(LFT_DIR) --no-print-directory
+	@$(MAKE) -C $(LFT_DIR) bonus
 
 mlx:
-	@$(MAKE) -C $(MLX_DIR) -s --no-print-directory 
+	@$(MAKE) -C $(MLX_DIR)
 	@cp $(MLX_DIR)/$(MLX_NAME) ./
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(LFT_DIR)/$(LIBFT_NAME) $(MLX_DIR)/$(MLX_NAME) $(GNL_OBJ)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(MLX_DIR)/$(MLX_NAME) $(GNL_OBJ)
 	@$(CC) $(DEBUG) $(BONUS) $(OS_FLAG) $(CFLAGS) -c $< $(INCLUDE_FLAGS) -o $@
 
 $(NAME): $(OBJECTS) $(GNL_OBJ) $(HEADERS) 
-	@$(CC) $(DEBUG) $(BONUS) $(CFLAGS) $(GNL_OBJ) $(OBJECTS) $(LIBFT_FLAGS) $(MLX_FLAGS) -o $@ -lpthread
+	@$(CC) $(DEBUG) $(BONUS) $(CFLAGS) $(GNL_OBJ) $(OBJECTS) $(LIBFT_FLAGS) $(MLX_FLAGS) -o $@ $(B_LIB)
 	@echo "$(NAME) created"
 
 clean:
 	@$(MAKE) clean -C $(LFT_DIR) --no-print-directory 
 	@$(MAKE) clean -C $(MLX_DIR) --no-print-directory 
-	@rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR)/*.o
 
 fclean: clean
 	@$(MAKE) fclean -C $(LFT_DIR) --no-print-directory
 	@rm -rf *.bmp
 	@rm -rf ${MLX_NAME}
+	@rm -rf ${MLX_NAME}
 	@rm -rf ${NAME}
 	@echo "${NAME} has been deleted"
 
-bonus:
-	@$(MAKE) BONUS="-D BONUS" BSRC="TRUE" all --no-print-directory
+clean_bonus:
+	@rm -rf $(OBJ_DIR)/*.o
+
+bonus: clean_bonus 
+	@$(MAKE) BONUS="-D BONUS" BSRC="TRUE" B_LIB="-lpthread" all --no-print-directory
 
 re: fclean all
