@@ -214,5 +214,6 @@ typedef struct		s_all
 	t_v_dbl		k;
 	int			num_scale;
 	int			exit;
+	int			debug;
 }					t_all;
 #endif

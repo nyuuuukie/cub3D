@@ -92,5 +92,7 @@ int		key_press(int keycode, t_all *all)
 		all->keys.k1 = !all->keys.k1;
 	else if (keycode == KEY_F)
 		all->keys.f = 1;
+	else if (keycode == 21)
+		all->debug = 1;
 	return (0);
 }

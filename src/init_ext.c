@@ -38,6 +38,7 @@ void	init_params(t_all *all)
 	all->remove = 0;
 	all->kill_counter = 0;
 	all->exit = 1;
+	all->debug = 0;
 }
 
 void	init_all(t_all *all)
