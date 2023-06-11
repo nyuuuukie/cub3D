@@ -47,7 +47,7 @@ void	get_shadow_color(t_all *all, int *f, int *c)
 
 void	get_lightning_color(t_all *all, int *f, int *c)
 {
-	if (all->map->bonus && all->keys.p && is_lightning(all))
+	if (all->map->bonus && all->keys.p && is_lightning(all) && !all->ceil_exist)
 	{
 		if (f != NULL)
 			*f = color_negative(*f);
