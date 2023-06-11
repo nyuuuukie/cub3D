@@ -22,8 +22,10 @@ void	next_level(t_all *all)
 	w = all->map->w;
 	h = all->map->h;
 	path = ft_strdup(all->map->nl_path);
-	free_all(all);
+	mlx_loop_hook(all->mlx, 0, all);
+	all->mlx = 0;
 	kill_music(all);
+	free_all(all);
 	parse_scene_file(all->map, path);
 	all->map->w = w;
 	all->map->h = h;
