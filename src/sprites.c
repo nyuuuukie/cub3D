@@ -66,27 +66,14 @@ void	calculate_dist_to_sprites(t_all *all)
 	}
 }
 
-void	check_if_sprite_hit(t_all *all, int x, int y)
-{
-	if (all->map->bonus && all->map->arr[x][y] == '2')
-	{
-		if (all->remove == 1)
-		{
-			all->remove = 0;
-			remove_sprite(all, x, y);
-		}
-		all->remove = 0;
-	}
-}
-
 void	check_shooted_sprite(t_all *all)
 {
 	int w;
 
-	if (all->map->arr[all->grid.x][all->grid.y] == '2')
+	if (all->remove == 1 && all->map->arr[all->grid.x][all->grid.y] == '2')
 	{
 		w = all->map->w / 2;
-		if (all->remove == 1 && all->it.x >= w - 5 && all->it.x <= w + 5)
+		if (all->it.x >= w - 5 && all->it.x <= w + 5)
 		{
 			remove_sprite(all, all->grid.x, all->grid.y);
 			all->remove = 0;
