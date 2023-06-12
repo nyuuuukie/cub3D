@@ -15,9 +15,13 @@
 void	draw_all(t_all *all)
 {
 	draw_walls(all);
-	if (all->map->sprites > 0)
+	if (all->map->sprites > 0) {
 		draw_sprites(all);
+	}
 	draw_bonus_part(all);
+	mlx_put_image_to_window(all->mlx, all->win, all->img.img, 0, 0);
+
+	draw_extra_data(all);
 }
 
 void	draw_background(t_all *all)
