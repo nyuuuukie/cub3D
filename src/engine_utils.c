@@ -37,7 +37,5 @@ int		random_number(int min, int max)
 
 int		is_lightning(t_all *all)
 {
-	return ((all->frame_count % 100 < 5) ||
-			(all->frame_count % 100 > 20 &&
-			all->frame_count % 100 < 25));
+	return (all->last_frame % 50 == 0);
 }
