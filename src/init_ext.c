@@ -28,10 +28,6 @@ void	init_params(t_all *all)
 	all->ceil_exist = 0;
 	all->wp_i = 0;
 	all->tpf = 0;
-	all->sound_started = 0;
-	all->wsound_started = 0;
-	all->csound_started = 0;
-	all->music_started = 0;
 	v_int_init(&all->it, 0, 0);
 	v_int_init(&all->scale, 1, 1);
 	all->vmove = 0.0;
@@ -39,6 +35,9 @@ void	init_params(t_all *all)
 	all->kill_counter = 0;
 	all->exit = 1;
 	all->debug = 0;
+	all->weapon_action = 0;
+	all->last_frame = time(0);
+	all->fps = 0;
 }
 
 void	init_all(t_all *all)
@@ -56,6 +55,16 @@ void	init_all(t_all *all)
 	init_textures(all);
 	init_shadow_params(all);
 	init_sprites(all);
+	init_sound(all);
+}
+
+void init_sound(t_all *all) {
+	soundlib_init(all);
+
+	all->music = load_sound(all, all->map->music);
+	all->sound = load_sound(all, all->map->sound);
+	all->wsound = load_sound(all, all->map->wsound);
+	all->csound = load_sound(all, all->map->csound);
 }
 
 void	init_vectors(t_all *all, int i, int j)

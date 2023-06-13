@@ -41,11 +41,11 @@ void	check_map_position(t_all *all, int x, int y)
 {
 	if (all->map->arr[x][y] == '2')
 	{
-		init_music(all, init_sound_fork);
+		play_sound(all->sound, false);
 	}
 	else if (all->map->arr[x][y] == '3')
 	{
-		init_music(all, init_csound_fork);
+		play_sound(all->csound, false);
 		all->map->keys--;
 		remove_sprite(all, x, y);
 	}

@@ -110,4 +110,6 @@ void	free_all(t_all *all)
 	free(all->zbuf);
 	free(all->mlx);
 	init_images(all);
+
+	soundlib_deinit();
 }

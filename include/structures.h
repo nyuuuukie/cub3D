@@ -13,6 +13,8 @@
 #ifndef STRUCTURES_H
 # define STRUCTURES_H
 
+# define soundid uint32_t
+
 typedef struct		s_clr
 {
 	int	set;
@@ -186,15 +188,14 @@ typedef struct		s_all
 	int			screen_w;
 	int			screen_h;
 
-	pthread_t	pmusic;
-	pid_t		music;
-	pid_t		sound;
-	pid_t		csound;
-	pid_t		wsound;
-	int			music_started;
-	int			sound_started;
-	int			wsound_started;
-	int			csound_started;
+	soundid		music;
+	soundid		sound;
+	soundid		csound;
+	soundid		wsound;
+
+	char		weapon_action;
+	time_t		last_frame;
+	int			fps;
 
 	double		det;
 	double		*zbuf;

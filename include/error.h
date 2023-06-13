@@ -13,6 +13,8 @@
 #ifndef ERROR_H
 # define ERROR_H
 
+# define EMPTY_EXTRA_MSG NULL
+
 typedef enum	e_error {
 	ERR_ARG_NUM = 0,
 	ERR_WRONG_EXT = 1,
@@ -33,7 +35,9 @@ typedef enum	e_error {
 	ERR_MISSING_SYMBOL = 16,
 	ERR_MLX_TXT_FAIL = 17,
 	ERR_MLX_WIN_FAIL = 18,
-	ERR_MLX_IMG_FAIL = 19
+	ERR_MLX_IMG_FAIL = 19,
+	ERR_SOUNDLIB_INIT = 20,
+	ERR_SOUNDLIB_LOAD = 21
 }				t_error;
 
 #endif

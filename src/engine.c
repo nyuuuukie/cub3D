@@ -33,39 +33,6 @@ int		start_engine(t_map *map, int mode)
 	return (0);
 }
 
-#ifdef BONUS
-
-void	kill_music(t_all *all)
-{
-	if (all->map->bonus && all->music != 0)
-		kill(all->music, SIGKILL);
-	if (all->map->bonus && all->sound != 0)
-		kill(all->sound, SIGKILL);
-	if (all->map->bonus && all->wsound != 0)
-		kill(all->wsound, SIGKILL);
-	if (all->map->bonus && all->csound != 0)
-		kill(all->csound, SIGKILL);
-}
-
-int		stop_engine(void *ptr)
-{
-	t_all *all;
-
-	all = (t_all *)ptr;
-	all->exit = 1;
-	kill_music(all);
-	free_all(all);
-	ft_putstr_fd("cub3D stopped", 1);
-	exit(0);
-}
-
-#else
-
-void	kill_music(t_all *all)
-{
-	(void)all;
-}
-
 int		stop_engine(void *ptr)
 {
 	t_all *all;
@@ -73,9 +40,7 @@ int		stop_engine(void *ptr)
 	all = (t_all *)ptr;
 	all->exit = 1;
 	free_all(all);
-	kill(all->music, SIGKILL);
 	ft_putstr_fd("cub3D stopped", 1);
 	exit(0);
 }
 
-#endif

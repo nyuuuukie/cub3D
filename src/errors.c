@@ -14,7 +14,7 @@
 
 char	*get_error_msg(t_error code)
 {
-	static char *errors[20];
+	static char *errors[22];
 
 	errors[ERR_ARG_NUM] = "Invalid number of arguments";
 	errors[ERR_INVALID_ARG] = "Invalid argument";
@@ -36,6 +36,8 @@ char	*get_error_msg(t_error code)
 	errors[ERR_MLX_TXT_FAIL] = "Cannot load texture";
 	errors[ERR_MLX_WIN_FAIL] = "Cannot create window";
 	errors[ERR_MLX_IMG_FAIL] = "Cannot create screen image";
+	errors[ERR_SOUNDLIB_INIT] = "Cannot init sound library";
+	errors[ERR_SOUNDLIB_LOAD] = "Cannot load sound file";
 	return (errors[code]);
 }
 

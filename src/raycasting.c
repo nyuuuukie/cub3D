@@ -17,8 +17,11 @@
 void	fire(t_all *all)
 {
 	all->keys.f = 0;
-	if (all->map->bonus && all->keys.k1)
-		init_music(all, init_wsound_fork);
+	if (all->map->bonus && all->keys.k1 && !all->weapon_action) {
+		play_sound(all->wsound, false);
+		all->weapon_action = 1;
+		all->remove = 1;
+	}
 }
 
 #else
@@ -33,15 +36,13 @@ void	fire(t_all *all)
 
 int		render(t_all *all)
 {
-	mlx_do_sync(all->mlx);
+	// mlx_do_sync(all->mlx);
 	all->frame_count++;
-	if (all->map->bonus && !all->music_started)
-		init_music(all, init_music_fork);
+
 	key_action(all);
-	if (all->map->bonus)
-		mouse_action(all);
+	mouse_action(all);
 	draw_all(all);
-	mlx_put_image_to_window(all->mlx, all->win, all->img.img, 0, 0);
+
 	return (0);
 }
 
@@ -49,6 +50,11 @@ void	start_main_loop(t_all *all)
 {
 	init_all(all);
 	all->exit = 1;
+
+	if (all->map->bonus) {
+		play_sound(all->music, true);
+	}
+
 	mlx_hook(all->win, KEY_PRESS_EVENT, KEY_PRESS_MASK, key_press, all);
 	mlx_hook(all->win, KEY_RELEASE_EVENT, KEY_RELEASE_MASK, key_release, all);
 	mlx_hook(all->win, 17, 1L << 17, stop_engine, all);

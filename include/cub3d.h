@@ -32,6 +32,9 @@
 # include "keycodes.h"
 # include "settings.h"
 # include "structures.h"
+# include "bool.h"
+# include "music.h"
+# include "bass.h"
 
 /*
 **Engine.c
@@ -136,6 +139,7 @@ void	init_texture(t_all *all, char *path, t_texture *t);
 void	init_sprites(t_all *all);
 void	init_bonus_flags(t_all *all);
 void	init_shadow_params(t_all *all);
+void    init_sound(t_all *all);
 
 /*
 **Vector
@@ -193,12 +197,6 @@ char	*bitmap_check_exist(void);
 /*
 **Music
 */
-int		music_start(t_all *all, pid_t *x, char *filename, char *volume);
-void	init_music(t_all *all, void *f(void *));
-void	*init_music_fork(void *prm);
-void	*init_wsound_fork(void *prm);
-void	*init_sound_fork(void *prm);
-void	*init_csound_fork(void *prm);
 
 /*
 **Free
@@ -206,7 +204,7 @@ void	*init_csound_fork(void *prm);
 void	free_all(t_all *all);
 void	free_map(t_map *map);
 void	change_pos(t_all *all, char t);
-void	kill_music(t_all *all);
+// void	kill_music(t_all *all);
 /*
 **Sprites
 */
@@ -254,6 +252,7 @@ void	draw_wall_line(t_all *all);
 void	draw_background(t_all *all);
 void	draw_floor_ceil(t_all *all);
 void	draw_bonus_part(t_all *all);
+void	draw_extra_data(t_all *all);
 void	draw_number(t_all *all, int x, int y, int num);
 
 void	change_pos(t_all *all, char t);
