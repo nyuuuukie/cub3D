@@ -1,4 +1,4 @@
-.PHONY: all clean fclean re bonus libft mlx create_dir
+.PHONY: all clean fclean re bonus libft libbass mlx create_dir
 .SILENT: mlx
 
 NAME = cub3D
@@ -6,6 +6,7 @@ LIBFT_NAME = libft.a
 
 OFLAGS	  	 = -O
 OS			 = $(shell uname)
+ARCH		 = $(shell uname -m)
 
 ############################# MLX ############################
 
@@ -13,11 +14,11 @@ ifeq ($(OS), Linux)
 	OS_FLAG		= -D LINUX
 	MLX_DIR		= minilibx/mlx_opengl
 	MLX_NAME	= libmlx.a
-	MLX_FLAGS	= -L. -lmlx -lXext -lX11 -lm
+	MLX_FLAGS	= -L ${MLX_DIR} -lmlx -lXext -lX11 -lm
 else
 	MLX_DIR		= minilibx/mlx_mac
 	MLX_NAME	= libmlx.a
-	MLX_FLAGS	= -L. -lmlx -framework OpenGL -framework AppKit
+	MLX_FLAGS	= -L ${MLX_DIR} -lmlx -framework OpenGL -framework AppKit
 endif
 
 ######################### CC && FLAGS ########################
@@ -26,7 +27,9 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
 LIBFT_FLAGS		= -L $(LFT_DIR) -lft
-INCLUDE_FLAGS 	= -I $(INC_DIR) -I $(LFT_DIR) -I $(GNL_DIR) -I $(MLX_DIR)
+LIBBASS_FLAGS   = -L ./libbass -lbass
+LIBBASS_EXTRA   = install_name_tool -change @loader_path/libbass.dylib @loader_path/libbass/libbass.dylib $(NAME) 
+INCLUDE_FLAGS 	= -I $(INC_DIR) -I $(LFT_DIR) -I $(GNL_DIR) -I $(MLX_DIR) -I $(LIBBASS_DIR)
 
 ######################### DIRECTORIES ########################
 
@@ -36,6 +39,7 @@ OBJ_DIR = obj
 LFT_DIR = libft
 INC_DIR = include
 GNL_DIR = get_next_line
+LIBBASS_DIR = libbass
 
 ######################### SOURCES ############################
 
@@ -56,7 +60,6 @@ SOURCES =	main.c \
 			save.c \
 			free_all.c \
 			sprites.c \
-			music_thread.c \
 			parse_map.c \
 			parse_num.c \
 			parse_prm.c \
@@ -91,14 +94,15 @@ HEADER_FILES = cub3d.h \
 				events.h \
 				keycodes.h \
 				settings.h \
-				structures.h
+				structures.h \
+				bool.h \
+				music.h
 
 ifeq ($(BSRC), "TRUE")
-	B_LIB = -lpthread
+	B_LIB = $(LIBBASS_FLAGS) $(LIBBASS_EXTRA)
 else
 	B_LIB = 
 endif
-
 
 
 GNL_SRC = 	get_next_line.c
@@ -115,25 +119,7 @@ HEADERS = $(addprefix $(INC_DIR)/, $(HEADER_FILES))
 
 ######################## INSTRUCTIONS ########################
 
-all: libft mlx create_dir $(GNL_OBJ) $(NAME)
-
-r: all
-	./${NAME} ${MAP}
-
-s: all
-	./${NAME} ${MAP} --save
-
-br: bonus
-	./${NAME} ${MAP}
-
-bs: bonus
-	./${NAME} ${MAP} --save
-
-bdebug:
-	$(MAKE) DEBUG="-g" bonus MAP=${MAP}
-
-debug:
-	$(MAKE) DEBUG="-g" MAP=${MAP}
+all: libbass libft mlx create_dir $(GNL_OBJ) $(NAME)
 
 create_dir:
 	@mkdir -p $(OBJ_DIR)
@@ -146,13 +132,17 @@ libft:
 
 mlx:
 	@$(MAKE) -C $(MLX_DIR)
-	@cp $(MLX_DIR)/$(MLX_NAME) ./
+# @cp $(MLX_DIR)/$(MLX_NAME) ./
+
+libbass:
+	@$(MAKE) -C $(LIBBASS_DIR) ${ARCH}
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(MLX_DIR)/$(MLX_NAME) $(GNL_OBJ)
 	@$(CC) $(DEBUG) $(BONUS) $(OS_FLAG) $(CFLAGS) -c $< $(INCLUDE_FLAGS) -o $@
 
 $(NAME): $(OBJECTS) $(GNL_OBJ) $(HEADERS) 
-	@$(CC) $(DEBUG) $(BONUS) $(CFLAGS) $(GNL_OBJ) $(OBJECTS) $(LIBFT_FLAGS) $(MLX_FLAGS) -o $@ $(B_LIB)
+	$(CC) $(DEBUG) $(BONUS) $(CFLAGS) $(GNL_OBJ) $(OBJECTS) $(LIBFT_FLAGS) $(MLX_FLAGS) -o $@ $(LIBBASS_FLAGS)
+	${LIBBASS_EXTRA}
 	@echo "$(NAME) created"
 
 clean:
@@ -172,6 +162,6 @@ clean_bonus:
 	@rm -rf $(OBJ_DIR)/*.o
 
 bonus: clean_bonus 
-	@$(MAKE) BONUS="-D BONUS" BSRC="TRUE" B_LIB="-lpthread" all --no-print-directory
+	@$(MAKE) BONUS="-D BONUS" BSRC="TRUE" all --no-print-directory
 
 re: fclean all
