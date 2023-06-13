@@ -132,7 +132,6 @@ libft:
 
 mlx:
 	@$(MAKE) -C $(MLX_DIR)
-# @cp $(MLX_DIR)/$(MLX_NAME) ./
 
 libbass:
 	@$(MAKE) -C $(LIBBASS_DIR) ${ARCH}
