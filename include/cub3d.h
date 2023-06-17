@@ -228,6 +228,7 @@ void	check_shooted_sprite(t_all *all);
 int		mouse_action(t_all *all);
 void	move_mouse(t_all *all, int w, int h);
 void	get_mouse_pos(t_all *all);
+int		mouse_press(int button, int x, int y, void *param);
 
 /*
 **Utils.c

@@ -64,9 +64,7 @@ void	check_map_position(t_all *all, int x, int y)
 
 void	move_bonus_check(t_all *all, t_v_dbl new)
 {
-	if ((all->frame_count & 1) == 0) {
-		calculate_weapon_offset(all);
-	}
+	calculate_weapon_offset(all);
 	check_map_position(all, new.x, all->pos.y);
 	check_map_position(all, all->pos.x, new.y);
 }

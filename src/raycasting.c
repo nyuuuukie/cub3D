@@ -41,7 +41,10 @@ int		render(t_all *all)
 
 	key_action(all);
 	mouse_action(all);
+
+	// if ((all->frame_count & 1) == 0) {
 	draw_all(all);
+	// }
 
 	return (0);
 }
@@ -58,6 +61,7 @@ void	start_main_loop(t_all *all)
 	mlx_hook(all->win, KEY_PRESS_EVENT, KEY_PRESS_MASK, key_press, all);
 	mlx_hook(all->win, KEY_RELEASE_EVENT, KEY_RELEASE_MASK, key_release, all);
 	mlx_hook(all->win, 17, 1L << 17, stop_engine, all);
+	mlx_mouse_hook(all->win, mouse_press, all);
 	mlx_loop_hook(all->mlx, render, all);
 	mlx_loop(all->mlx);
 }

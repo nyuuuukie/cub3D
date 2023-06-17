@@ -27,8 +27,12 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
 LIBFT_FLAGS		= -L $(LFT_DIR) -lft
-LIBBASS_FLAGS   = -L ./libbass -lbass
-LIBBASS_EXTRA   = install_name_tool -change @loader_path/libbass.dylib @loader_path/libbass/libbass.dylib $(NAME) 
+
+
+LIBBASS_NAME    = libbass.dylib
+LIBBASS_FLAGS   = -L ./${LIBBASS_DIR}/${ARCH} -lbass
+LIBBASS_EXTRA   = install_name_tool -change @loader_path/${LIBBASS_NAME} @loader_path/${LIBBASS_DIR}/${LIBBASS_NAME} $(NAME) 
+
 INCLUDE_FLAGS 	= -I $(INC_DIR) -I $(LFT_DIR) -I $(GNL_DIR) -I $(MLX_DIR) -I $(LIBBASS_DIR)
 
 ######################### DIRECTORIES ########################
@@ -134,7 +138,7 @@ mlx:
 	@$(MAKE) -C $(MLX_DIR)
 
 libbass:
-	@$(MAKE) -C $(LIBBASS_DIR) ${ARCH}
+	@cp ./${LIBBASS_DIR}/${ARCH}/${LIBBASS_NAME} ./${LIBBASS_DIR}/${LIBBASS_NAME} 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(MLX_DIR)/$(MLX_NAME) $(GNL_OBJ)
 	@$(CC) $(DEBUG) $(BONUS) $(OS_FLAG) $(CFLAGS) -c $< $(INCLUDE_FLAGS) -o $@
@@ -159,6 +163,7 @@ fclean: clean
 
 clean_bonus:
 	@rm -rf $(OBJ_DIR)/*.o
+	@rm -f ${LIBBASS_DIR}/${LIBBASS_NAME}
 
 bonus: clean_bonus 
 	@$(MAKE) BONUS="-D BONUS" BSRC="TRUE" all --no-print-directory

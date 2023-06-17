@@ -7,7 +7,7 @@ WE textures/cyber/cement3.xpm
 EA textures/cyber/cement4.xpm
 
 AS sprites/chip.xpm
-SK textures/cyber/bg.xpm
+SK textures/cyber/bg2.xpm
 CT textures/cyber/floor.xpm
 FT textures/cyber/floor.xpm
 WP textures/cyber/pistol.anim

@@ -18,7 +18,7 @@ void	init_params(t_all *all)
 	all->r_angle = 0.066f;
 	all->frame_count = 0;
 	all->r = 0;
-	all->inc = 3;
+	all->inc = 1;
 	all->pmx = all->screen_w / 2;
 	all->zbuf = malloc(sizeof(double) * all->map->w);
 	if (!all->zbuf)
