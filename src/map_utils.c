@@ -22,7 +22,6 @@ void	set_default_bonus(t_map *map)
 	map->ct_path = 0;
 	map->as_path = 0;
 	map->tp_path = 0;
-	map->dg_path = 0;
 	map->nl_path = 0;
 	map->music = 0;
 	map->sound = 0;

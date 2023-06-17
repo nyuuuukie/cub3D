@@ -82,6 +82,5 @@ void	init_textures(t_all *all)
 		init_texture(all, all->map->sk_path, &all->sky);
 		init_mult_textures(all, all->wpn, all->map->wp_path, ANIM_FRAMES);
 		init_mult_textures(all, all->tp, all->map->tp_path, ANIM_FRAMES);
-		init_mult_textures(all, all->digits, all->map->dg_path, 10);
 	}
 }

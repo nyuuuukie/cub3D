@@ -20,8 +20,6 @@ void	parse_identify_line_bonus(t_map *map)
 		parse_wpath(map, &map->wp_path, "WP", ".anim");
 	else if (!ft_strncmp(map->line, "TP", 2))
 		parse_wpath(map, &map->tp_path, "TP", ".anim");
-	else if (!ft_strncmp(map->line, "DG", 2))
-		parse_wpath(map, &map->dg_path, "DG", ".anim");
 	else if (!ft_strncmp(map->line, "AS", 2))
 		parse_path(map, &map->as_path, "AS", ".xpm");
 	else if (!ft_strncmp(map->line, "NL", 2))

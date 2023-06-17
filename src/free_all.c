@@ -18,8 +18,6 @@ void	free_map_ext(t_map *map)
 		free(map->wp_path);
 	if (map->tp_path)
 		free(map->tp_path);
-	if (map->dg_path)
-		free(map->dg_path);
 	if (map->as_path)
 		free(map->as_path);
 	if (map->sound)
@@ -84,8 +82,6 @@ void	free_all_bonus(t_all *all)
 		free_mlp_texture(all, all->wpn, ANIM_FRAMES);
 	if (all->mlx && all->map->tp_path)
 		free_mlp_texture(all, all->tp, ANIM_FRAMES);
-	if (all->mlx && all->map->dg_path)
-		free_mlp_texture(all, all->digits, 10);
 }
 
 void	free_all(t_all *all)
