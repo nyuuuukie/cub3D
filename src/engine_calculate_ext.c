@@ -53,7 +53,7 @@ int		calculate_skybox_color(t_all *all)
 
 void	calculate_weapon_offset(t_all *all)
 {
-	if ((int)all->r > -1 || (int)all->r < -60)
+	if ((int)all->r > 0 || (int)all->r < -30)
 		all->inc *= -1;
 	all->r += all->inc;
 }

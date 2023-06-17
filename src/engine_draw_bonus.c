@@ -50,8 +50,8 @@ void	draw_weapon(t_all *all)
 	x = 0;
 	while (x < all->map->w)
 	{
-		y = all->map->h / 2 - 60;
-		tex.x = 1.0 * x / all->map->w * all->wpn[all->wp_i].w;
+		y = all->map->h / 3;
+		tex.x = 1.0 * x / all->map->w * all->wpn[all->wp_i].w + all->r;
 		while (y < all->map->h)
 		{
 			tex.y = 1.0 * y / all->map->h * all->wpn[all->wp_i].h + all->r;

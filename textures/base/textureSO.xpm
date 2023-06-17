@@ -1,5 +1,5 @@
 /* XPM */
-static char *_901_113932597b9566356364bd442b9a0d26bfa186d6ae2318c35d1dd2a33748c318[] = {
+static char *textureSO[] = {
 /* columns rows colors chars-per-pixel */
 "64 64 22 1 ",
 "  c gray12",

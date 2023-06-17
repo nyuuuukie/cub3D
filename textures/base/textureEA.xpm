@@ -1,5 +1,5 @@
 /* XPM */
-static char *_203_fab4fe7801d7f060128b517e88555d9c4b810c8940acf32eb66bc3be688f1821[] = {
+static char *textureEA[] = {
 /* columns rows colors chars-per-pixel */
 "64 64 20 1 ",
 "  c #382C14",
