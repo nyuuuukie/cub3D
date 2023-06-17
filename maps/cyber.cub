@@ -1,17 +1,17 @@
 R 1000 800
 
-S sprites-sm/kianu.xpm
-NO textures-sm/cyber/bigdoor.xpm
-SO textures-sm/cyber/cement2.xpm
-WE textures-sm/cyber/cement3.xpm
-EA textures-sm/cyber/cement4.xpm
+S sprites/kianu.xpm
+NO textures/cyber/bigdoor.xpm
+SO textures/cyber/cement2.xpm
+WE textures/cyber/cement3.xpm
+EA textures/cyber/cement4.xpm
 
-AS sprites-sm/chip.xpm
-SK textures-sm/cyber/bg.xpm
-CT textures-sm/cyber/floor.xpm
-FT textures-sm/cyber/floor.xpm
-WP textures-sm/cyber/pistol.anim
-TP textures-sm/cyber/tp.anim
+AS sprites/chip.xpm
+SK textures/cyber/bg.xpm
+CT textures/cyber/floor.xpm
+FT textures/cyber/floor.xpm
+WP textures/cyber/pistol.anim
+TP textures/cyber/tp.anim
 KS music/pickup.mp3
 MC music/cyber.mp3
 SD music/wtfu.mp3

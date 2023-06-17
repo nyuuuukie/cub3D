@@ -1,17 +1,17 @@
 R 600 500
 
-S  sprites-sm/idk.xpm
-NO textures-sm/oblivion/obl15.xpm
-SO textures-sm/oblivion/obl9.xpm
-WE textures-sm/oblivion/obl10.xpm
-EA textures-sm/oblivion/obl12.xpm
+S  sprites/idk.xpm
+NO textures/oblivion/obl15.xpm
+SO textures/oblivion/obl9.xpm
+WE textures/oblivion/obl10.xpm
+EA textures/oblivion/obl12.xpm
 
-AS sprites-sm/bag.xpm
-SK textures-sm/oblivion/bg.xpm
-CT textures-sm/oblivion/grass.xpm
-FT textures-sm/oblivion/gravel.xpm
-WP textures-sm/oblivion/weapon.anim
-TP textures-sm/oblivion/tp.anim
+AS sprites/bag.xpm
+SK textures/oblivion/bg.xpm
+CT textures/oblivion/grass.xpm
+FT textures/oblivion/gravel.xpm
+WP textures/oblivion/weapon.anim
+TP textures/oblivion/tp.anim
 KS music/keys.mp3
 WS music/arrow.mp3
 MC music/oblivion.mp3
